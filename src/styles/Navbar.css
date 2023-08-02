@@ -1,0 +1,53 @@
+.navbar {
+
+    background-color: #f8f9fa; /* Set the background color of the navbar */
+
+  }
+
+ 
+
+  .navbar-brand {
+
+    font-size: 1.5rem; /* Adjust the font size of the brand */
+
+    font-weight: bold;
+
+  }
+
+ 
+
+  .navbar-nav {
+
+    margin-left: auto; /* Align the nav links to the right */
+
+  }
+
+ 
+
+  .nav-link {
+
+    margin-right: 20px; /* Add spacing between nav links */
+
+    color: #212529; /* Set the color of the nav links */
+
+  }
+
+ 
+
+  .nav-link:not(:last-child) {
+
+    margin-right: 20px;
+
+  }
+
+ 
+
+  /* Add hover effect to nav links */
+
+  .nav-link:hover {
+
+    color: #007bff; /* Set the hover color of the nav links */
+
+  }
+
+ 
