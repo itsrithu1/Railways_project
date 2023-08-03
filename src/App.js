@@ -3,14 +3,16 @@ import logo from './logo.svg';
 import './App.css';
 import Register from './Register';
 import Login from './SignIn';
-import BookingDetails from './components/bd';
+import DisplayTrains from './components/TrainDetails';
+// import BookingDetails from './components/bd';
+import BookingPassengerDetails from './components/BookingPassengerDetailsPage';
 import { BrowserRouter, Route, Router, Routes, Navigate } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
 
 import Nav from 'react-bootstrap/Nav';
 
 import Navbar from 'react-bootstrap/Navbar';
-
+import LandingPage from './components/LandingPage';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 function App() {
   return (
@@ -20,7 +22,9 @@ function App() {
           <Route path='/' element={<Navigate to="/SignIn" replace={true} />} />
           <Route path='/Register' element={<Register />} />
           <Route path='/SignIn' element={<Login />} Default/>
-          <Route path='/bookingDetails' element={<BookingDetails/>} />
+          <Route path='/LandingPage' element={<LandingPage/>} />
+          <Route path='/DisplayTrains' element={<DisplayTrains/>} />
+          <Route path='/bookingPassengerDetails' element={<BookingPassengerDetails/>} />
         </Routes>
       </BrowserRouter>
     </main>

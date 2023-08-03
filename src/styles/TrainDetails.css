@@ -1,0 +1,44 @@
+/* src/components/TrainDetails.css */
+
+/* Create a flex container to center the content vertically and horizontally */
+.train-details-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh; /* Set the container height to fill the entire viewport */
+  }
+  
+  /* Add some spacing between elements */
+  .train-details-container > * {
+    margin-bottom: 20px;
+  }
+  
+  /* Center the table */
+  table {
+    margin: 0 50px;
+    /*width: 90%;*/
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  th, td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: center;
+  }
+  
+  th {
+    background-color: #f2f2f2;
+  }
+  
+  /* Center the submit button */
+  button {
+    margin-top: 20px;
+  }
+  
+  /* Add some spacing between radio buttons and text */
+  input[type="radio"] {
+    margin-right: 5px;
+  }
+  

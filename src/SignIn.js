@@ -73,7 +73,7 @@ const Login = () => {
                     <h1>you are logged in!</h1>
                     <br />
                     <p>
-                        <NavLink to="/HomePage">HomePage</NavLink>
+                        <NavLink to="/LandingPage"></NavLink>
                     </p>
                 </section>
             ) : (
@@ -123,4 +123,4 @@ const Login = () => {
     )
 }
 
-export default Login
+export default Login;

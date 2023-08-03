@@ -1,13 +1,13 @@
 /* Styling for the form container */
-form {
+/* form {
     display: flex;
     flex-direction: column;
     width: 300px;
     margin: 0 auto;
   }
-  
+   */
   /* Styling for form inputs */
-  label {
+  /* label {
     margin-bottom: 5px;
   }
   
@@ -22,12 +22,12 @@ form {
     border: 1px solid #ccc;
     border-radius: 5px;
   }
-  
+   */
   /* Styling for radio buttons */
-  input[type="radio"] {
+  /* input[type="radio"] {
     margin-right: 7px;
   }
-  
+   */
   /* Styling for the "Book Now" button */
   button[type="submit"] {
     padding: 10px;
