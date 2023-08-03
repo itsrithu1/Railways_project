@@ -29,41 +29,51 @@ const Login = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const data = new URLSearchParams();
-        data.append("username", user);
-        data.append("password", pwd);
+    
         try {
-            const response = await axios.post(`http://127.0.0.1:8000/login`, data,
-                {
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    withCredentials: true
+            
+            fetch("http://localhost:3001/api/v1/user/login", {
+          method: "POST",
+          crossDomain: true,
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            "Accesss-Control-Allow-Origin": "*",
+          },
+          body: JSON.stringify({
+            user,
+             pwd
+          }),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            console.log("recieved data is",data)
+            
+    
+            if (data.flag=="OK") {
+                    setUser("");
+                    setPwd("");
+                    setSuccess(true);
+                  } else {
+                    // Handle unsuccessful login response here
+                    if (data.status_code === 400) {
+                      setErrMsg("not a valid email");
+                    } else if (data.status_code === 401) {
+                      setErrMsg("unauthorized");
+                    } else {
+                      setErrMsg("login failed");
+                    }
                 }
-            ); //username:user  depending on backend
-            console.log(JSON.stringify(response?.data));
-            //console.log(JSON.stringify(response)); 
-            const accessToken = response?.data?.accessToken;
-            const roles = response?.date?.roles;
-            setAuth({ user, pwd, roles, accessToken });
-
-            setUser('');
-            setPwd('');
-            setSuccess(true);
+    
+            });
+    
+    
+     
         } catch (err) {
-            if (!err?.response) {
-                setErrMsg('no server response');
-            }
-            else if (err.response?.status === 400) {
-                setErrMsg(' missing username or password');
-            }
-            else if (err.response?.status === 401) {
-                setErrMsg(' unauthorized');
-            }
-            else {
-                setErrMsg("login failed");
-            }
-            errRef.current.focus();
+          console.error("Error:", err);
+          setErrMsg("An error occurred during login");
+          errRef.current.focus();
         }
-        //console.log(user,pwd);
 
     }
     return (
@@ -73,7 +83,7 @@ const Login = () => {
                     <h1>you are logged in!</h1>
                     <br />
                     <p>
-                        <NavLink to="/LandingPage"></NavLink>
+                        <NavLink to='/LandingPage'></NavLink>
                     </p>
                 </section>
             ) : (

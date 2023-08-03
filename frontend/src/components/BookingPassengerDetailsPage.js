@@ -2,7 +2,10 @@ import React, { useState } from 'react';
 import "../styles/bookingDetails.css";
 import NavbarComponent from './NavbarComponent';
 import Footer from './Footer';
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { PDFViewer, Document, Page, Text, View, StyleSheet, PDFDownloadLink } from '@react-pdf/renderer';
 
 const BookingPassengerDetails = () => {
   const [passengers, setPassengers] = useState([
@@ -48,12 +51,96 @@ const BookingPassengerDetails = () => {
     e.preventDefault();
     // You can perform any actions with the form data here (e.g., API call, data validation, etc.).
     // For this example, we'll simply log the form data.
+    setShowModal(true);
     console.log(passengers);
   };
 
   const printinconsole = () => {
     console.log({passengers})
   }
+
+  const handleDeletePassenger = (index) => {
+
+    setPassengers((prevPassengers) => {
+
+      const updatedPassengers = prevPassengers.filter((_, i) => i !== index);
+
+      return updatedPassengers;
+
+    });
+
+  };
+
+
+ 
+
+  const handleCloseModal = () => {
+
+    setShowModal(false);
+
+  };
+
+ 
+
+  const [showModal, setShowModal] = useState(false);
+
+ 
+
+  const PDFDocument = ({ passengers }) => {
+
+    return (
+
+      <Document>
+
+        <Page style={styles.page}>
+
+          {passengers.map((passenger, index) => (
+
+            <View key={index} style={styles.passenger}>
+
+              <Text>Name: {passenger.name}</Text>
+
+              <Text>Age: {passenger.age}</Text>
+
+              <Text>Gender: {passenger.gender}</Text>
+
+              <Text>Phone No: {passenger.phone}</Text>
+
+              <Text>Email ID: {passenger.email}</Text>
+
+              <Text>Travel Insurance: {passenger.travelInsurance}</Text>
+
+              <Text>Food Preferences: {passenger.foodPreferences}</Text>
+
+            </View>
+
+          ))}
+
+        </Page>
+
+      </Document>
+
+    );
+
+  };
+
+ 
+
+  const styles = StyleSheet.create({
+
+    page: {
+
+      padding: 20,
+
+    },
+
+    passenger: {
+
+      marginBottom: 10,
+
+    },
+
+  });
 
   return (
     <>
@@ -189,6 +276,83 @@ const BookingPassengerDetails = () => {
         </button>
         <button type="submit" onClick={printinconsole}>Book Now</button>
       </form>
+
+      <Modal show={showModal} onHide={handleCloseModal}>
+
+        <Modal.Header closeButton>
+
+          <Modal.Title>Passenger Details</Modal.Title>
+
+        </Modal.Header>
+
+        <Modal.Body>
+
+          {passengers.map((passenger, index) => (
+
+            <div key={index}>
+
+              <p>Name: {passenger.name}</p>
+
+              <p>Age: {passenger.age}</p>
+
+              <p>Gender: {passenger.gender}</p>
+
+              <p>Phone No: {passenger.phone}</p>
+
+              <p>Email ID: {passenger.email}</p>
+
+              <p>Travel Insurance: {passenger.travelInsurance}</p>
+
+              <p>Food Preferences: {passenger.foodPreferences}</p>
+
+              <Button
+
+                variant="danger"
+
+                onClick={() => handleDeletePassenger(index)}
+
+              >
+
+                Delete
+
+              </Button>
+
+              <hr />
+
+            </div>
+
+          ))}
+
+        </Modal.Body>
+
+        <Modal.Footer>
+
+          <Button variant="secondary" onClick={handleCloseModal}>
+
+            Close
+
+          </Button>
+
+          <PDFDownloadLink
+
+            document={<PDFDocument passengers={passengers} />}
+
+            fileName="passenger_details.pdf"
+
+          >
+
+            {({ blob, url, loading, error }) =>
+
+              loading ? 'Loading document...' : 'Print Now'
+
+            }
+
+          </PDFDownloadLink>
+
+        </Modal.Footer>
+
+      </Modal>
+
       <Footer />
     </>
   );

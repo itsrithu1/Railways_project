@@ -127,14 +127,56 @@ const Register = () => {
       return;
     }
     try {
-      const response = await axios.post(
-        `http://127.0.0.1:8000/register?username=${user}&email=abc@example.com&password=${pwd}&confirm_password=${matchPwd}`
-      );
-      console.log(response.data);
-      console.log(response.accessToken);
-      console.log(JSON.stringify(response));
-      setSuccess(true);
-      //clear input fields
+
+      fetch("http://localhost:3001/api/v1/user/create", {
+          method: "POST",
+          crossDomain: true,
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            "Accesss-Control-Allow-Origin": "*",
+          },
+          body: JSON.stringify({
+            user,
+             pwd,
+             email,
+             number
+          }),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            console.log("recieved data is",data)
+            
+    
+            if (data.status_code==200) {
+                    setUser("");
+                    setPwd("");
+                    setEmail("")
+                    setNo("")
+                    setSuccess(true);
+                  } else {
+                    // Handle unsuccessful login response here
+                    if (data.status_code === 202) {
+                      setErrMsg(data.message);
+                    } else if (data.status_code === 401) {
+                      setErrMsg("unauthorized");
+                    } else {
+                      setErrMsg("login failed");
+                    }
+                }
+    
+            });
+
+    //   const response = await axios.post(
+    //     `http://127.0.0.1:8000/register?username=${user}&email=abc@example.com&password=${pwd}&confirm_password=${matchPwd}`
+    //   );
+    //   console.log(response.data);
+    //   console.log(response.accessToken);
+    //   console.log(JSON.stringify(response));
+    //   setSuccess(true);
+    //   //clear input fields
+
+
     } catch (err) {
       if (!err?.response) {
         setErrMsg("noserver response");
