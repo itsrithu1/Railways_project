@@ -1,44 +1,110 @@
-/* src/components/TrainDetails.css */
-
 /* Create a flex container to center the content vertically and horizontally */
+
 .train-details-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    height: 100vh; /* Set the container height to fill the entire viewport */
-  }
-  
-  /* Add some spacing between elements */
-  .train-details-container > * {
-    margin-bottom: 20px;
-  }
-  
-  /* Center the table */
-  table {
-    margin: 0 50px;
-    /*width: 90%;*/
-    border-collapse: collapse;
-    width: 100%;
-  }
-  
-  th, td {
-    border: 1px solid #ccc;
-    padding: 8px;
-    text-align: center;
-  }
-  
-  th {
-    background-color: #f2f2f2;
-  }
-  
-  /* Center the submit button */
-  button {
-    margin-top: 20px;
-  }
-  
-  /* Add some spacing between radio buttons and text */
-  input[type="radio"] {
-    margin-right: 5px;
-  }
-  
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  flex-direction: column;
+
+  height: 100vh; /* Set the container height to fill the entire viewport */
+
+}
+
+
+
+/* Enclose content in a box with a white background */
+
+.content-box {
+
+  background-color: white;
+
+  padding: 20px;
+
+  border-radius: 10px;
+
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+}
+
+
+
+/* Center the table */
+
+table {
+
+  margin: 20px 0;
+
+  /*width: 90%;*/
+
+  border-collapse: collapse;
+
+  width: 100%;
+
+}
+
+
+
+th, td {
+
+  border: 1px solid #ccc;
+
+  padding: 8px;
+
+  text-align: center;
+
+}
+
+
+
+th {
+
+  background-color: #f2f2f2;
+
+}
+
+
+
+/* Center the submit button */
+
+button {
+
+  margin-top: 20px;
+
+}
+
+
+
+/* Add some spacing between radio buttons and text */
+
+input[type="radio"] {
+
+  margin-right: 5px;
+
+}
+
+
+
+.page-container {
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  height: 100vh; /* Set the container height to fill the entire viewport */
+
+  background-image: url("../../public/Train1.png");
+
+  background-repeat: no-repeat;
+
+  background-position: center;
+
+  background-size: cover;
+
+}
+

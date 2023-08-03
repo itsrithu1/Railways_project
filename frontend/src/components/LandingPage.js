@@ -62,6 +62,8 @@ const LandingPage = () => {
   const [show, setShow] = useState(false);
 
   return (
+    <>
+    <NavbarComponent/>
     <div className='page-container'>
       <div className='card-container'>
         <Card>
@@ -145,6 +147,8 @@ const LandingPage = () => {
         </Card>
       </div>
     </div>
+    <Footer/>
+    </>
   );
 };
 

@@ -1,64 +1,120 @@
-/* src/components/CardComponent.css */
+.card-container {
+
+  width: 400px;
+
+  margin: 0 auto;
+
+  padding: 20px;
+
+  border: 1px solid #ccc;
+
+  border-radius: 5px;
+
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+}
+
+
+
+.card-container h5 {
+
+  text-align: center;
+
+  margin-bottom: 20px;
+
+}
+
+
+
+.form-container {
+
+  display: flex;
+
+  flex-direction: column;
+
+}
+
+
+
+.form-group {
+
+  margin-bottom: 20px;
+
+}
+
+
+
+.form-control {
+
+  font-size: 14px;
+
+  padding: 5px 10px;
+
+  width: 50%;
+
+}
+
+
+
+.form-check {
+
+  display: inline-block;
+
+  margin-right: 20px;
+
+}
+
+
+
+button {
+
+  margin-top: 50px; /* Adjust the value as needed */
+
+  width: 25%;
+
+  margin-left: auto;
+
+  margin-right: auto;
+
+  display: block;
+
+}
+
+
 
 .card-container {
-    width: 400px;
-    margin: 0 auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  .card-container h5 {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  .form-container {
-    display: flex;
-    flex-direction: column;
-  }
 
-  .form-group {
-    margin-bottom: 20px;
-  }
-  
-  .form-control {
-    font-size: 14px;
-    padding: 5px 10px;
-    width: 50%;
-  }
-  
-  .form-check {
-    display: inline-block;
-    margin-right: 20px;
-  }
-  
-  button {
-    margin-top: 50px; /* Adjust the value as needed */
-    width: 25%;
-    margin-left: auto;
-    margin-right: auto;
-    display: block;
-  }
-  
-  .card-container {
-    width: 400px;
-    margin: 0 20px; /* Add some spacing on the right side */
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
+  width: 400px;
 
-  .page-container {
-    display: flex;
-    justify-content: flex-end; /* Align items to the right */
-    height: 100vh; /* Set the container height to fill the entire viewport */
-    /* background-image: url("../../../public/Train1.jpg"); */
-    background-repeat: no-repeat;
-    background-position: right center;
-    background-size: cover;
-  }
+  margin: 0 20px; /* Add some spacing on the right side */
 
-  
+  padding: 20px;
+
+  border: 1px solid #ccc;
+
+  border-radius: 5px;
+
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+}
+
+
+
+.page-container {
+
+  display: flex;
+
+  justify-content: flex-end; /* Align items to the right */
+
+  height: 100vh; /* Set the container height to fill the entire viewport */
+
+  background-image: url("../../public/Train1.png");
+
+  background-repeat: no-repeat;
+
+  background-position: center;
+
+  background-size: cover;
+
+}
+

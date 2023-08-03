@@ -4,7 +4,7 @@ import Form from 'react-bootstrap/Form';
 import { Button } from 'react-bootstrap';
 import { Router, useNavigate } from 'react-router-dom';
 // import './TrainDetails.css'; // Import the CSS file
-import '../styles/TrainDetails.css'
+import '../styles/TrainDetails.css';
 import NavbarComponent from '../components/NavbarComponent';
 import Footer from '../components/Footer';
 
@@ -27,7 +27,9 @@ const DisplayTrains = ({ source, destination, date }) => {
   return (
     <>
     <NavbarComponent/>
-    <div className="train-details-container">
+    <div className='page-container'>
+
+      <div className="content-box train-details-container">
       <h2>Train Details</h2>
       <p>Source: {source}</p>
       <p>Destination: {destination}</p>
@@ -69,6 +71,7 @@ const DisplayTrains = ({ source, destination, date }) => {
       <Button variant="primary" type="submit" onClick={handleSubmit}>
         Submit
       </Button>
+    </div>
     </div>
     <Footer/>
     </>
