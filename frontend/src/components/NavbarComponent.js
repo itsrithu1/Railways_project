@@ -25,13 +25,13 @@ function NavbarComponent() {
 
           <Nav className="me-auto">
 
-            <Nav.Link href="#home">Trains</Nav.Link>
+            <Nav.Link href="/LandingPage">Modify Seach</Nav.Link>
 
-            <Nav.Link href="#link">Destinations</Nav.Link>
+            {/* <Nav.Link href="#link">Destinations</Nav.Link> */}
 
-            <Nav.Link href="#link">Features</Nav.Link>
+            {/* <Nav.Link href="#link">Features</Nav.Link> */}
 
-            <Nav.Link href="#link">About Us</Nav.Link>
+            <Nav.Link href="/">Logout </Nav.Link>
 
           </Nav>
 

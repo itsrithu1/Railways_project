@@ -6,7 +6,6 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css' ;
 import { Router, useNavigate } from 'react-router-dom';
-import '../styles/AdminAddTrains.css'
 const AdminAddTrains = () => {
   const [Trains, setTrains] = useState([
     {

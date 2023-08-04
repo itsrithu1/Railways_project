@@ -3,8 +3,7 @@ import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import { Button } from 'react-bootstrap';
 import { Router, useNavigate ,useLocation} from 'react-router-dom';
-// import {  } from 'react-router-dom';
-// import './TrainDetails.css'; // Import the CSS file
+
 import '../styles/TrainDetails.css';
 import NavbarComponent from '../components/NavbarComponent';
 import Footer from '../components/Footer';
