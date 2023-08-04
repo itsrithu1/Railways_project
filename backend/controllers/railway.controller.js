@@ -50,25 +50,3 @@ exports.searchTrainUser = async (req, res) => {
 };
 
 
-
-
-exports.displayAllTrainsWithSourceAndDestination = async (req, res) => {
-
-
-
-  const findAll = await Train.find();
-  if(!findAll){
-    return res
-      .status(httpStatusCodes[202].code)
-      .json(
-        formResponse(httpStatusCodes[202].code, "No Trains found")
-      );
-  }
-
-  return res
-      .status(httpStatusCodes[200].code)
-      .json(
-        formResponse(httpStatusCodes[200].code, findAll)
-      );
-
-}

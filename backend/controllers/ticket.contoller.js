@@ -2,7 +2,7 @@ const httpStatusCodes = require("../Constants/http-status-codes");
 const { formResponse } = require("../utils/helper");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const { Ticket } = require("../model/ticket.model");
+// const { Ticket } = require("../model/ticket.model");
 
 exports.createticket = async (req, res) => {
   const { name, gender, dob, phoneNo,insurance, food, ticket_id } = req.body;
