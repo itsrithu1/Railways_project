@@ -4,7 +4,14 @@ const { Train } = require("../model/trainData.model");
 const { formResponse } = require("../utils/helper");
 
 exports.searchTrainUser = async (req, res) => {
-  const { source, destination, date } = req.body;
+  // const { source, destination, date } = req.body;
+
+  const source=req.query.source;
+  const destination=req.query.destination;
+  const date=req.params.date;
+
+
+
 
   try {
     const checkTrain = await Train.find({ source, destination });
@@ -42,3 +49,26 @@ exports.searchTrainUser = async (req, res) => {
   }
 };
 
+
+
+
+exports.displayAllTrainsWithSourceAndDestination = async (req, res) => {
+
+
+
+  const findAll = await Train.find();
+  if(!findAll){
+    return res
+      .status(httpStatusCodes[202].code)
+      .json(
+        formResponse(httpStatusCodes[202].code, "No Trains found")
+      );
+  }
+
+  return res
+      .status(httpStatusCodes[200].code)
+      .json(
+        formResponse(httpStatusCodes[200].code, findAll)
+      );
+
+}
