@@ -1,11 +1,44 @@
 const httpStatusCodes = require("../Constants/http-status-codes");
+const { SeatAllocation } = require("../model/seatAllocation.model");
+const { Train } = require("../model/trainData.model");
 const { formResponse } = require("../utils/helper");
 
+exports.searchTrainUser = async (req, res) => {
+  const { source, destination, date } = req.body;
 
+  try {
+    const checkTrain = await Train.find({ source, destination });
 
-exports.searchTrain = async (req, res) => {
-    const { email, password } = req.body;
-  
-    
-  };
-  
+    if (!checkTrain.length) {
+      return res.status(httpStatusCodes[202].code).json(
+        formResponse(httpStatusCodes[202].code, "No Trains found for this route")
+      );
+    }
+
+    const foundTrainsPromises = checkTrain.map(async (train) => {
+      const findTrainWithSeats = await SeatAllocation.find({
+        train_Number: train.train_Number,
+        date
+      });
+
+      return {
+        // train_Number: train.train_Number,
+        seatAllocations: findTrainWithSeats
+      };
+    });
+
+    const foundTrains = await Promise.all(foundTrainsPromises);
+
+    return res
+      .status(httpStatusCodes[200].code)
+      .json(
+        formResponse(httpStatusCodes[200].code, foundTrains)
+      );
+  } catch (error) {
+    console.error('Error:', error);
+    return res
+      .status(httpStatusCodes[500].code)
+      .json(formResponse(httpStatusCodes[500].code, "Internal Server Error"));
+  }
+};
+

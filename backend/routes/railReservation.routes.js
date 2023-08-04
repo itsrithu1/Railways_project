@@ -1,9 +1,9 @@
 
 const {Router}=require('express');
 
-const { searchTrain } = require('../controllers/railway.controller');
+const { searchTrainUser } = require('../controllers/railway.controller');
 const railwayRouter=Router();
 
-railwayRouter.post('/api/v1/user/searchTrain',searchTrain)
+railwayRouter.post('/api/v1/user/searchTrain',searchTrainUser)
 
 module.exports=railwayRouter
