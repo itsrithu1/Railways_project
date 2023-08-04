@@ -5,6 +5,7 @@ import Footer from './Footer';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { Navigate } from 'react-router-dom';
 import { PDFViewer, Document, Page, Text, View, StyleSheet, PDFDownloadLink } from '@react-pdf/renderer';
 
 const BookingPassengerDetails = () => {
@@ -79,7 +80,9 @@ const BookingPassengerDetails = () => {
     setShowModal(false);
 
   };
-
+  // const handleClose=()=>{
+  //   navigate('/LandingPage')
+  // }
  
 
   const [showModal, setShowModal] = useState(false);
@@ -149,7 +152,7 @@ const BookingPassengerDetails = () => {
         <table className="table table-bordered">
           <thead>
             <tr>
-              <th>#</th>
+              <th>Sr No</th>
               <th>Name</th>
               <th>Age</th>
               <th>Gender</th>
@@ -209,7 +212,7 @@ const BookingPassengerDetails = () => {
                     name="email"
                     value={passenger.email}
                     onChange={(e) => handleChange(index, e)}
-                    required
+                    
                   />
                 </td>
                 <td>
@@ -326,12 +329,14 @@ const BookingPassengerDetails = () => {
         </Modal.Body>
 
         <Modal.Footer>
+          {/* <Button onClick={handleClose}>Close</Button> */}
 
           <Button variant="secondary" onClick={handleCloseModal}>
 
-            Close
+            Back
 
           </Button>
+
 
           <PDFDownloadLink
 

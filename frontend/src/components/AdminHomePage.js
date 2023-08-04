@@ -3,15 +3,15 @@ import Form from 'react-bootstrap/Form';
 import { Button } from 'react-bootstrap';
 import { Router, useNavigate } from 'react-router-dom';
 //import './TrainDetails.css'; // Import the CSS file
-import NavbarComponent from '../NavbarComponent';
-import Footer from '../Footer';
+import NavbarComponent from '../components/NavbarComponent';
+import Footer from '../components/Footer';
 
-const TrainDetails = ({ source, destination, date }) => {
+const AdminHomePage = ({ source, destination, date }) => {
   const navigate = useNavigate();
 
   const handleSubmit = () => {
     // window.location.href='./displaytrains'
-    navigate('/EditPage');
+    navigate('/AdmimEditPage');
   };
 
   const trainData = [
@@ -71,4 +71,4 @@ const TrainDetails = ({ source, destination, date }) => {
   );
 };
 
-export default TrainDetails;
+export default AdminHomePage;
