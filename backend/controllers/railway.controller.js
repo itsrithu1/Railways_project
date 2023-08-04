@@ -9,11 +9,11 @@ exports.searchTrainUser = async (req, res) => {
 
   const source=req.query.source;
   const destination=req.query.destination;
-  const date=req.params.date;
+  const date=req.query.date;
 
 
 
-
+console.log(source,destination,date)
   try {
     const checkTrain = await Train.find({ source, destination });
 
@@ -52,8 +52,6 @@ exports.searchTrainUser = async (req, res) => {
 
 exports.displayTrains = async (req, res) => {
 
-<<<<<<< HEAD
-=======
   const trainNumber = req.query.trainNumber;
   console.log(trainNumber);
   
@@ -83,4 +81,3 @@ exports.displayTrains = async (req, res) => {
 
 
 };
->>>>>>> 5a951adaca839017424bb778e528426cbebac37a

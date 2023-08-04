@@ -21,7 +21,7 @@ const LandingPage = () => {
     e.preventDefault();
 
     if (source && destination && date) {
-      navigate('/displaytrains');
+      navigate(`/displaytrains?source=${source}&destination=${destination}&date=${date}`);
     } else {
       alert('Please enter valid values');
     }

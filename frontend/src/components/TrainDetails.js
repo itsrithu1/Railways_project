@@ -1,14 +1,17 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import { Button } from 'react-bootstrap';
-import { Router, useNavigate } from 'react-router-dom';
+import { Router, useNavigate ,useLocation} from 'react-router-dom';
+// import {  } from 'react-router-dom';
 // import './TrainDetails.css'; // Import the CSS file
 import '../styles/TrainDetails.css';
 import NavbarComponent from '../components/NavbarComponent';
 import Footer from '../components/Footer';
 
-const DisplayTrains = ({ source, destination, date }) => {
+const DisplayTrains = () => {
+
+  const location =useLocation()
   
   const navigate = useNavigate();
   
@@ -23,6 +26,79 @@ const DisplayTrains = ({ source, destination, date }) => {
     { trainNo: '11', trainName: 'Train 2', departure: '12:30 PM', arrival: '03:30 PM', fare: 'Rs 550', seats_available: '300' },
     { trainNo: '12', trainName: 'Train 3', departure: '10:00 AM', arrival: '08:00 PM', fare: 'Rs 1000', seats_available: '150' }
   ];
+
+  const [source,setSource]=useState();
+  const [destination,setDestination]=useState();
+  const [date,setDate]=useState();
+
+  useEffect(() => {
+    console.log(source,destination,date)
+  }, [setSource,setDestination])
+  
+
+  const displayTrainDetails = ()=>{
+    // const { source } = useParams();
+    // const { destination } = useParams();
+    // const { date } = useParams();
+
+
+    const queryParams= new URLSearchParams(location.search);
+    setSource( queryParams.get("source"))
+    setDestination( queryParams.get("destination"))
+
+    
+    const parts = queryParams.get("date").split("-");
+    const formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
+    
+
+    setDate(formattedDate)
+
+    
+
+    
+    try {
+            
+      fetch(`http://localhost:3001/api/v1/user/searchTrain?source=${source}&destination=${destination}&date=${date}`, {
+    method: "GET",
+    crossDomain: true,
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      "Accesss-Control-Allow-Origin": "*",
+    },
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      console.log("recieved data is",data)
+      
+
+      if (data.flag=="OK") {
+            
+              
+            } else {
+              // Handle unsuccessful login response here
+              
+          }
+
+      });
+
+
+
+  } catch (err) {
+    console.error("Error:", err);
+    
+  }
+
+
+
+
+
+    // console.log(source,destination,date)
+  }
+  useEffect(() => {
+    
+    displayTrainDetails();
+  }, []);
 
   return (
     <>

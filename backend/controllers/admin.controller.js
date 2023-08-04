@@ -105,23 +105,40 @@ exports.createTrain = async (req, res) => {
       // console.log(`stdout: ${data}`);
       data1 += data;
       const dataArray = data1.split("\n")
-      console.log(dataArray.length)
-      console.log("unreserved array from backend: ",typeof dataArray[0])
-      console.log("reserved array from backend: ",typeof dataArray[1])
 
-      const cleanString1 = dataArray[0].replace(/^\{|\}$/g, "").replace(/'/g, "");
-      const keyValuePairs1 = cleanString1.split(", ");
-      unreservedArray = keyValuePairs1.map((pair) => {
-        const [key, value] = pair.split(": ");
-        return { [key]: parseInt(value) }; // Convert value to integer
-      });
+      var jsonStringWithDoubleQuotes = dataArray[0].replace(/'/g, '"');
 
-      const cleanString2 = dataArray[1].replace(/^\{|\}$/g, "").replace(/'/g, "");
-      const keyValuePairs2 = cleanString2.split(", ");
-      reservedArray = keyValuePairs2.map((pair) => {
-        const [key, value] = pair.split(": ");
-        return { [key]: parseInt(value) }; // Convert value to integer
-      });
+    var myObject = JSON.parse(jsonStringWithDoubleQuotes);
+
+    unreservedArray=myObject;
+
+    myObject=null;
+
+    jsonStringWithDoubleQuotes = dataArray[1].replace(/'/g, '"');
+
+    myObject = JSON.parse(jsonStringWithDoubleQuotes);
+
+    reservedArray=myObject;
+
+    console.log(reservedArray)
+      
+      // console.log(dataArray.length)
+      // console.log("unreserved array from backend: ",typeof dataArray[0])
+      // console.log("reserved array from backend: ",typeof dataArray[1])
+
+      // const cleanString1 = dataArray[0].replace(/^\{|\}$/g, "").replace(/'/g, "");
+      // const keyValuePairs1 = cleanString1.split(", ");
+      // unreservedArray = keyValuePairs1.map((pair) => {
+      //   const [key, value] = pair.split(": ");
+      //   return { [key]: parseInt(value) }; // Convert value to integer
+      // });
+
+      // const cleanString2 = dataArray[1].replace(/^\{|\}$/g, "").replace(/'/g, "");
+      // const keyValuePairs2 = cleanString2.split(", ");
+      // reservedArray = keyValuePairs2.map((pair) => {
+      //   const [key, value] = pair.split(": ");
+      //   return { [key]: parseInt(value) }; // Convert value to integer
+      // });
 
 
       // console.log("UnreservedArray : ",typeof unreservedArray)
