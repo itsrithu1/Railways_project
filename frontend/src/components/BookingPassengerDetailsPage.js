@@ -12,10 +12,10 @@ const BookingPassengerDetails = () => {
   const [passengers, setPassengers] = useState([
     {
       name: '',
-      age: '',
+      dob: '',
       gender: '',
-      phone: '',
-      email: '',
+      phone: 0,
+   
       travelInsurance: 'no',
       foodPreferences: 'no',
     },
@@ -38,10 +38,10 @@ const BookingPassengerDetails = () => {
       ...prevPassengers,
       {
         name: '',
-        age: '',
+        dob: '',
         gender: '',
         phone: '',
-        email: '',
+       
         travelInsurance: 'no',
         foodPreferences: 'no',
       },
@@ -54,6 +54,40 @@ const BookingPassengerDetails = () => {
     // For this example, we'll simply log the form data.
     setShowModal(true);
     console.log(passengers);
+
+    e.preventDefault();
+    
+        try {
+            
+            fetch("http://localhost:3001/api/v1/passenger/addPassenger?train_Number=12133", {
+          method: "POST",
+          crossDomain: true,
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            "Accesss-Control-Allow-Origin": "*",
+          },
+          body: JSON.stringify({
+            passengers
+          }),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            console.log("recieved data is",data)
+            
+    
+            
+    
+            });
+    
+    
+     
+        } catch (err) {
+          console.error("Error:", err);
+          
+        }
+
+
   };
 
   const printinconsole = () => {
@@ -103,13 +137,13 @@ const BookingPassengerDetails = () => {
 
               <Text>Name: {passenger.name}</Text>
 
-              <Text>Age: {passenger.age}</Text>
+              <Text>Dob: {passenger.dob}</Text>
 
               <Text>Gender: {passenger.gender}</Text>
 
               <Text>Phone No: {passenger.phone}</Text>
 
-              <Text>Email ID: {passenger.email}</Text>
+              {/* <Text>Email ID: {passenger.email}</Text> */}
 
               <Text>Travel Insurance: {passenger.travelInsurance}</Text>
 
@@ -154,10 +188,10 @@ const BookingPassengerDetails = () => {
             <tr>
               <th>Sr No</th>
               <th>Name</th>
-              <th>Age</th>
+              <th>Dob</th>
               <th>Gender</th>
               <th>Phone No</th>
-              <th>Email ID</th>
+            
               <th>Travel Insurance</th>
               <th>Food Preferences</th>
             </tr>
@@ -177,12 +211,13 @@ const BookingPassengerDetails = () => {
                 </td>
                 <td>
                   <input
-                    type="number"
-                    name="age"
-                    value={passenger.age}
+                    type="date"
+                    name="dob"
+                    value={passenger.date}
                     onChange={(e) => handleChange(index, e)}
                     required
                   />
+                  
                 </td>
                 <td>
                   <select
@@ -199,22 +234,14 @@ const BookingPassengerDetails = () => {
                 </td>
                 <td>
                   <input
-                    type="tel"
+                    type="number"
                     name="phone"
                     value={passenger.phone}
                     onChange={(e) => handleChange(index, e)}
                     required
                   />
                 </td>
-                <td>
-                  <input
-                    type="email"
-                    name="email"
-                    value={passenger.email}
-                    onChange={(e) => handleChange(index, e)}
-                    
-                  />
-                </td>
+                
                 <td>
                   <label>
                     <input
@@ -277,7 +304,7 @@ const BookingPassengerDetails = () => {
         <button type="button" onClick={handleAddPassenger}>
           Add Passenger
         </button>
-        <button type="submit" onClick={printinconsole}>Book Now</button>
+        <button type="submit" onClick={handleSubmit}>Book Now</button>
       </form>
 
       <Modal show={showModal} onHide={handleCloseModal}>
@@ -296,13 +323,13 @@ const BookingPassengerDetails = () => {
 
               <p>Name: {passenger.name}</p>
 
-              <p>Age: {passenger.age}</p>
+              <p>Dob: {passenger.dob}</p>
 
               <p>Gender: {passenger.gender}</p>
 
               <p>Phone No: {passenger.phone}</p>
 
-              <p>Email ID: {passenger.email}</p>
+              {/* <p>Email ID: {passenger.email}</p> */}
 
               <p>Travel Insurance: {passenger.travelInsurance}</p>
 
