@@ -5,7 +5,14 @@ const { formResponse } = require("../utils/helper");
 const { displayTrains } = require("./admin.controller");
 
 exports.searchTrainUser = async (req, res) => {
-  const { source, destination, date } = req.body;
+  // const { source, destination, date } = req.body;
+
+  const source=req.query.source;
+  const destination=req.query.destination;
+  const date=req.params.date;
+
+
+
 
   try {
     const checkTrain = await Train.find({ source, destination });
@@ -42,7 +49,6 @@ exports.searchTrainUser = async (req, res) => {
       .json(formResponse(httpStatusCodes[500].code, "Internal Server Error"));
   }
 };
-
 
 exports.displayTrains = async (req, res) => {
 
