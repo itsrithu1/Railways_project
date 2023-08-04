@@ -9,16 +9,15 @@ const { SeatAllocation } = require("../model/seatAllocation.model");
 exports.searchTrain = async (req, res) => {
   // const { trainNumber, trainName } = req.params.id;
   const trainNumber = req.query.trainNumber;
-  const trainName = req.query.trainName;
-
+console.log(trainNumber);
   // console.log("hello",trainName,trainNumber)
 
   try {
-    const query = {
-      $or: [{ train_Number: trainNumber }, { name: trainName }],
-    };
+    // const query = {
+    //   $or: [{ train_Number: trainNumber }, { name: trainName }],
+    // };
 
-    const foundTrains = await Train.find(query);
+    const foundTrains = await Train.find({train_Number: trainNumber});
 
     if (!foundTrains || foundTrains.length === 0) {
       return res
