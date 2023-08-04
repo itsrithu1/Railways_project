@@ -118,7 +118,7 @@ const LandingPage = () => {
                 />
               </Form.Group>
 
-              <Form.Group>
+              {/* <Form.Group>
                 <Form.Label>Are you a Senior Citizen</Form.Label>
                 <div>
                   <Form.Check
@@ -137,7 +137,7 @@ const LandingPage = () => {
                     value='no'
                   />
                 </div>
-              </Form.Group>
+              </Form.Group> */}
 
               <Button variant='primary' type='submit' onClick={handleSubmit}>
                 Submit

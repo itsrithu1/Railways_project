@@ -88,11 +88,5 @@ exports.addPassenger = async (req, res) => {
   
 };
 
-exports.createticket = async (req, res) => { 
-
-  const { name, gender, dob, phoneNo,insurance, food, ticket_id } = req.body;
- 
-
-};
 
 

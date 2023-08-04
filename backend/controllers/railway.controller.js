@@ -52,6 +52,8 @@ exports.searchTrainUser = async (req, res) => {
 
 exports.displayTrains = async (req, res) => {
 
+<<<<<<< HEAD
+=======
   const trainNumber = req.query.trainNumber;
   console.log(trainNumber);
   
@@ -81,3 +83,4 @@ exports.displayTrains = async (req, res) => {
 
 
 };
+>>>>>>> 5a951adaca839017424bb778e528426cbebac37a
