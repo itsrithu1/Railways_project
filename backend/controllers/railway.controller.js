@@ -2,6 +2,7 @@ const httpStatusCodes = require("../Constants/http-status-codes");
 const { SeatAllocation } = require("../model/seatAllocation.model");
 const { Train } = require("../model/trainData.model");
 const { formResponse } = require("../utils/helper");
+const { displayTrains } = require("./admin.controller");
 
 exports.searchTrainUser = async (req, res) => {
   const { source, destination, date } = req.body;
@@ -42,3 +43,35 @@ exports.searchTrainUser = async (req, res) => {
   }
 };
 
+
+exports.displayTrains = async (req, res) => {
+
+  const trainNumber = req.query.trainNumber;
+  console.log(trainNumber);
+  
+  try {
+    
+
+    const foundTrains = await Train.find({train_Number: trainNumber});
+
+    if (!foundTrains || foundTrains.length === 0) {
+      return res
+        .status(httpStatusCodes[404].code)
+        .json(formResponse(httpStatusCodes[404].code, "Train not found"));
+    }
+
+    return res
+      .status(httpStatusCodes[200].code)
+      .json(formResponse(httpStatusCodes[200].code, foundTrains));
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(httpStatusCodes[500].code)
+      .json(formResponse(httpStatusCodes[500].code, error));
+  }
+
+
+
+
+
+};

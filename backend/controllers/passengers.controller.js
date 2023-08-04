@@ -3,7 +3,7 @@ const { formResponse } = require("../utils/helper");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const { Passenger } = require("../model/passenger.model");
-const { Ticket } = require("../model/ticket.model");
+// const { Ticket } = require("../model/ticket.model");
 
 exports.addPassenger = async (req, res) => {
   const { name, gender, dob, phoneNo,insurance, food, ticket_id,  train_Number } = req.body;
