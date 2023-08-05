@@ -37,6 +37,9 @@ console.log(trainNumber);
 };
 
 exports.createTrain = async (req, res) => {
+// console.log(req.body);
+
+
   const {
     train_Number,
     name,
@@ -46,8 +49,26 @@ exports.createTrain = async (req, res) => {
     numberOfSeatsPerCoach,
     startTime,
     endTime,
-    fare,
-  } = req.body;
+    fare
+  } = req.body.Trains;
+
+  const Tnumber = parseInt(train_Number,2) 
+
+  console.log(
+    {Tnumber,
+    name,
+    source,
+    destination,
+    numberOfCoach,
+    numberOfSeatsPerCoach,
+    startTime,
+    endTime,
+    fare});
+
+
+  // const numberOfCoach = parseInt(numberOfCoach,2) 
+  // const numberOfSeatsPerCoach = parseInt(numberOfSeatsPerCoach,2) 
+  
 
   try {
     if (

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import "../styles/bookingDetails.css";
 import NavbarComponent from './NavbarComponent';
 import Footer from './Footer';
@@ -7,76 +7,89 @@ import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css' ;
 import { Router, useNavigate } from 'react-router-dom';
 const AdminAddTrains = () => {
-  const [Trains, setTrains] = useState([
+  const [Trains, setTrains] = useState(
     {
-   trainName: '',
-      number: '',
-      coaches: '',
-      seats: '',
+      train_Number: '',
+      name: '',
       source: '',
       destination: '',
-      src_time: '',
-      end_time:'',
-      fair:'',
-    },
-  ]);
+      numberOfCoach: '',
+      numberOfSeatsPerCoach: '',
+      startTime: '',
+      endTime:'',
+      fare:'',
+    }
+  );
+
+  useEffect(() => {
+    console.log({Trains});
+  }, [Trains]);
  
 
-  const handleChange = (index, e) => {
-    const { name, value } = e.target;
-
-    setTrains((prevTrains) => {
-
-      const updatedTrains = [...prevTrains];
-
-      updatedTrains[index] = {
-
-        ...updatedTrains[index],
-
-        [name]: value,
-
-      };
-
-      return updatedTrains;
-
-    });
-
-  };
-
- 
-
-  const handleAddtrains = () => {
-
-    setTrains((prevTrains) => [
-
+  const handleTnameChange = (e) => {
+    setTrains((prevTrains) => ({
       ...prevTrains,
-
-      {
-
-        trainName: '',
-
-        number: '',
-
-        coaches: '',
-
-        seats: '',
-
-        source: '',
-
-        destination: '',
-
-        src_time: '',
-
-        end_time:'',
-
-        fair:'',
-
-      },
-
-    ]);
-
+      name: e.target.value,
+    }));
   };
 
+  const handleTnumberChange = (e) => {
+    setTrains((prevTrains) => ({
+      ...prevTrains,
+      train_Number: e.target.value,
+    }));
+  };
+
+  const handleTsourceChange = (e) => {
+    setTrains((prevTrains) => ({
+      ...prevTrains,
+      source: e.target.value,
+    }));
+  };
+
+  const handleTdesitinationChange = (e) => {
+    setTrains((prevTrains) => ({
+      ...prevTrains,
+      destination: e.target.value,
+    }));
+  };
+
+  const handleTsourcetimeChange = (e) => {
+    setTrains((prevTrains) => ({
+      ...prevTrains,
+      startTime: e.target.value,
+    }));
+  };
+
+  const handleTendtimeChange = (e) => {
+    setTrains((prevTrains) => ({
+      ...prevTrains,
+      endTime: e.target.value,
+    }));
+  };
+
+  const handleTcoachesChange = (e) => {
+    setTrains((prevTrains) => ({
+      ...prevTrains,
+      numberOfCoach: e.target.value,
+    }));
+  };
+ 
+  const handleTseatsChange = (e) => {
+    setTrains((prevTrains) => ({
+      ...prevTrains,
+      numberOfSeatsPerCoach: e.target.value,
+    }));
+  };
+
+  const handleTfareChange = (e) => {
+    setTrains((prevTrains) => ({
+      ...prevTrains,
+      fare: e.target.value,
+    }));
+  };
+
+  
   const handleBack=()=>{
 
     // navigate('/AdminHomePage');
@@ -94,9 +107,37 @@ const AdminAddTrains = () => {
     e.preventDefault();
 
     setShow(true)
-    // You can perform any actions with the form data here (e.g., API call, data validation, etc.).
+    
 
-    // For this example, we'll simply log the form data.
+    try {
+            
+      fetch(`http://localhost:3001/api/v1/admin/createTrain`, {
+    method: "POST",
+    crossDomain: true,
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      "Accesss-Control-Allow-Origin": "*",
+    },
+    body: JSON.stringify({
+      Trains
+    }),
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      
+      if(data.flag=="OK"){
+        alert("Seat Booked Successfully")
+      }
+
+      });
+
+
+
+  } catch (err) {
+    console.error("Error:", err);
+    
+  }
 
     console.log(Trains);
 
@@ -114,242 +155,128 @@ const AdminAddTrains = () => {
 
     <form onSubmit={handleSubmit} >
 
-      {Trains.map((Trains, index) => (
+      
 
-        <div key={index}>
+        <div >
 
-          <h3>Train {index + 1}</h3>
+          <h3>Add Train </h3>
 
           <div>
-
-            <label htmlFor={`trainName${index}`}>Train Name:</label>
-
+            <label >Train Name:</label>
             <input
-
               type="text"
-
-              id={`trainName${index}`}
-
-              name="trainName"
-
-              value={Trains.trainName}
-
-              onChange={(e) => handleChange(index, e)}
-
+              name="name"
+              onChange={handleTnameChange}
               required
-
             />
-
           </div>
 
- 
 
           <div>
-
-       <label htmlFor={`number${index}`}> Train Number:</label>
-
+       <label > Train Number:</label>
          <input
-
           type="number"
-
-          id={`number${index}`}
-
-          name="number"
-
-          value={Trains.number}
-
-          onChange={(e) => handleChange(index, e)}
-
+          name="train_Number"
+          onChange={handleTnumberChange}
           required
-
         />
-
       </div>
 
  
 
       <div>
-
-            <label htmlFor={`source${index}`}>Source:</label>
-
+            <label >Source:</label>
             <input
-
               type="text"
-
-              id={`source${index}`}
-
               name="source"
-
               value={Trains.source}
-
-              onChange={(e) => handleChange(index, e)}
-
+              onChange={handleTsourceChange}
               required
-
             />
-
           </div>
 
  
 
           <div>
-
-            <label htmlFor={`destination${index}`}>Destination:</label>
-
+            <label >Destination:</label>
             <input
-
               type="text"
-
-              id={`destination${index}`}
-
               name="destination"
-
               value={Trains.destination}
-
-              onChange={(e) => handleChange(index, e)}
-
+              onChange={handleTdesitinationChange}
               required
-
             />
+          </div>
 
+          <div>
+            <label >source time:</label>
+            <input
+              type="time"
+              name="startTime"
+              value={Trains.startTime}
+              onChange={handleTsourcetimeChange}
+              required
+            />
           </div>
 
  
 
           <div>
-
-            <label htmlFor={`src_time${index}`}>src_time:</label>
-
+            <label>End Time:</label>
             <input
-
               type="time"
-
-              id={`src_time${index}`}
-
-              name="src_time"
-
-              value={Trains.src_time}
-
-              onChange={(e) => handleChange(index, e)}
-
+              name="endTime"
+              value={Trains.endTime}
+              onChange={handleTendtimeChange}
               required
-
             />
-
           </div>
-
- 
-
-          <div>
-
-            <label htmlFor={`dest_time${index}`}>end_time:</label>
-
-            <input
-
-              type="time"
-
-              id={`end_time${index}`}
-
-              name="end_time"
-
-              value={Trains.end_time}
-
-              onChange={(e) => handleChange(index, e)}
-
-              required
-
-            />
-
-          </div>
-
  
 
       <div>
-
-       <label htmlFor={`number${index}`}> Coaches:</label>
-
+       <label> Coaches:</label>
          <input
-
           type="number"
-
-          id={`coaches${index}`}
-
-          name="coaches"
-
-          value={Trains.coaches}
-
-          onChange={(e) => handleChange(index, e)}
-
+          name="numberOfCoach"
+          value={Trains.numberOfCoach}
+          onChange={handleTcoachesChange}
           required
-
         />
-
       </div>
 
  
 
       <div>
-
-       <label htmlFor={`number${index}`}> No of Seats:</label>
-
+       <label > No of Seats:</label>
          <input
-
           type="number"
-
-          id={`seats${index}`}
-
-          name="seats"
-
-          value={Trains.seats}
-
-          onChange={(e) => handleChange(index, e)}
-
+          name="numberOfSeatsPerCoach"
+          value={Trains.numberOfSeatsPerCoach}
+          onChange={handleTseatsChange}
           required
-
         />
-
       </div>
 
  
 
       <div>
-
-       <label htmlFor={`number${index}`}> Fair:</label>
-
+       <label > Fare:</label>
          <input
-
           type="number"
-
-          id={`fair${index}`}
-
-          name="fair"
-
-          value={Trains.fair}
-
-          onChange={(e) => handleChange(index, e)}
-
+          name="fare"
+          value={Trains.fare}
+          onChange={handleTfareChange}
           required
-
         />
-
       </div>
-
- 
-
- 
 
         </div>
 
-      ))}
+      
 
  
 
-      <button type="button" onClick={handleAddtrains}>
-
-        Add Train
-
-      </button>
-
+   
  
 
       <button type="submit" onClick={handleSubmit}>
@@ -392,35 +319,27 @@ Train Booked Successfully
 </Modal.Header>
 <Modal.Body style={{display:'grid'}}>
 
-{Trains.map((Trains, index) => (
-
-<div key={index}>
 
 
-  <p>Train Name: {Trains.trainName}</p>
+<div >
 
-  <p>Train Number: {Trains.number}</p>
 
-  <p>Number of Coaches: {Trains.coaches}</p>
-
-  <p>Seats per Coach: {Trains.seats}</p>
-
+  <p>Train Name: {Trains.name}</p>
+  <p>Train Number: {Trains.train_Number}</p>
+  <p>Number of Coaches: {Trains.numberOfCoach}</p>
+  <p>Seats per Coach: {Trains.numberOfSeatsPerCoach}</p>
   <p>Source: {Trains.source}</p>
-
   <p>Destination: {Trains.destination}</p>
-
-  <p>Departure Time: {Trains.src_time}</p>
-
-  <p>Arrival Time: {Trains.end_time}</p>
-
-  <p>Fair: {Trains.fair}</p>
+  <p>Departure Time: {Trains.startTime}</p>
+  <p>Arrival Time: {Trains.endTime}</p>
+  <p>Fare: {Trains.fare}</p>
 
 
   <hr />
 
 </div>
 
-))}
+
 
 <Button variant="success" onClick={() => setShow(false)}>Okay, Confirm</Button>
 
