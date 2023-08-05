@@ -9,10 +9,10 @@ import { computeHeadingLevel } from '@testing-library/react';
 
 
 
-const EditPopup = ({ isOpen, onRequestClose, train, onSave }) => {
+const EditPopup = ({ isOpen, onRequestClose,train,trainNumber, onSave }) => {
   const [editedTrain, setEditedTrain] = useState({ ...train });
   
-
+console.log(train)
   const handleChange = (e) => {
     const { name, value } = e.target;
     setEditedTrain((prevTrain) => ({ ...prevTrain, [name]: value }));
@@ -20,6 +20,43 @@ const EditPopup = ({ isOpen, onRequestClose, train, onSave }) => {
 
   const handleSave = () => {
     onSave(editedTrain);
+
+    try {
+            
+      fetch(`http://localhost:3001/api/v1/admin/updateTrain?train_Number=${trainNumber}`, {
+    method: "POST",
+    crossDomain: true,
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      "Accesss-Control-Allow-Origin": "*",
+    },
+    body: JSON.stringify({
+      editedTrain
+    }),
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      console.log("recieved data is", data.data)
+      
+
+      if (data.flag=="OK") {
+            
+        console.log("successful")
+            } else {
+              // alert("No Trains Found")
+              
+          }
+
+      });
+
+
+
+  } catch (err) {
+    console.error("Error:", err);
+    
+  }
+
     onRequestClose();
   };
 
@@ -35,27 +72,27 @@ const EditPopup = ({ isOpen, onRequestClose, train, onSave }) => {
         <label>Train Name:</label>
         <input
           type="text"
-          value={editedTrain.trainName}
+          value={editedTrain.name}
           onChange={handleChange}
-          name="trainName"
+          name="name"
           required
         />
 
-      <label>Train No:</label>
+      {/* <label>Train No:</label>
         <input
         type="number"
-        value={editedTrain.trainNo}
+        value={editedTrain.train_Number}
         onChange={handleChange}
-        name="trainNo"
+        name="train_Number"
         required
-        />
+        /> */}
 
       <label>Arrival Time:</label>
         <input
         type="time"
-        value={editedTrain.Arrival_Time}
+        value={editedTrain.startTime}
         onChange={handleChange}
-        name="Arrival_Time"
+        name="startTime"
         required
         />
 
@@ -63,9 +100,9 @@ const EditPopup = ({ isOpen, onRequestClose, train, onSave }) => {
       <label>Dept Time:</label>
         <input
         type="time"
-        value={editedTrain.Dept_Time}
+        value={editedTrain.endTime}
         onChange={handleChange}
-        name="Dept_Time"
+        name="endTime"
         required
         />
 
@@ -73,21 +110,28 @@ const EditPopup = ({ isOpen, onRequestClose, train, onSave }) => {
         <label>No of coaches:</label>
         <input
         type="number"
-        value={editedTrain.Number_Of_Coaches}
+        value={editedTrain.numberOfCoach}
         onChange={handleChange}
-        name="Number_Of_Coaches"
+        name="numberOfCoach"
         required
         />
 
-      <label>No of Seats:</label>
+      <label>No of Seats Per Coach:</label>
         <input
         type="number"
-        value={editedTrain.Seats_Per_Coach}
+        value={editedTrain.numberOfSeatsPerCoach}
         onChange={handleChange}
-        name="Seats_Per_Coach"
+        name="numberOfSeatsPerCoach"
         required
         />
-
+<label>Fare :</label>
+        <input
+        type="number"
+        value={editedTrain.fare}
+        onChange={handleChange}
+        name="fare"
+        required
+        />
 
         
 
@@ -104,7 +148,7 @@ const EditPopup = ({ isOpen, onRequestClose, train, onSave }) => {
   );
 };
 
-const AdminHomePage = ({ source, destination, date }) => {
+const AdminHomePage = () => {
   const [TrainData, setTrainData] = useState();
   useEffect(() => {
     console.log(TrainData)
@@ -113,13 +157,11 @@ const AdminHomePage = ({ source, destination, date }) => {
 
   const navigate = useNavigate();
 
-  const handleSubmit = () => {
-    navigate('/SignIn');
-  };
 
   const [selectedTrain, setSelectedTrain] = useState(null);
 
   const handleEdit = (index) => {
+    console.log("hello the index is ",index)
     setSelectedTrain(index);
   };
 
@@ -127,26 +169,74 @@ const AdminHomePage = ({ source, destination, date }) => {
     navigate('/AdminAddTrains');
   };
 
-  const hardcodedTrainData = [
-    // Your train data here
-    { trainNo: '10', trainName: 'Train 1', Dept_Time: '09:00 am', Arrival_Time: '04:00 pm', Number_Of_Coaches: '5', Seats_Per_Coach: '72' },
-    { trainNo: '11', trainName: 'Train 2', Dept_Time: '12:00 pm', Arrival_Time: '11:00 pm', Number_Of_Coaches: '5', Seats_Per_Coach: '72' },
-    { trainNo: '12', trainName: 'Train 3', Dept_Time: '07:00 am', Arrival_Time: '03:00 am', Number_Of_Coaches: '5', Seats_Per_Coach: '72' }
-  ];
+  // const hardcodedTrainData = [
+  //   // Your train data here
+  //   { trainNo: '10', trainName: 'Train 1', Dept_Time: '09:00 am', Arrival_Time: '04:00 pm', Number_Of_Coaches: '5', Seats_Per_Coach: '72' },
+  //   { trainNo: '11', trainName: 'Train 2', Dept_Time: '12:00 pm', Arrival_Time: '11:00 pm', Number_Of_Coaches: '5', Seats_Per_Coach: '72' },
+  //   { trainNo: '12', trainName: 'Train 3', Dept_Time: '07:00 am', Arrival_Time: '03:00 am', Number_Of_Coaches: '5', Seats_Per_Coach: '72' }
+  // ];
 
   const handleSaveEdit = (editedTrain) => {
     // Perform any actions to save the edited details
-    console.log(editedTrain)
-    console.log(hardcodedTrainData)
-    const updatedTrainData = [...hardcodedTrainData];
-    updatedTrainData[selectedTrain] = editedTrain;
-    // You can update the state or API here as per your use case
-    setTrainData(updatedTrainData); // Assuming setTrainData is a state updater function
+    // console.log("edited ",editedTrain)
+    // console.log(hardcodedTrainData)
+    // const updatedTrainData = [...trainDetails];
+    // updatedTrainData[selectedTrain] = editedTrain;
+    // // You can update the state or API here as per your use case
+    // setTrainData(updatedTrainData); // Assuming setTrainData is a state updater function
     // console.log(TrainData);
   };
 
+
+  const [trainDetails ,setTrainDetails]=useState([])
+  const displayTrainDetails =()=>{
+
+    // console.log("hello")
+    try {
+            
+      fetch(`http://localhost:3001/api/v1/admin/displayAllTrains`, {
+    method: "GET",
+    crossDomain: true,
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      "Accesss-Control-Allow-Origin": "*",
+    },
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      // console.log("recieved data is", data.data)
+      
+
+      if (data.flag=="OK") {
+        // let temp=data.data
+            // console.log(temp[0])
+        setTrainDetails(data.data)
+            } else {
+              // alert("No Trains Found")
+              
+          }
+
+      });
+
+
+
+  } catch (err) {
+    console.error("Error:", err);
+    
+  }
+
+
+  }
+
+  useEffect(() => {
+
+    displayTrainDetails();
+  },[]);
+
   return (
     <>
+    {/* {console.log(trainDetails)} */}
       <NavbarComponent />
       <div className='page-container'>
         <div className="content-box train-details-container">
@@ -156,22 +246,29 @@ const AdminHomePage = ({ source, destination, date }) => {
               <tr>
                 <th>Train No.</th>
                 <th>Train Name</th>
+                <th>Source</th>
+                <th>Destination</th>
                 <th>Departure Time</th>
                 <th>Arrival Time</th>
                 <th>Number Of Coaches</th>
                 <th>Seats Per Coach</th>
+                <th>Fare</th>
                 <th></th>
               </tr>
             </thead>
             <tbody>
-              {hardcodedTrainData.map((train, index) => (
+            {trainDetails && trainDetails.map((train, index) => (
                 <tr key={index}>
-                  <td>{train.trainNo}</td>
-                  <td>{train.trainName}</td>
-                  <td>{train.Dept_Time}</td>
-                  <td>{train.Arrival_Time}</td>
-                  <td>{train.Number_Of_Coaches}</td>
-                  <td>{train.Seats_Per_Coach}</td>
+                  <td>{train.train_Number}</td>
+                  <td>{train.name}</td>
+                  <td>{train.source}</td>
+                  <td>{train.destination}</td>
+                  
+                  <td>{train.endTime}</td>
+                  <td>{train.startTime}</td>
+                  <td>{train.numberOfCoach}</td>
+                  <td>{train.numberOfSeatsPerCoach}</td>
+                  <td>{train.fare}</td>
                   <td>
                     <button onClick={() => handleEdit(index)}>Edit</button>
                   </td>
@@ -180,9 +277,7 @@ const AdminHomePage = ({ source, destination, date }) => {
             </tbody>
           </table>
           <button onClick={handleAdd}>Add Train</button>
-          <Button variant="primary" type="submit" onClick={handleSubmit}>
-            Logout
-          </Button>
+        
         </div>
       </div>
 
@@ -191,8 +286,10 @@ const AdminHomePage = ({ source, destination, date }) => {
         <EditPopup
           isOpen={selectedTrain !== null}
           onRequestClose={() => setSelectedTrain(null)}
-          train={hardcodedTrainData[selectedTrain]}
+          train={trainDetails[selectedTrain]}
+          trainNumber = {trainDetails[selectedTrain].train_Number}
           onSave={handleSaveEdit}
+          
         />
       )}
 

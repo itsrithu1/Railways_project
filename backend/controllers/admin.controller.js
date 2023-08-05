@@ -194,8 +194,9 @@ exports.createTrain = async (req, res) => {
 };
 
 exports.updateTrain = async (req, res) => {
-  train_Number = req.params.id;
+  train_Number = req.query.train_Number;
   console.log(train_Number);
+  console.log(req.body)
 
   const {
     name,
@@ -206,7 +207,7 @@ exports.updateTrain = async (req, res) => {
     startTime,
     endTime,
     fare,
-  } = req.body;
+  } = req.body.editedTrain;
 
   try {
     // Construct the update object with the fields to update
@@ -220,6 +221,19 @@ exports.updateTrain = async (req, res) => {
     if (startTime) updateObject.startTime = startTime;
     if (endTime) updateObject.endTime = endTime;
     if (fare) updateObject.fare = fare;
+
+
+    const findTrain = await Train.findOne({train_Number})
+    if(!findTrain){
+      return res.status(404).json({ message: "Train not found" });
+    }else{
+      if(findTrain.name!=name || findTrain.numberOfCoach !=numberOfCoach || findTrain.numberOfSeatsPerCoach!=numberOfSeatsPerCoach){
+        //find in seatalloc collection and update 
+      }
+    }
+
+
+
 
     // Find the document by ID and update with the provided fields
     const updatedTrain = await Train.findOneAndUpdate(

@@ -5,7 +5,7 @@ const adminRouter = Router();
 
 adminRouter.get("/api/v1/admin/searchTrain", searchTrain);
 adminRouter.post("/api/v1/admin/createTrain", createTrain);
-adminRouter.post("/api/v1/admin/updateTrain/:id", updateTrain);
+adminRouter.post("/api/v1/admin/updateTrain", updateTrain);
 adminRouter.get("/api/v1/admin/deleteTrain", deleteTrain);
 adminRouter.get("/api/v1/admin/displayAllTrains", displayTrains);
 
