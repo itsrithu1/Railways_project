@@ -1,21 +1,23 @@
-import React, { useState } from 'react';
+import React, { useEffect,useState } from 'react';
 import "../styles/bookingDetails.css";
 import NavbarComponent from './NavbarComponent';
 import Footer from './Footer';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Navigate } from 'react-router-dom';
+import { Navigate ,useLocation} from 'react-router-dom';
 import { PDFViewer, Document, Page, Text, View, StyleSheet, PDFDownloadLink } from '@react-pdf/renderer';
 
 const BookingPassengerDetails = () => {
+
+  const location =useLocation()
+
   const [passengers, setPassengers] = useState([
     {
       name: '',
       dob: '',
       gender: '',
       phone: 0,
-   
       travelInsurance: 'no',
       foodPreferences: 'no',
     },
@@ -48,10 +50,11 @@ const BookingPassengerDetails = () => {
     ]);
   };
 
+  const [trainNumber,setTrainNumber]=useState(null)
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    // You can perform any actions with the form data here (e.g., API call, data validation, etc.).
-    // For this example, we'll simply log the form data.
+
     setShowModal(true);
     console.log(passengers);
 
@@ -59,7 +62,7 @@ const BookingPassengerDetails = () => {
     
         try {
             
-            fetch("http://localhost:3001/api/v1/passenger/addPassenger?train_Number=12133", {
+            fetch(`http://localhost:3001/api/v1/passenger/addPassenger?train_Number=${trainNumber}`, {
           method: "POST",
           crossDomain: true,
           headers: {
@@ -106,6 +109,12 @@ const BookingPassengerDetails = () => {
 
   };
 
+  
+  useEffect(() => {
+    const queryParams= new URLSearchParams(location.search);
+    setTrainNumber( queryParams.get("train_Number"))
+    
+  }, []);
 
  
 

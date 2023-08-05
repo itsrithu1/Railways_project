@@ -13,18 +13,18 @@ const DisplayTrains = () => {
   const location =useLocation()
   
   const navigate = useNavigate();
+
+  const [selectedTrainNumber, setSelectedTrainNumber] = useState(null);
+  
+  const handleRadioChange = (event) => {
+    setSelectedTrainNumber(event.target.value);
+  };
+
   
   const handleSubmit = () => {
     // window.location.href='./displaytrains'
-    navigate('/bookingPassengerDetails');
+    navigate(`/bookingPassengerDetails?train_Number=${selectedTrainNumber}`);
   };
-
-  //// Write the Data here once API is working
-  // const trainData = [
-  //   { trainNo: '10', trainName: 'Train 1', departure: '09:00 AM', arrival: '12:00 PM', fare: 'Rs 500', seats_available: '320' },
-  //   { trainNo: '11', trainName: 'Train 2', departure: '12:30 PM', arrival: '03:30 PM', fare: 'Rs 550', seats_available: '300' },
-  //   { trainNo: '12', trainName: 'Train 3', departure: '10:00 AM', arrival: '08:00 PM', fare: 'Rs 1000', seats_available: '150' }
-  // ];
 
   const [trainData ,setTrainData]=useState()
 
@@ -32,17 +32,8 @@ const DisplayTrains = () => {
   const [destination,setDestination]=useState();
   const [date,setDate]=useState();
 
-  // useEffect(() => {
-  //   console.log(source,destination,date)
-  // }, [setSource,setDestination])
-  
-
   const displayTrainDetails = ()=>{
-    // const { source } = useParams();
-    // const { destination } = useParams();
-    // const { date } = useParams();
-
-    
+  
     try {
             
       fetch(`http://localhost:3001/api/v1/user/searchTrain?source=${source}&destination=${destination}&date=${date}`, {
@@ -63,7 +54,7 @@ const DisplayTrains = () => {
             
         setTrainData(data.data)
             } else {
-              // Handle unsuccessful login response here
+              // alert("No Trains Found")
               
           }
 
@@ -125,12 +116,13 @@ const DisplayTrains = () => {
           {trainData && trainData.map((train, index) => (
             <tr key={index}>
               <td>
-                <Form.Check
+              <Form.Check
                   type="radio"
                   name="TrainBooking"
                   id={`Train${index + 1}`}
                   value={train.train_Number}
-                  
+                  checked={selectedTrainNumber === train.train_Number}
+                  onChange={handleRadioChange}
                 />
               </td>
               <td>{train.train_Number}</td>

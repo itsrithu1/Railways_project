@@ -13,7 +13,7 @@ exports.searchTrainUser = async (req, res) => {
 
 
 
-console.log(source,destination,date)
+// console.log(source,destination,date)
   try {
     const checkTrain = await Train.find({ source, destination });
 
@@ -28,6 +28,12 @@ console.log(source,destination,date)
         train_Number: train.train_Number,
         date
       });
+
+      if(!findTrainWithSeats){
+        return res.status(httpStatusCodes[204].code).json(
+          formResponse(httpStatusCodes[204].code, "No Trains found")
+        );
+      }
 
       // console.log(findTrainWithSeats[0].ptrURS);
 
