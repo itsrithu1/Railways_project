@@ -149,10 +149,10 @@ console.log(train)
 };
 
 const AdminHomePage = () => {
-  const [TrainData, setTrainData] = useState();
-  useEffect(() => {
-    console.log(TrainData)
-  }, [TrainData])
+  // const [TrainData, setTrainData] = useState();
+  // useEffect(() => {
+  //   console.log(TrainData)
+  // }, [TrainData])
   
 
   const navigate = useNavigate();
@@ -232,7 +232,7 @@ const AdminHomePage = () => {
   useEffect(() => {
 
     displayTrainDetails();
-  },[]);
+  },[trainDetails]);
 
   return (
     <>
