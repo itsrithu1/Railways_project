@@ -17,7 +17,7 @@ const BookingPassengerDetails = () => {
       name: '',
       dob: '',
       gender: '',
-      phone: 0,
+      phone: null,
       travelInsurance: 'no',
       foodPreferences: 'no',
     },

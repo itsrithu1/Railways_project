@@ -126,9 +126,7 @@ const AdminAddTrains = () => {
     .then((res) => res.json())
     .then((data) => {
       
-      if(data.flag=="OK"){
-        alert("Seat Booked Successfully")
-      }
+      
 
       });
 
