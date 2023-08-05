@@ -20,39 +20,27 @@ const DisplayTrains = () => {
   };
 
   //// Write the Data here once API is working
-  const trainData = [
-    { trainNo: '10', trainName: 'Train 1', departure: '09:00 AM', arrival: '12:00 PM', fare: 'Rs 500', seats_available: '320' },
-    { trainNo: '11', trainName: 'Train 2', departure: '12:30 PM', arrival: '03:30 PM', fare: 'Rs 550', seats_available: '300' },
-    { trainNo: '12', trainName: 'Train 3', departure: '10:00 AM', arrival: '08:00 PM', fare: 'Rs 1000', seats_available: '150' }
-  ];
+  // const trainData = [
+  //   { trainNo: '10', trainName: 'Train 1', departure: '09:00 AM', arrival: '12:00 PM', fare: 'Rs 500', seats_available: '320' },
+  //   { trainNo: '11', trainName: 'Train 2', departure: '12:30 PM', arrival: '03:30 PM', fare: 'Rs 550', seats_available: '300' },
+  //   { trainNo: '12', trainName: 'Train 3', departure: '10:00 AM', arrival: '08:00 PM', fare: 'Rs 1000', seats_available: '150' }
+  // ];
+
+  const [trainData ,setTrainData]=useState()
 
   const [source,setSource]=useState();
   const [destination,setDestination]=useState();
   const [date,setDate]=useState();
 
-  useEffect(() => {
-    console.log(source,destination,date)
-  }, [setSource,setDestination])
+  // useEffect(() => {
+  //   console.log(source,destination,date)
+  // }, [setSource,setDestination])
   
 
   const displayTrainDetails = ()=>{
     // const { source } = useParams();
     // const { destination } = useParams();
     // const { date } = useParams();
-
-
-    const queryParams= new URLSearchParams(location.search);
-    setSource( queryParams.get("source"))
-    setDestination( queryParams.get("destination"))
-
-    
-    const parts = queryParams.get("date").split("-");
-    const formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
-    
-
-    setDate(formattedDate)
-
-    
 
     
     try {
@@ -68,12 +56,12 @@ const DisplayTrains = () => {
   })
     .then((res) => res.json())
     .then((data) => {
-      console.log("recieved data is",data)
+      console.log("recieved data is", data.data)
       
 
       if (data.flag=="OK") {
             
-              
+        setTrainData(data.data)
             } else {
               // Handle unsuccessful login response here
               
@@ -95,11 +83,23 @@ const DisplayTrains = () => {
     // console.log(source,destination,date)
   }
   useEffect(() => {
+    const queryParams= new URLSearchParams(location.search);
+    setSource( queryParams.get("source"))
+    setDestination( queryParams.get("destination"))
+
     
+    const parts = queryParams.get("date").split("-");
+    const formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
+    
+
+    setDate(formattedDate)
+
+
     displayTrainDetails();
-  }, []);
+  }, [date]);
 
   return (
+    
     <>
     <NavbarComponent/>
     <div className='page-container'>
@@ -122,22 +122,23 @@ const DisplayTrains = () => {
           </tr>
         </thead>
         <tbody>
-          {trainData.map((train, index) => (
+          {trainData && trainData.map((train, index) => (
             <tr key={index}>
               <td>
                 <Form.Check
                   type="radio"
                   name="TrainBooking"
                   id={`Train${index + 1}`}
-                  value={train.trainNo}
+                  value={train.train_Number}
+                  
                 />
               </td>
-              <td>{train.trainNo}</td>
-              <td>{train.trainName}</td>
-              <td>{train.departure}</td>
-              <td>{train.arrival}</td>
+              <td>{train.train_Number}</td>
+              <td>{train.name}</td>
+              <td>{train.departure_time}</td>
+              <td>{train.arrival_time}</td>
               <td>{train.fare}</td>
-              <td>{train.seats_available}</td>
+              <td>{train.totalSeatsAvailable}</td>
             </tr>
           ))}
         </tbody>

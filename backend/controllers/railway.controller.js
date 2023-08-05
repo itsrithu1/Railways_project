@@ -29,9 +29,25 @@ console.log(source,destination,date)
         date
       });
 
+      // console.log(findTrainWithSeats[0].ptrURS);
+
+
+      let reserverdSeatsPerCoach =Math.floor( 0.1 * train.numberOfSeatsPerCoach)
+      let totalReservedSeats = reserverdSeatsPerCoach* train.numberOfCoach
+
+      let totalUnreservedSeats = (train.numberOfCoach*train.numberOfSeatsPerCoach)-totalReservedSeats
+
+      let totalSeatsAvailable = totalReservedSeats - findTrainWithSeats[0].ptrRS +totalUnreservedSeats - findTrainWithSeats[0].ptrURS 
+
+
       return {
-        // train_Number: train.train_Number,
-        seatAllocations: findTrainWithSeats
+        train_Number: train.train_Number,
+        name : train.name,
+        arrival_time : train.startTime,
+        departure_time : train.endTime,
+        fare:train.fare,
+        totalSeatsAvailable: totalSeatsAvailable,
+
       };
     });
 
