@@ -216,8 +216,8 @@ exports.createTrain = async (req, res) => {
 
 exports.updateTrain = async (req, res) => {
   train_Number = req.query.train_Number;
-  console.log(train_Number);
-  console.log(req.body)
+  // console.log(train_Number);
+  // console.log(req.body)
 
   const {
     name,
@@ -248,8 +248,79 @@ exports.updateTrain = async (req, res) => {
     if(!findTrain){
       return res.status(404).json({ message: "Train not found" });
     }else{
-      if(findTrain.name!=name || findTrain.numberOfCoach !=numberOfCoach || findTrain.numberOfSeatsPerCoach!=numberOfSeatsPerCoach){
+      if( findTrain.numberOfCoach !=numberOfCoach || findTrain.numberOfSeatsPerCoach!=numberOfSeatsPerCoach){
         //find in seatalloc collection and update 
+
+        try {
+    
+          const args = [numberOfCoach,numberOfSeatsPerCoach]
+          var reservedArray = []
+          var unreservedArray = []
+      
+          const py = spawn("C:/Python311/python", [__dirname + "/seatAlloc.py",args]);
+          let data1 = "";
+          py.stdout.on("data", (data) => {
+            // console.log(`stdout: ${data}`);
+            data1 += data;
+            const dataArray = data1.split("\n")
+      
+            var jsonStringWithDoubleQuotes = dataArray[0].replace(/'/g, '"');
+      
+          var myObject = JSON.parse(jsonStringWithDoubleQuotes);
+      
+          unreservedArray=myObject;
+      
+          myObject=null;
+      
+          jsonStringWithDoubleQuotes = dataArray[1].replace(/'/g, '"');
+      
+          myObject = JSON.parse(jsonStringWithDoubleQuotes);
+      
+          reservedArray=myObject;
+          // console.log(unreservedArray)
+ 
+        
+          });
+      
+      
+      
+          py.on("close",async (code) => {
+            console.log(`Python script exited with code ${code}`);
+            const updateResult = await SeatAllocation.updateMany(
+              { train_Number: train_Number },
+              {
+                $set: {
+                  
+                  unreservedSeats: unreservedArray,
+                  reservedSeats: reservedArray,
+                  ptrURS:0,
+                  ptrRS:0,
+                },
+              }
+            );
+          });
+
+          // console.log("outside ",unreservedArray)
+          
+          // console.log("success")
+      
+
+        }catch(error){
+          console.log(error)
+        }
+
+        
+      }
+       if(findTrain.name!=name ){
+        const updateResult = await SeatAllocation.updateMany(
+          { train_Number: train_Number },
+          {
+            $set: {
+              name:name
+            },
+          }
+        );
+
       }
     }
 
