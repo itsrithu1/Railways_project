@@ -6,8 +6,8 @@ const { Passenger } = require("../model/passenger.model");
 // const { Ticket } = require("../model/ticket.model");
 
 exports.addPassenger = async (req, res) => {
-  console.log("Heloo");
-  console.log(req.body);
+  // console.log("Heloo");
+  // console.log(req.body);
   const { passengers } = req.body;
 
   var i=0;
@@ -26,12 +26,12 @@ exports.addPassenger = async (req, res) => {
   ])
   var result =0;
   if(maxTicket_id){
-    console.log("Im in maxID");
+    // console.log("Im in maxID");
     result = ((parseInt(maxTicket_id[0].maxT))+1);
 
   }
  
-  console.log(maxTicket_id);
+  // console.log(maxTicket_id);
   // console.log((parseInt(maxTicket_id[0].maxT))+1);
  
   console.log(result);
@@ -66,6 +66,10 @@ exports.addPassenger = async (req, res) => {
    
      
       });
+
+      return res
+      .status(httpStatusCodes[200].code)
+      .json(formResponse(httpStatusCodes[200].code, "Passengers Added"));
   
      
       

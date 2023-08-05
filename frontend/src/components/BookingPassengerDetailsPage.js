@@ -52,10 +52,10 @@ const BookingPassengerDetails = () => {
 
   const [trainNumber,setTrainNumber]=useState(null)
 
-  const handleSubmit = (e) => {
+  const handleConfirm = (e) => {
     e.preventDefault();
 
-    setShowModal(true);
+    
     console.log(passengers);
 
     e.preventDefault();
@@ -76,10 +76,10 @@ const BookingPassengerDetails = () => {
         })
           .then((res) => res.json())
           .then((data) => {
-            console.log("recieved data is",data)
             
-    
-            
+            if(data.flag=="OK"){
+              alert("Seat Booked Successfully")
+            }
     
             });
     
@@ -92,6 +92,13 @@ const BookingPassengerDetails = () => {
 
 
   };
+
+const handleSubmit = (e)=>{
+  e.preventDefault()
+  setShowModal(true);
+
+}
+  
 
   const printinconsole = () => {
     console.log({passengers})
@@ -313,7 +320,7 @@ const BookingPassengerDetails = () => {
         <button type="button" onClick={handleAddPassenger}>
           Add Passenger
         </button>
-        <button type="submit" onClick={handleSubmit}>Book Now</button>
+        <button  onClick={handleSubmit}>Proceed</button>
       </form>
 
       <Modal show={showModal} onHide={handleCloseModal}>
@@ -373,6 +380,11 @@ const BookingPassengerDetails = () => {
 
           </Button>
 
+          <Button variant="success" onClick={handleConfirm}>
+
+            Confirm Booking
+
+          </Button>
 
           <PDFDownloadLink
 
