@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Form from 'react-bootstrap/Form';
-import { Button } from 'react-bootstrap';
+import Button from 'react-bootstrap/Button';
 import { Router, useNavigate } from 'react-router-dom';
 import Modal from 'react-modal';
 import NavbarComponent from './NavbarComponent';
@@ -10,7 +10,7 @@ import AdminSearchTrain from './AdminSearchTrain';
 
 
 
-const EditPopup = ({ isOpen, onRequestClose,train,trainNumber, onSave }) => {
+const EditPopup = ({ isOpen, onRequestClose,train,trainNumber, onSave ,displayTrainDetails}) => {
   const [editedTrain, setEditedTrain] = useState({ ...train });
   
 console.log(train)
@@ -42,7 +42,7 @@ console.log(train)
       
 
       if (data.flag=="OK") {
-            
+        displayTrainDetails()
         console.log("successful")
             } else {
               // alert("No Trains Found")
@@ -60,6 +60,41 @@ console.log(train)
 
     onRequestClose();
   };
+
+  const handleDelete = ()=>{
+
+    try {
+            
+      fetch(`http://localhost:3001/api/v1/admin/deleteTrain?trainNumber=${trainNumber}`, {
+    method: "GET",
+    crossDomain: true,
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      "Accesss-Control-Allow-Origin": "*",
+    },
+  })
+    .then((res) => res.json())
+    .then((data) => {      
+
+      if (data.flag=="OK") {
+            alert("Train Deleted Successfully")
+        console.log("successful")
+            } else {
+              alert("Some Error Occured, try after some time")
+              
+          }
+
+      });
+
+
+
+  } catch (err) {
+    console.error("Error:", err);
+    
+  }
+  onRequestClose();
+  }
 
   return (
     <Modal
@@ -140,6 +175,7 @@ console.log(train)
         <button type="button" onClick={handleSave}>
           Save
         </button>
+        <Button variant="danger" onClick={handleDelete}>Delete Train</Button>
         <button type="button" onClick={onRequestClose}>
           Cancel
         </button>
@@ -150,16 +186,56 @@ console.log(train)
 };
 
 const AdminHomePage = () => {
-  // const [TrainData, setTrainData] = useState();
-  // useEffect(() => {
-  //   console.log(TrainData)
-  // }, [TrainData])
   
-
   const navigate = useNavigate();
-
+  const [searchtrainNumber, setSearchTrainNumber] = useState('');
+  const [searchResult, setSearchResult] = useState('');
+  const [trainDetails ,setTrainDetails]=useState([])
+  const [originaltrainDetails ,setOriginalTrainDetails]=useState([])
 
   const [selectedTrain, setSelectedTrain] = useState(null);
+
+  const handleTrainNumberChange = (event) => {
+    setSearchTrainNumber(event.target.value);
+  };
+
+  const handleSearch = () => {
+    // Here, you can perform the actual search based on the train number
+    // For demonstration purposes, we'll just display the result on the page.
+    // setSearchResult(`Searching for train number: ${searchtrainNumber}`);
+    if(!searchtrainNumber){
+      setTrainDetails(originaltrainDetails)
+    }
+
+    try {
+            
+      fetch(`http://localhost:3001/api/v1/admin/searchTrain?trainNumber=${searchtrainNumber}`, {
+    method: "GET",
+    crossDomain: true,
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      "Accesss-Control-Allow-Origin": "*",
+    },
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      // console.log("recieved data is", data.data)
+      
+
+      if (data.flag=="OK") {
+        setTrainDetails(data.data)
+            } else {
+              
+          }
+
+      });
+  } catch (err) {
+    console.error("Error:", err);
+    
+  }
+
+  };
 
   const handleEdit = (index) => {
     console.log("hello the index is ",index)
@@ -170,12 +246,7 @@ const AdminHomePage = () => {
     navigate('/AdminAddTrains');
   };
 
-  // const hardcodedTrainData = [
-  //   // Your train data here
-  //   { trainNo: '10', trainName: 'Train 1', Dept_Time: '09:00 am', Arrival_Time: '04:00 pm', Number_Of_Coaches: '5', Seats_Per_Coach: '72' },
-  //   { trainNo: '11', trainName: 'Train 2', Dept_Time: '12:00 pm', Arrival_Time: '11:00 pm', Number_Of_Coaches: '5', Seats_Per_Coach: '72' },
-  //   { trainNo: '12', trainName: 'Train 3', Dept_Time: '07:00 am', Arrival_Time: '03:00 am', Number_Of_Coaches: '5', Seats_Per_Coach: '72' }
-  // ];
+
 
   const handleSaveEdit = (editedTrain) => {
     // Perform any actions to save the edited details
@@ -189,7 +260,7 @@ const AdminHomePage = () => {
   };
 
 
-  const [trainDetails ,setTrainDetails]=useState([])
+  
   const displayTrainDetails =()=>{
 
     // console.log("hello")
@@ -213,6 +284,7 @@ const AdminHomePage = () => {
         // let temp=data.data
             // console.log(temp[0])
         setTrainDetails(data.data)
+        setOriginalTrainDetails(data.data)
             } else {
               // alert("No Trains Found")
               
@@ -233,7 +305,7 @@ const AdminHomePage = () => {
   useEffect(() => {
 
     displayTrainDetails();
-  },[trainDetails]);
+  },[]);
 
   return (
     <>
@@ -242,7 +314,34 @@ const AdminHomePage = () => {
       
       <div className='page-container'>
         <div className="content-box train-details-container">
-        <AdminSearchTrain/>
+        {/* <AdminSearchTrain/> */}
+
+
+
+
+        <div>
+        <label htmlFor="trainNumber">Enter Train Number:</label>
+        <input
+          type="text"
+          id="trainNumber"
+          value={searchtrainNumber}
+          onChange={handleTrainNumberChange}
+        />
+      </div>
+      <div>
+        <button onClick={handleSearch}>Submit</button>
+      </div>
+      <div>
+        <p>{searchResult}</p>
+      </div>
+
+
+
+
+
+
+
+
 
           <h2>Train Details</h2>
           <table>
@@ -293,6 +392,7 @@ const AdminHomePage = () => {
           train={trainDetails[selectedTrain]}
           trainNumber = {trainDetails[selectedTrain].train_Number}
           onSave={handleSaveEdit}
+          displayTrainDetails = {displayTrainDetails}
           
         />
       )}
