@@ -313,6 +313,9 @@ const handleSubmit = (e)=>{
                     Non-Veg
                   </label>
                 </td>
+                <td>
+                  <button onClick={() => handleDeletePassenger(index)}>Delete</button>
+                </td>
               </tr>
             ))}
           </tbody>
