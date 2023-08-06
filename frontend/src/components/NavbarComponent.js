@@ -23,7 +23,7 @@ function NavbarComponent() {
 
         <Navbar.Collapse id="basic-navbar-nav">
 
-          <Nav className="me-auto">
+          <Nav className="ml-auto">
 
             <Nav.Link href="/LandingPage">Modify Seach</Nav.Link>
 
@@ -48,3 +48,8 @@ function NavbarComponent() {
  
 
 export default NavbarComponent;
+
+
+
+
+
