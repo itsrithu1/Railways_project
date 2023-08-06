@@ -50,7 +50,15 @@ const BookingPassengerDetails = () => {
         foodPreferences: '',
       },
     ]);
+    setIsFormValid(true);
   };
+
+  const getMaxDate = () => {
+    const currentDate = new Date();
+    currentDate.setFullYear(currentDate.getFullYear() - 5);
+    return currentDate.toISOString().split("T")[0]; // Convert to YYYY-MM-DD format
+  };
+  
 
   const [trainNumber,setTrainNumber]=useState(null)
 
@@ -95,15 +103,35 @@ const BookingPassengerDetails = () => {
 
   };
 
-const handleSubmit = (e)=>{
-
   
-  e.preventDefault()
-  setShowModal(true);
+  const [isFormValid, setIsFormValid] = useState(true);
 
-}
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const hasEmptyFields = passengers.some((passenger) =>
+      Object.values(passenger).some((value) => value === null || value === '')
+    );
+
+    if (hasEmptyFields) {
+      setIsFormValid(false);
+    } else {
+      setIsFormValid(true);
+      setShowModal(true);
+    }
+  };
+
+  const handleInputChange = (index, e) => {
+    // ... (existing handleChange logic)
+
+    // When a field is updated, we mark the form as valid
+    setIsFormValid(true);
+  };
+    
   
-const calculateTotalFare = () => {
+  
+  
+  const calculateTotalFare = () => {
   const numberOfPassengers = passengers.length;
   return numberOfPassengers * farePerTicket;
 };
@@ -240,6 +268,7 @@ const calculateTotalFare = () => {
                     value={passenger.date}
                     onChange={(e) => handleChange(index, e)}
                     required
+                    max={getMaxDate()}
                   />
                   
                 </td>
@@ -260,6 +289,7 @@ const calculateTotalFare = () => {
                   <input
                     type="number"
                     name="phone"
+                    pattern="[0-9]{10}"
                     value={passenger.phone}
                     onChange={(e) => handleChange(index, e)}
                     required
@@ -328,6 +358,9 @@ const calculateTotalFare = () => {
             ))}
           </tbody>
         </table>
+
+        {!isFormValid && <p style={{ color: 'red' }}>Please fill in all the required details before proceeding.</p>}
+        
         <button type="button" onClick={handleAddPassenger}>
           Add Passenger
         </button>
