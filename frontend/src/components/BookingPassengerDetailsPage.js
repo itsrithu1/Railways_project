@@ -12,6 +12,8 @@ const BookingPassengerDetails = () => {
 
   const location =useLocation()
 
+  const farePerTicket = 100; // Set the fare per ticket
+
   const [passengers, setPassengers] = useState([
     {
       name: '',
@@ -99,6 +101,10 @@ const handleSubmit = (e)=>{
 
 }
   
+const calculateTotalFare = () => {
+  const numberOfPassengers = passengers.length;
+  return numberOfPassengers * farePerTicket;
+};
 
   const printinconsole = () => {
     console.log({passengers})
@@ -314,7 +320,7 @@ const handleSubmit = (e)=>{
                   </label>
                 </td>
                 <td>
-                  <button onClick={() => handleDeletePassenger(index)}>Delete</button>
+                  <Button variant="danger" onClick={() => handleDeletePassenger(index)}>Delete</Button>
                 </td>
               </tr>
             ))}
@@ -366,6 +372,7 @@ const handleSubmit = (e)=>{
 
               </Button>
 
+              
               <hr />
 
             </div>
@@ -376,6 +383,10 @@ const handleSubmit = (e)=>{
 
         <Modal.Footer>
           {/* <Button onClick={handleClose}>Close</Button> */}
+
+          <hr />
+          <p><b>Total Fare: ${calculateTotalFare()} </b></p>
+          <hr />
 
           <Button variant="secondary" onClick={handleCloseModal}>
 
