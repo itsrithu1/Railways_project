@@ -23,7 +23,7 @@ const DisplayTrains = () => {
   
   const handleSubmit = () => {
     // window.location.href='./displaytrains'
-    navigate(`/bookingPassengerDetails?train_Number=${selectedTrainNumber}`);
+    navigate(`/bookingPassengerDetails?train_Number=${selectedTrainNumber}&date=${date}`);
   };
 
   const [trainData ,setTrainData]=useState()

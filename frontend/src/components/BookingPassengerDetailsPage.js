@@ -12,7 +12,7 @@ const BookingPassengerDetails = () => {
 
   const location =useLocation()
 
-  const farePerTicket = 100; // Set the fare per ticket
+  var farePerTicket = 100; // Set the fare per ticket
 
   const [passengers, setPassengers] = useState([
     {
@@ -96,6 +96,8 @@ const BookingPassengerDetails = () => {
   };
 
 const handleSubmit = (e)=>{
+
+  
   e.preventDefault()
   setShowModal(true);
 

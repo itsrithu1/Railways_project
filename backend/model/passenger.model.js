@@ -33,7 +33,18 @@ const PassengerDetailsSchema=Schema({
   train_Number:{
     type:String,
     required:true
+  },
+  seat_Number:{
+    type:String,
+    required: true
+  },
+  insurance:{
+    type:String,
+  },
+  food:{
+    type:String,
   }
+
 
 },{
     timestamps:true
