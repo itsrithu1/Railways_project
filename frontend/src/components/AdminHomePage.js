@@ -6,6 +6,7 @@ import Modal from 'react-modal';
 import NavbarComponent from './NavbarComponent';
 import Footer from './Footer';
 import { computeHeadingLevel } from '@testing-library/react';
+import AdminSearchTrain from './AdminSearchTrain';
 
 
 
@@ -238,8 +239,11 @@ const AdminHomePage = () => {
     <>
     {/* {console.log(trainDetails)} */}
       <NavbarComponent />
+      
       <div className='page-container'>
         <div className="content-box train-details-container">
+        <AdminSearchTrain/>
+
           <h2>Train Details</h2>
           <table>
             <thead>

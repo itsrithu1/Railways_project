@@ -311,7 +311,7 @@ aria-labelledby="example-custom-modal-styling-title"
 style={{ justifyContent: "center" ,marginLeft: '169px'}}
 id="example-custom-modal-styling-title"
 >
-Train Booked Successfully
+Train Added Successfully
 </h3>
 {/* </Modal.Title> */}
 </Modal.Header>

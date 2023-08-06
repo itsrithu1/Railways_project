@@ -18,8 +18,8 @@ const BookingPassengerDetails = () => {
       dob: '',
       gender: '',
       phone: null,
-      travelInsurance: 'no',
-      foodPreferences: 'no',
+      travelInsurance: '',
+      foodPreferences: '',
     },
   ]);
 
@@ -44,8 +44,8 @@ const BookingPassengerDetails = () => {
         gender: '',
         phone: '',
        
-        travelInsurance: 'no',
-        foodPreferences: 'no',
+        travelInsurance: '',
+        foodPreferences: '',
       },
     ]);
   };

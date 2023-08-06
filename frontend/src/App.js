@@ -14,6 +14,7 @@ import AdminUpdatePage from './components/AdminHomePage';
 import Navbar from 'react-bootstrap/Navbar';
 import LandingPage from './components/LandingPage';
 import NavDropdown from 'react-bootstrap/NavDropdown';
+import AdminSearchTrain from './components/AdminSearchTrain';
 function App() {
   return (
     <main className="App">
@@ -27,6 +28,7 @@ function App() {
           <Route path='/bookingPassengerDetails' element={<BookingPassengerDetails />} />
           <Route path='/AdminHomePage' element={<AdminHomePage />} />
           <Route path='/AdminAddTrains' element={<AdminAddTrains />} />
+          <Route path='/AdminSearchTrain' element={<AdminSearchTrain/>}/>
         </Routes>
       </BrowserRouter>
     </main>
