@@ -53,6 +53,13 @@ const BookingPassengerDetails = () => {
     setIsFormValid(true);
   };
 
+  const getMaxDate = () => {
+    const currentDate = new Date();
+    currentDate.setFullYear(currentDate.getFullYear() - 5);
+    return currentDate.toISOString().split("T")[0]; // Convert to YYYY-MM-DD format
+  };
+  
+
   const [trainNumber,setTrainNumber]=useState(null)
 
   const handleConfirm = (e) => {
@@ -261,6 +268,7 @@ const BookingPassengerDetails = () => {
                     value={passenger.date}
                     onChange={(e) => handleChange(index, e)}
                     required
+                    max={getMaxDate()}
                   />
                   
                 </td>
