@@ -2,6 +2,7 @@ const httpStatusCodes = require("../Constants/http-status-codes");
 const { formResponse } = require("../utils/helper");
 const bcrypt = require("bcryptjs");
 const { Train } = require("../model/trainData.model");
+const { TrainData } = require("../model/trainDataNew.model");
 const { spawn } = require("child_process");
 const axios = require("axios");
 const { SeatAllocation } = require("../model/seatAllocation.model");
@@ -409,3 +410,161 @@ exports.displayTrains = async (req, res) => {
       );
 
 }
+
+
+
+
+
+
+
+exports.createTrainNew = async (req, res) => {
+  console.log(req.body);
+  
+  
+    const {
+      train_Number,
+      name,
+      Stations,
+      numberOfCoach,
+      numberOfSeatsPerCoach,
+      Distance,
+      fare
+    } = req.body;
+  
+    const Tnumber = parseInt(train_Number,2) 
+  
+    console.log(
+      {Tnumber,
+      name,
+      Stations,
+      numberOfCoach,
+      numberOfSeatsPerCoach,
+      Distance,
+      fare});
+  
+  
+    // const numberOfCoach = parseInt(numberOfCoach,2) 
+    // const numberOfSeatsPerCoach = parseInt(numberOfSeatsPerCoach,2) 
+    console.log(Stations);
+    console.log(Distance);
+    
+  
+    try {
+      if (
+        !train_Number ||
+        !name ||
+        !Stations ||
+        !numberOfCoach ||
+        !numberOfSeatsPerCoach ||
+        !Distance ||
+        !fare
+      ) {
+        return res
+          .status(httpStatusCodes[400].code)
+          .json(formResponse(httpStatusCodes[400].code, "Enter All details"));
+      }
+      const checktrain = await TrainData.findOne({ train_Number });
+      // console.log(checktrain);
+  
+      if (checktrain) {
+        return res
+          .status(httpStatusCodes[202].code)
+          .json(
+            formResponse(
+              httpStatusCodes[202].code,
+              "train with same Train Number is Present"
+            )
+          );
+      }
+  
+      const newTrain = new TrainData({
+        train_Number,
+        name,
+        Stations,
+        numberOfCoach,
+        numberOfSeatsPerCoach,
+        Distance,
+        fare
+      });
+  
+      await newTrain.save();
+  
+      try {
+      
+      const args = [numberOfCoach,numberOfSeatsPerCoach]
+      var reservedArray = []
+      var unreservedArray = []
+  
+      const py = spawn("C:/Python311/python", [__dirname + "/seatAlloc.py",args]);
+      let data1 = "";
+      py.stdout.on("data", (data) => {
+        // console.log(`stdout: ${data}`);
+        data1 += data;
+        const dataArray = data1.split("\n")
+  
+        var jsonStringWithDoubleQuotes = dataArray[0].replace(/'/g, '"');
+  
+      var myObject = JSON.parse(jsonStringWithDoubleQuotes);
+  
+      unreservedArray=myObject;
+  
+      myObject=null;
+  
+      jsonStringWithDoubleQuotes = dataArray[1].replace(/'/g, '"');
+  
+      myObject = JSON.parse(jsonStringWithDoubleQuotes);
+  
+      reservedArray=myObject;
+  
+      console.log(reservedArray)
+        
+        
+      });
+  
+  
+  
+      py.on("close", (code) => {
+        console.log(`Python script exited with code ${code}`);
+        // Now you can proceed with your remaining logic.
+        // For example, you can process `data1` and use it.
+      });
+  
+  
+        const today = new Date();
+        const numberOfDays = 30;
+        for (let i = 0; i < numberOfDays; i++) {
+          const incrementedDate = new Date(today);
+          incrementedDate.setDate(today.getDate() + i);
+  
+          const year = incrementedDate.getFullYear();
+          const month = String(incrementedDate.getMonth() + 1).padStart(2, "0");
+          const day = String(incrementedDate.getDate()).padStart(2, "0");
+  
+          const formattedDate = `${day}-${month}-${year}`;
+  
+          const newSeatAllocation = new SeatAllocation({
+            train_Number,
+            name,
+            unreservedSeats: unreservedArray,
+            reservedSeats: reservedArray,
+            ptrURS:0,
+            ptrRS:0,
+            date:formattedDate,
+          });
+  
+          await newSeatAllocation.save();
+        }
+      } catch (error) {
+        console.log(error);
+      }
+  
+      res
+        .status(httpStatusCodes[200].code)
+        .json(formResponse(httpStatusCodes[200].code, "Train Created"));
+    } catch (error) {
+      console.log(error);
+      return res
+        .status(httpStatusCodes[500].code)
+        .json(formResponse(httpStatusCodes[500].code, error));
+    }
+  };

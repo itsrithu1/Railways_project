@@ -7,12 +7,15 @@ import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Navigate ,useLocation} from 'react-router-dom';
 import { PDFViewer, Document, Page, Text, View, StyleSheet, PDFDownloadLink } from '@react-pdf/renderer';
+// import { useHistory } from 'react-router-dom';
+
 
 const BookingPassengerDetails = () => {
 
   const location =useLocation()
 
   var farePerTicket = 100; // Set the fare per ticket
+
 
   const [passengers, setPassengers] = useState([
     {
@@ -24,6 +27,8 @@ const BookingPassengerDetails = () => {
       foodPreferences: '',
     },
   ]);
+  const [paymentSuccess, setPaymentSuccess] = useState(false);
+
 
   const handleChange = (index, e) => {
     const { name, value } = e.target;
@@ -61,18 +66,75 @@ const BookingPassengerDetails = () => {
   
 
   const [trainNumber,setTrainNumber]=useState(null)
+  const [name, setName] = useState('First Class')
 
-  const handleConfirm = (e) => {
+  function loadScript(src) {
+    return new Promise((resolve) => {
+      const script = document.createElement('script')
+      script.src = src
+      script.onload = () => {
+        resolve(true)
+      }
+      script.onerror = () => {
+        resolve(false)
+      }
+      document.body.appendChild(script)
+    })
+  }
+  
+  const __DEV__ = document.domain === 'localhost'
+
+
+  
+  const [isFormValid, setIsFormValid] = useState(true);
+
+  const handleSubmit = (e) => {
     e.preventDefault();
+    setIsFormValid(true);
+      setShowModal(true);
+    // const hasEmptyFields = passengers.some((passenger) =>
+    //   Object.values(passenger).some((value) => value === null || value === '')
+    // );
 
+    // if (hasEmptyFields) {
+    //   setIsFormValid(false);
+    // } else {
+    //   setIsFormValid(true);
+    //   setShowModal(true);
+    // }
+  };
+
+  const handleInputChange = (index, e) => {
+    // ... (existing handleChange logic)
+
+    // When a field is updated, we mark the form as valid
+    setIsFormValid(true);
+  };
     
+  
+  
+  
+  const calculateTotalFare = () => {
+  const numberOfPassengers = passengers.length;
+  return numberOfPassengers * farePerTicket;
+};
+
+  const printinconsole = () => {
+    console.log({passengers})
+  }
+  
+
+  const handleConfirm = () => {
+    // e.preventDefault();
+
+    console.log("Im in handleConfirm");
     console.log(passengers);
 
-    e.preventDefault();
+    // e.preventDefault();
     
         try {
             
-            fetch(`http://localhost:3001/api/v1/passenger/addPassenger?train_Number=${trainNumber}`, {
+            fetch(`http://localhost:3001/api/v1/passenger/addPassenger?train_Number=${trainNumber}&date=${date}`, {
           method: "POST",
           crossDomain: true,
           headers: {
@@ -103,42 +165,50 @@ const BookingPassengerDetails = () => {
 
   };
 
-  
-  const [isFormValid, setIsFormValid] = useState(true);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  async function displayRazorpay() {
+		const res = await loadScript('https://checkout.razorpay.com/v1/checkout.js')
+    const passengersData = JSON.stringify(passengers); // Encode the passengers data
 
-    const hasEmptyFields = passengers.some((passenger) =>
-      Object.values(passenger).some((value) => value === null || value === '')
-    );
 
-    if (hasEmptyFields) {
-      setIsFormValid(false);
-    } else {
-      setIsFormValid(true);
-      setShowModal(true);
-    }
-  };
+		if (!res) {
+			alert('Razorpay SDK failed to load. Are you online?')
+			return
+		}
 
-  const handleInputChange = (index, e) => {
-    // ... (existing handleChange logic)
+		const data = await fetch('http://localhost:3001/api/v1/payment', { method: 'POST' }).then((t) =>
+			t.json()
+		)
 
-    // When a field is updated, we mark the form as valid
-    setIsFormValid(true);
-  };
+		console.log(data)
+
+		const options = {
+			key: __DEV__ ? 'rzp_test_fgWk4ynD9HVS0a' : 'PRODUCTION_KEY',
+			currency: data.currency,
+			amount: data.amount.toString(),
+			order_id: data.id,
+			name: 'First Class',
+			description: 'Thank you for using our service',
+			image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/%D0%9F%D0%BE%D0%B5%D0%B7%D0%B4_%D0%BD%D0%B0_%D1%84%D0%BE%D0%BD%D0%B5_%D0%B3%D0%BE%D1%80%D1%8B_%D0%A8%D0%B0%D1%82%D1%80%D0%B8%D1%89%D0%B5._%D0%92%D0%BE%D1%80%D0%BE%D0%BD%D0%B5%D0%B6%D1%81%D0%BA%D0%B0%D1%8F_%D0%BE%D0%B1%D0%BB%D0%B0%D1%81%D1%82%D1%8C.jpg/1200px-%D0%9F%D0%BE%D0%B5%D0%B7%D0%B4_%D0%BD%D0%B0_%D1%84%D0%BE%D0%BD%D0%B5_%D0%B3%D0%BE%D1%80%D1%8B_%D0%A8%D0%B0%D1%82%D1%80%D0%B8%D1%89%D0%B5._%D0%92%D0%BE%D1%80%D0%BE%D0%BD%D0%B5%D0%B6%D1%81%D0%BA%D0%B0%D1%8F_%D0%BE%D0%B1%D0%BB%D0%B0%D1%81%D1%82%D1%8C.jpg',
+			// callback_url: `http://localhost:3000/SuccessBooking?passengers=${passengersData}&train_Number=${trainNumber}`,
+			prefill: {
+				name,
+				email: 'sdfdsjfh2@ndsfdf.com',
+				phone_number: '9899999999'
+			}
+		}
+		const paymentObject = new window.Razorpay(options)
     
-  
-  
-  
-  const calculateTotalFare = () => {
-  const numberOfPassengers = passengers.length;
-  return numberOfPassengers * farePerTicket;
-};
 
-  const printinconsole = () => {
-    console.log({passengers})
-  }
+		const result = paymentObject.open()
+
+    console.log("Payment Finish");
+    console.log(result);
+    handleConfirm();
+   
+	}
+
+  
 
   const handleDeletePassenger = (index) => {
 
@@ -152,10 +222,11 @@ const BookingPassengerDetails = () => {
 
   };
 
-  
+  const [date, setdate] = useState();
   useEffect(() => {
     const queryParams= new URLSearchParams(location.search);
     setTrainNumber( queryParams.get("train_Number"))
+    setdate( queryParams.get("date"))
     
   }, []);
 
@@ -359,7 +430,7 @@ const BookingPassengerDetails = () => {
           </tbody>
         </table>
 
-        {!isFormValid && <p style={{ color: 'red' }}>Please fill in all the required details before proceeding.</p>}
+        {/* {!isFormValid && <p style={{ color: 'red' }}>Please fill in all the required details before proceeding.</p>} */}
         
         <button type="button" onClick={handleAddPassenger}>
           Add Passenger
@@ -429,9 +500,9 @@ const BookingPassengerDetails = () => {
 
           </Button>
 
-          <Button variant="success" onClick={handleConfirm}>
+          <Button variant="success" onClick={displayRazorpay}>
 
-            Confirm Booking
+            Pay Now
 
           </Button>
 
