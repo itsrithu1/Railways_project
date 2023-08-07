@@ -51,9 +51,15 @@ exports.loginUser = async (req, res) => {
       console.log(error);
     }
 
+    if(username=="Admin" && password=="@Admin123"){
+      return res
+      .status(httpStatusCodes[200].code)
+      .json(formResponse(httpStatusCodes[200].code, "Logged in as Admin"));
+    }
+
     return res
       .status(httpStatusCodes[200].code)
-      .json(formResponse(httpStatusCodes[200].code, "Logged in Successfully"));
+      .json(formResponse(httpStatusCodes[200].code, "Logged in as User"));
   }
   return res
     .status(httpStatusCodes[404].code)
