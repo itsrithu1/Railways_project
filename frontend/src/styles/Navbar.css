@@ -1,7 +1,6 @@
 .navbar {
 
     background-color: #f8f9fa; /* Set the background color of the navbar */
-
   }
 
  
@@ -19,6 +18,8 @@
   .navbar-nav {
 
     margin-left: auto; /* Align the nav links to the right */
+    /* color: black; */
+
 
   }
 
@@ -28,7 +29,7 @@
 
     margin-right: 20px; /* Add spacing between nav links */
 
-    color: #212529; /* Set the color of the nav links */
+    color: #000000; /* Set the color of the nav links */
 
   }
 

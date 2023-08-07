@@ -67,6 +67,9 @@ const Register = () => {
     setValidNo(result);
   }, [number]);
 
+  const handleRegister = ()=> {
+    navigate('/SignIn')
+}
   useEffect(() => {
     //email
     // const result = USER_REGEX.test(email);
@@ -339,7 +342,7 @@ const Register = () => {
               />
              
               <div className="button">
-                <button
+                <button onClick={handleRegister}
                   disabled={
                     !validName || !validPwd || !validMatch ? true : false
                   }

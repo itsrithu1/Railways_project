@@ -3,7 +3,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { Router, useNavigate } from 'react-router-dom';
 import Modal from 'react-modal';
-import NavbarComponent from './NavbarComponent';
+import NavbarAdminComponent from './NavbarAdmin';
 import Footer from './Footer';
 import { computeHeadingLevel } from '@testing-library/react';
 import AdminSearchTrain from './AdminSearchTrain';
@@ -98,90 +98,205 @@ console.log(train)
 
   return (
     <Modal
-      isOpen={isOpen}
-      onRequestClose={onRequestClose}
-      contentLabel="Edit Train Details"
-      ariaHideApp={false}
-    >
-      <h2>Edit Train Details</h2>
-      <div>
-        <label>Train Name:</label>
-        <input
-          type="text"
-          value={editedTrain.name}
-          onChange={handleChange}
-          name="name"
-          required
-        />
+  isOpen={isOpen}
+  onRequestClose={onRequestClose}
+  contentLabel="Edit Train Details"
+  ariaHideApp={false}
+  style={{
+    overlay: {
+      backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    },
+    content: {
+      maxWidth: '400px',
+      margin: '0 auto',
+      padding: '20px',
+      border: '1px solid #ccc',
+      borderRadius: '4px',
+    },
+  }}
+>
+  <h2 style={{ marginBottom: '20px' }}>Edit Train Details</h2>
+  <div style={{ marginBottom: '10px' }}>
+    <label style={{ display: 'block' }}>Train Name:</label>
+    <input
+      type="text"
+      value={editedTrain.name}
+      onChange={handleChange}
+      name="name"
+      required
+      style={{ width: '100%', padding: '5px' }}
+    />
 
-      {/* <label>Train No:</label>
-        <input
-        type="number"
-        value={editedTrain.train_Number}
-        onChange={handleChange}
-        name="train_Number"
-        required
-        /> */}
+    {/* <label>Train No:</label>
+    <input
+      type="number"
+      value={editedTrain.train_Number}
+      onChange={handleChange}
+      name="train_Number"
+      required
+      style={{ width: '100%', padding: '5px' }}
+    /> */}
 
-      <label>Arrival Time:</label>
-        <input
-        type="time"
-        value={editedTrain.startTime}
-        onChange={handleChange}
-        name="startTime"
-        required
-        />
+    <label style={{ display: 'block' }}>Arrival Time:</label>
+    <input
+      type="time"
+      value={editedTrain.startTime}
+      onChange={handleChange}
+      name="startTime"
+      required
+      style={{ width: '100%', padding: '5px' }}
+    />
+
+    <label style={{ display: 'block' }}>Dept Time:</label>
+    <input
+      type="time"
+      value={editedTrain.endTime}
+      onChange={handleChange}
+      name="endTime"
+      required
+      style={{ width: '100%', padding: '5px' }}
+    />
+
+    <label style={{ display: 'block' }}>No of coaches:</label>
+    <input
+      type="number"
+      value={editedTrain.numberOfCoach}
+      onChange={handleChange}
+      name="numberOfCoach"
+      required
+      style={{ width: '100%', padding: '5px' }}
+    />
+
+    <label style={{ display: 'block' }}>No of Seats Per Coach:</label>
+    <input
+      type="number"
+      value={editedTrain.numberOfSeatsPerCoach}
+      onChange={handleChange}
+      name="numberOfSeatsPerCoach"
+      required
+      style={{ width: '100%', padding: '5px' }}
+    />
+
+    <label style={{ display: 'block' }}>Fare :</label>
+    <input
+      type="number"
+      value={editedTrain.fare}
+      onChange={handleChange}
+      name="fare"
+      required
+      style={{ width: '100%', padding: '5px' }}
+    />
+
+    <div style={{ marginTop: '20px', textAlign: 'center' }}>
+      <button
+        type="button"
+        onClick={handleSave}
+        style={{ marginRight: '140px', padding: '5px 10px' }}
+      >
+        Save
+      </button>
+      <Button
+        variant="danger"
+        onClick={handleDelete}
+        style={{ padding: '5px 10px' }}
+      >
+        Delete Train
+      </Button>
+      <button
+        type="button"
+        onClick={onRequestClose}
+        style={{ marginLeft: '140px', padding: '5px 10px' }}
+      >
+        Cancel
+      </button>
+    </div>
+  </div>
+</Modal>
+
+//     <Modal
+//       isOpen={isOpen}
+//       onRequestClose={onRequestClose}
+//       contentLabel="Edit Train Details"
+//       ariaHideApp={false}
+//     >
+//       <h2>Edit Train Details</h2>
+//       <div>
+//         <label>Train Name:</label>
+//         <input
+//           type="text"
+//           value={editedTrain.name}
+//           onChange={handleChange}
+//           name="name"
+//           required
+//         />
+
+//       {/* <label>Train No:</label>
+//         <input
+//         type="number"
+//         value={editedTrain.train_Number}
+//         onChange={handleChange}
+//         name="train_Number"
+//         required
+//         /> */}
+
+//       <label>Arrival Time:</label>
+//         <input
+//         type="time"
+//         value={editedTrain.startTime}
+//         onChange={handleChange}
+//         name="startTime"
+//         required
+//         />
 
 
-      <label>Dept Time:</label>
-        <input
-        type="time"
-        value={editedTrain.endTime}
-        onChange={handleChange}
-        name="endTime"
-        required
-        />
+//       <label>Dept Time:</label>
+//         <input
+//         type="time"
+//         value={editedTrain.endTime}
+//         onChange={handleChange}
+//         name="endTime"
+//         required
+//         />
 
 
-        <label>No of coaches:</label>
-        <input
-        type="number"
-        value={editedTrain.numberOfCoach}
-        onChange={handleChange}
-        name="numberOfCoach"
-        required
-        />
+//         <label>No of coaches:</label>
+//         <input
+//         type="number"
+//         value={editedTrain.numberOfCoach}
+//         onChange={handleChange}
+//         name="numberOfCoach"
+//         required
+//         />
 
-      <label>No of Seats Per Coach:</label>
-        <input
-        type="number"
-        value={editedTrain.numberOfSeatsPerCoach}
-        onChange={handleChange}
-        name="numberOfSeatsPerCoach"
-        required
-        />
-<label>Fare :</label>
-        <input
-        type="number"
-        value={editedTrain.fare}
-        onChange={handleChange}
-        name="fare"
-        required
-        />
+//       <label>No of Seats Per Coach:</label>
+//         <input
+//         type="number"
+//         value={editedTrain.numberOfSeatsPerCoach}
+//         onChange={handleChange}
+//         name="numberOfSeatsPerCoach"
+//         required
+//         />
+// <label>Fare :</label>
+//         <input
+//         type="number"
+//         value={editedTrain.fare}
+//         onChange={handleChange}
+//         name="fare"
+//         required
+//         />
 
         
 
-        {/* Add other input fields for other train details here */}
-        <button type="button" onClick={handleSave}>
-          Save
-        </button>
-        <Button variant="danger" onClick={handleDelete}>Delete Train</Button>
-        <button type="button" onClick={onRequestClose}>
-          Cancel
-        </button>
+//         <button type="button" onClick={handleSave}>
+//           Save
+//         </button>
+//         <Button variant="danger" onClick={handleDelete}>Delete Train</Button>
+//         <button type="button" onClick={onRequestClose}>
+//           Cancel
+//         </button>
         
-      </div>
-    </Modal>
+//       </div>
+//     </Modal>
   );
 };
 
@@ -310,7 +425,7 @@ const AdminHomePage = () => {
   return (
     <>
     {/* {console.log(trainDetails)} */}
-      <NavbarComponent />
+      <NavbarAdminComponent />
       
       <div className='page-container'>
         <div className="content-box train-details-container">
@@ -329,20 +444,11 @@ const AdminHomePage = () => {
         />
       </div>
       <div>
-        <button onClick={handleSearch}>Submit</button>
+        <button onClick={handleSearch} style={{ marginRight: '10px', padding: '5px 10px' }}>Submit</button>
       </div>
       <div>
         <p>{searchResult}</p>
       </div>
-
-
-
-
-
-
-
-
-
           <h2>Train Details</h2>
           <table>
             <thead>

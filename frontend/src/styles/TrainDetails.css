@@ -11,6 +11,7 @@
   flex-direction: column;
 
   height: 100vh; /* Set the container height to fill the entire viewport */
+  color: black;
 
 }
 
@@ -25,11 +26,12 @@
   padding: 20px;
 
   border-radius: 10px;
+  color: black;
 
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   opacity: 80%;
   width: 95%;
-  height: 75%;
+  height: 85%;
   margin: auto;
 
 }
@@ -47,6 +49,8 @@ table {
   border-collapse: collapse;
 
   width: 100%;
+  color: black;
+
 
 }
 

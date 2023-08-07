@@ -22,15 +22,8 @@ res={}
 
 noOfReservedSeats=int(0.1*noOfSeats)
 
-if(noOfCoaches%2):
+mid_Coach=int(noOfCoaches/2)+1
 
-    mid_Coach=int(noOfCoaches/2)+1
-
-else:
-
-    mid_Coach=int(noOfCoaches/2)
-
- 
 
 if(noOfSeats%2):
 
@@ -104,7 +97,7 @@ while seat<noOfSeats and seat>0:
 
         # print("C"+str(coach)+"S"+str(seat))
 
-        if(seat<=noOfReservedSeats or seat>=(noOfSeats-noOfReservedSeats-1)):
+        if(seat<=noOfReservedSeats or seat>(noOfSeats-noOfReservedSeats-1)):
 
             # print("reserved")
 

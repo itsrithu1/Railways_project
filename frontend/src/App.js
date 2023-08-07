@@ -15,6 +15,8 @@ import Navbar from 'react-bootstrap/Navbar';
 import LandingPage from './components/LandingPage';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import AdminSearchTrain from './components/AdminSearchTrain';
+// import NavbarAdminComponent from './components/NavbarAdmin'
+// import NavbarComponent from './components/NavbarComponent';
 function App() {
   return (
     <main className="App">
