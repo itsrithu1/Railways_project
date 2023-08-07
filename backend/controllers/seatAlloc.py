@@ -22,17 +22,16 @@ res={}
 
 noOfReservedSeats=int(0.1*noOfSeats)
 
-if(noOfCoaches%2):
+mid_Coach=int(noOfCoaches/2)+1
 
-    mid_Coach=int(noOfCoaches/2)+1
+
+if(noOfSeats%2):
+
+    mid_Seat=int(noOfSeats/2)+1
 
 else:
 
-    mid_Coach=int(noOfCoaches/2)
-
- 
-
-mid_Seat=int(noOfSeats/2)+1
+    mid_Seat=int(noOfSeats/2)
 
    
 
