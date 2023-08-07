@@ -30,7 +30,9 @@ const BookingPassengerDetails = () => {
   ]);
   // const [ticket_id, setticket_id] = useState();
 
- 
+  const [trainNumber,setTrainNumber]=useState(null)
+  const [date,setdate]=useState(null)
+  const [name, setName] = useState('First Class')
 
   const handleChange = (index, e) => {
     const { name, value } = e.target;
@@ -67,9 +69,7 @@ const BookingPassengerDetails = () => {
   };
   
 
-  const [trainNumber,setTrainNumber]=useState(null)
-  const [date,setdate]=useState(null)
-  const [name, setName] = useState('First Class')
+  
 
   function loadScript(src) {
     return new Promise((resolve) => {
@@ -174,7 +174,7 @@ const BookingPassengerDetails = () => {
           
         }
 
-        Navigate('/successBooking');
+        // Navigate('/successBooking');
 
 
   };
@@ -295,12 +295,10 @@ const BookingPassengerDetails = () => {
 
   
   useEffect(() => {
-    const queryParams= new URLSearchParams(location.search);
-    setTrainNumber( queryParams.get("train_Number"))
-    setdate( queryParams.get("date"))
-
-    
-  }, []);
+    const queryParams = new URLSearchParams(location.search);
+    setTrainNumber(queryParams.get("train_Number"));
+    setdate(queryParams.get("date"));
+  }, [location]);
 
  
 
