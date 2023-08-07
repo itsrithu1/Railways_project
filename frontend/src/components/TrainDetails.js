@@ -32,7 +32,7 @@ const DisplayTrains = () => {
 
   const [selectedTrainNumber, setSelectedTrainNumber] = useState(null);
 
- 
+  const [showMessage, setShowMessage] = useState(false);
 
   const handleRadioChange = (event) => {
 
@@ -48,7 +48,17 @@ const DisplayTrains = () => {
 
     // window.location.href='./displaytrains'
 
-    navigate(`/bookingPassengerDetails?train_Number=${selectedTrainNumber}&date=${date}`);
+    if(selectedTrainNumber){
+      navigate(`/bookingPassengerDetails?train_Number=${selectedTrainNumber}&date=${date}`);
+    } else {
+      setShowMessage(true);
+
+      setTimeout(() => {
+
+        setShowMessage(false);
+
+      }, 1500);
+    }
 
   };
 
@@ -287,11 +297,13 @@ const DisplayTrains = () => {
 
  
 
-      <Button variant="primary" type="submit" onClick={handleSubmit}>
+      <Button variant="primary" type="submit" onClick={handleSubmit} >
 
         Submit
 
       </Button>
+
+      {showMessage && <p style={{ color: 'red' }}>Please select a train.</p>}
 
     </div>
 

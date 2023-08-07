@@ -77,20 +77,19 @@ const Login = () => {
 
     }
 
-    const handelSignin = ()=> {
+    const handleSignIn = ()=> {
         navigate('/LandingPage')
     }
     return (
         <>
-            {/* {success ? (
+            {success ? (
                 <section>
-                    <h1>you are logged in!</h1>
-                    <br />
+                    
                     <p>
-                        <NavLink to='/components/LandingPage'></NavLink>
+                        <NavLink to="/LandingPage"></NavLink>
                     </p>
                 </section>
-            ) : ( */}
+            ) : (
 
 <div className="div">
                 <section >
@@ -105,7 +104,7 @@ const Login = () => {
                         <br />
 
 
-                        <button className="button" onClick={handelSignin}>Sign In</button>
+                        <button className="button" onClick={handleSignIn}>Sign In</button>
 
                         {/* <div className="button">
                                 <button >
@@ -131,8 +130,8 @@ const Login = () => {
                     </p>
                 </section>
                 </div>
-            {/* ) */}
-           
+             ) 
+                        }
         </>
     )
 }

@@ -20,8 +20,8 @@ const BookingPassengerDetails = () => {
       dob: '',
       gender: '',
       phone: null,
-      travelInsurance: '',
-      foodPreferences: '',
+      travelInsurance: 'no',
+      foodPreferences: 'no',
     },
   ]);
 
@@ -46,8 +46,8 @@ const BookingPassengerDetails = () => {
         gender: '',
         phone: '',
        
-        travelInsurance: '',
-        foodPreferences: '',
+        travelInsurance: 'no',
+        foodPreferences: 'no',
       },
     ]);
     setIsFormValid(true);
@@ -355,7 +355,7 @@ const BookingPassengerDetails = () => {
                       type="radio"
                       name={`travelInsurance${index}`}
                       value="no"
-                      // checked={passenger.travelInsurance === 'no'}
+                      //checked={passenger.travelInsurance === 'no'}
                       onChange={(e) => handleChange(index, e)}
                     />
                     No
@@ -367,7 +367,7 @@ const BookingPassengerDetails = () => {
                       type="radio"
                       name={`foodPreferences${index}`}
                       value="no"
-                      // checked={passenger.foodPreferences === 'no'}
+                      //checked={passenger.foodPreferences === 'no'}
                       onChange={(e) => handleChange(index, e)}
                     />
                     No
@@ -404,9 +404,9 @@ const BookingPassengerDetails = () => {
         {/* {!isFormValid && <p style={{ color: 'red' }}>Please fill in all the required details before proceeding.</p>} */}
         
 
-        <button  onClick={handleSubmit}>Proceed</button>
+        <button  onClick={handleSubmit} style={{borderRadius:'5px'}}>Proceed</button>
 
-        <button type="button" onClick={handleAddPassenger}>
+        <button type="button" onClick={handleAddPassenger} style={{borderRadius:'5px',width:'120px'}}>
           Add Passenger
         </button>
       </form>
@@ -427,17 +427,7 @@ const BookingPassengerDetails = () => {
 
               <p>Name: {passenger.name}</p>
 
-              <p>Dob: {passenger.dob}</p>
-
-              <p>Gender: {passenger.gender}</p>
-
               <p>Phone No: {passenger.phone}</p>
-
-              {/* <p>Email ID: {passenger.email}</p> */}
-
-              <p>Travel Insurance: {passenger.travelInsurance}</p>
-
-              <p>Food Preferences: {passenger.foodPreferences}</p>
 
               <Button
 

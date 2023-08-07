@@ -191,7 +191,7 @@ console.log(train)
       <button
         type="button"
         onClick={handleSave}
-        style={{ marginRight: '140px', padding: '5px 10px' }}
+        style={{ marginRight: '140px',borderRadius:'5px', padding: '5px 10px' }}
       >
         Save
       </button>
@@ -205,7 +205,7 @@ console.log(train)
       <button
         type="button"
         onClick={onRequestClose}
-        style={{ marginLeft: '140px', padding: '5px 10px' }}
+        style={{ marginLeft: '140px', padding: '5px 10px' ,borderRadius:'5px'}}
       >
         Cancel
       </button>
@@ -444,7 +444,7 @@ const AdminHomePage = () => {
         />
       </div>
       <div>
-        <button onClick={handleSearch} style={{ marginRight: '10px', padding: '5px 10px' }}>Submit</button>
+        <button onClick={handleSearch} style={{ marginRight: '10px', borderRadius:'5px',padding: '5px 10px' }}>Submit</button>
       </div>
       <div>
         <p>{searchResult}</p>
@@ -479,13 +479,13 @@ const AdminHomePage = () => {
                   <td>{train.numberOfSeatsPerCoach}</td>
                   <td>{train.fare}</td>
                   <td>
-                    <button onClick={() => handleEdit(index)}>Edit</button>
+                    <button onClick={() => handleEdit(index)} style={{borderRadius:'5px'}}>Edit</button>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
-          <button onClick={handleAdd}>Add Train</button>
+          <button onClick={handleAdd} style={{borderRadius:'5px'}}>Add Train</button>
         
         </div>
       </div>
