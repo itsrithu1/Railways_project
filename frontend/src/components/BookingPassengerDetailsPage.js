@@ -279,7 +279,7 @@ const BookingPassengerDetails = () => {
                     onChange={(e) => handleChange(index, e)}
                     required
                   >
-                    <option value="">Select Gender</option>
+                    <option value="" disabled>Select Gender</option>
                     <option value="male">Male</option>
                     <option value="female">Female</option>
                     <option value="other">Other</option>

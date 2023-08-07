@@ -1,118 +1,275 @@
 /* Create a flex container to center the content vertically and horizontally */
 
+ 
+
 .train-details-container {
+
+ 
 
   display: flex;
 
+ 
+
   justify-content: center;
+
+ 
 
   align-items: center;
 
+ 
+
   flex-direction: column;
 
+ 
+
   height: 100vh; /* Set the container height to fill the entire viewport */
-  color: black;
+
+ 
 
 }
 
+ 
 
+ 
+
+ 
 
 /* Enclose content in a box with a white background */
 
+ 
+
 .content-box {
+
+ 
 
   background-color: white;
 
+ 
+
   padding: 20px;
 
+ 
+
   border-radius: 10px;
-  color: black;
+
+ 
 
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
   opacity: 80%;
+
   width: 95%;
-  height: 85%;
+
+  height: 95%;
+
   margin: auto;
+
+ 
 
 }
 
+ 
 
+ 
+
+ 
 
 /* Center the table */
 
+ 
+
 table {
+
+ 
 
   margin: 20px 0;
 
+ 
+
   /*width: 90%;*/
+
+ 
 
   border-collapse: collapse;
 
-  width: 100%;
-  color: black;
+ 
 
+  width: 100%;
+
+ 
 
 }
 
+ 
 
+ 
+
+ 
 
 th, td {
 
+ 
+
   border: 1px solid #ccc;
+
+ 
 
   padding: 8px;
 
+ 
+
   text-align: center;
+
+ 
 
 }
 
+ 
 
+ 
+
+ 
 
 th {
 
+ 
+
   background-color: #f2f2f2;
+
+ 
 
 }
 
+ 
 
+ 
+
+ 
 
 /* Center the submit button */
 
+ 
+
 button {
+
+ 
 
   margin-top: 20px;
 
+ 
+
 }
 
+ 
 
+ 
+
+ 
 
 /* Add some spacing between radio buttons and text */
+
+ 
+
+input[type="radio"] {
+
+ 
+
+  margin-right: 5px;
+
+ 
+
+}
+
+ 
+
+ 
+
+ 
+
+.page-container {
+
+ 
+
+  display: flex;
+
+ 
+
+  justify-content: center;
+
+ 
+
+  align-items: center;
+
+ 
+
+  height: 100vh; /* Set the container height to fill the entire viewport */
+
+ 
+
+  background-image: url("../../public/Train1.png");
+
+ 
+
+  background-repeat: no-repeat;
+
+ 
+
+  background-position: center;
+
+ 
+
+  background-size: cover;
+
+ 
+
+}
+
+ 
+
+/* Darken the radio button circle */
 
 input[type="radio"] {
 
   margin-right: 5px;
 
-}
+  appearance: none; /* Remove default appearance */
 
+  width: 16px;
 
+  height: 16px;
 
-.page-container {
+  border: 2px solid #000; /* Border color for the circle */
 
-  display: flex;
+  border-radius: 50%; /* Make it a circle */
 
-  justify-content: center;
-
-  align-items: center;
-
-  height: 100vh; /* Set the container height to fill the entire viewport */
-
-  background-image: url("../../public/Train1.png");
-
-  background-repeat: no-repeat;
-
-  background-position: center;
-
-  background-size: cover;
+  background-color: transparent;
 
 }
 
+ 
+
+input[type="radio"]:checked {
+
+  background-color: #000; /* Darken the circle when selected */
+
+}
+
+ 
+
+/* Apply some padding to the table rows for better interaction */
+
+tr {
+
+  cursor: pointer;
+
+  padding: 10px;
+
+}
+
+ 
+
+tr:hover {
+
+  background-color: #f2f2f2; /* Change background color on hover */
+
+}

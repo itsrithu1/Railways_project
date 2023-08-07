@@ -7,6 +7,8 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 
 import '../styles/Navbar.css';
+import logo from './Rail_Logo.png';
+
  
 
 function NavbarAdminComponent() {
@@ -17,7 +19,18 @@ function NavbarAdminComponent() {
 
       <Container>
 
-        <Navbar.Brand href="#home">First Class Railways</Navbar.Brand>
+        <Navbar.Brand href="#">
+        <img
+
+src={logo}
+
+alt="Logo"
+
+className="d-inline-block align-top logo-image"
+
+/>
+
+            First Class Railways</Navbar.Brand>
 
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
 
