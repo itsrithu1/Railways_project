@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import Form from 'react-bootstrap/Form';
-import { Button } from 'react-bootstrap';
+import Button from 'react-bootstrap/Button';
 import { Router, useNavigate } from 'react-router-dom';
 import Modal from 'react-modal';
-import NavbarComponent from './NavbarComponent';
+import NavbarAdminComponent from './NavbarAdmin';
 import Footer from './Footer';
 import { computeHeadingLevel } from '@testing-library/react';
 import AdminSearchTrain from './AdminSearchTrain';
 
 
 
-const EditPopup = ({ isOpen, onRequestClose,train,trainNumber, onSave }) => {
+const EditPopup = ({ isOpen, onRequestClose,train,trainNumber, onSave ,displayTrainDetails}) => {
   const [editedTrain, setEditedTrain] = useState({ ...train });
   
 console.log(train)
@@ -42,7 +42,7 @@ console.log(train)
       
 
       if (data.flag=="OK") {
-            
+        displayTrainDetails()
         console.log("successful")
             } else {
               // alert("No Trains Found")
@@ -61,105 +61,296 @@ console.log(train)
     onRequestClose();
   };
 
+  const handleDelete = ()=>{
+
+    try {
+            
+      fetch(`http://localhost:3001/api/v1/admin/deleteTrain?trainNumber=${trainNumber}`, {
+    method: "GET",
+    crossDomain: true,
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      "Accesss-Control-Allow-Origin": "*",
+    },
+  })
+    .then((res) => res.json())
+    .then((data) => {      
+
+      if (data.flag=="OK") {
+            alert("Train Deleted Successfully")
+        console.log("successful")
+            } else {
+              alert("Some Error Occured, try after some time")
+              
+          }
+
+      });
+
+
+
+  } catch (err) {
+    console.error("Error:", err);
+    
+  }
+  onRequestClose();
+  }
+
   return (
     <Modal
-      isOpen={isOpen}
-      onRequestClose={onRequestClose}
-      contentLabel="Edit Train Details"
-      ariaHideApp={false}
-    >
-      <h2>Edit Train Details</h2>
-      <div>
-        <label>Train Name:</label>
-        <input
-          type="text"
-          value={editedTrain.name}
-          onChange={handleChange}
-          name="name"
-          required
-        />
+  isOpen={isOpen}
+  onRequestClose={onRequestClose}
+  contentLabel="Edit Train Details"
+  ariaHideApp={false}
+  style={{
+    overlay: {
+      backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    },
+    content: {
+      maxWidth: '400px',
+      margin: '0 auto',
+      padding: '20px',
+      border: '1px solid #ccc',
+      borderRadius: '4px',
+    },
+  }}
+>
+  <h2 style={{ marginBottom: '20px' }}>Edit Train Details</h2>
+  <div style={{ marginBottom: '10px' }}>
+    <label style={{ display: 'block' }}>Train Name:</label>
+    <input
+      type="text"
+      value={editedTrain.name}
+      onChange={handleChange}
+      name="name"
+      required
+      style={{ width: '100%', padding: '5px' }}
+    />
 
-      {/* <label>Train No:</label>
-        <input
-        type="number"
-        value={editedTrain.train_Number}
-        onChange={handleChange}
-        name="train_Number"
-        required
-        /> */}
+    {/* <label>Train No:</label>
+    <input
+      type="number"
+      value={editedTrain.train_Number}
+      onChange={handleChange}
+      name="train_Number"
+      required
+      style={{ width: '100%', padding: '5px' }}
+    /> */}
 
-      <label>Arrival Time:</label>
-        <input
-        type="time"
-        value={editedTrain.startTime}
-        onChange={handleChange}
-        name="startTime"
-        required
-        />
+    <label style={{ display: 'block' }}>Arrival Time:</label>
+    <input
+      type="time"
+      value={editedTrain.startTime}
+      onChange={handleChange}
+      name="startTime"
+      required
+      style={{ width: '100%', padding: '5px' }}
+    />
+
+    <label style={{ display: 'block' }}>Dept Time:</label>
+    <input
+      type="time"
+      value={editedTrain.endTime}
+      onChange={handleChange}
+      name="endTime"
+      required
+      style={{ width: '100%', padding: '5px' }}
+    />
+
+    <label style={{ display: 'block' }}>No of coaches:</label>
+    <input
+      type="number"
+      value={editedTrain.numberOfCoach}
+      onChange={handleChange}
+      name="numberOfCoach"
+      required
+      style={{ width: '100%', padding: '5px' }}
+    />
+
+    <label style={{ display: 'block' }}>No of Seats Per Coach:</label>
+    <input
+      type="number"
+      value={editedTrain.numberOfSeatsPerCoach}
+      onChange={handleChange}
+      name="numberOfSeatsPerCoach"
+      required
+      style={{ width: '100%', padding: '5px' }}
+    />
+
+    <label style={{ display: 'block' }}>Fare :</label>
+    <input
+      type="number"
+      value={editedTrain.fare}
+      onChange={handleChange}
+      name="fare"
+      required
+      style={{ width: '100%', padding: '5px' }}
+    />
+
+    <div style={{ marginTop: '20px', textAlign: 'center' }}>
+      <button
+        type="button"
+        onClick={handleSave}
+        style={{ marginRight: '140px',borderRadius:'5px', padding: '5px 10px' }}
+      >
+        Save
+      </button>
+      <Button
+        variant="danger"
+        onClick={handleDelete}
+        style={{ padding: '5px 10px' }}
+      >
+        Delete Train
+      </Button>
+      <button
+        type="button"
+        onClick={onRequestClose}
+        style={{ marginLeft: '140px', padding: '5px 10px' ,borderRadius:'5px'}}
+      >
+        Cancel
+      </button>
+    </div>
+  </div>
+</Modal>
+
+//     <Modal
+//       isOpen={isOpen}
+//       onRequestClose={onRequestClose}
+//       contentLabel="Edit Train Details"
+//       ariaHideApp={false}
+//     >
+//       <h2>Edit Train Details</h2>
+//       <div>
+//         <label>Train Name:</label>
+//         <input
+//           type="text"
+//           value={editedTrain.name}
+//           onChange={handleChange}
+//           name="name"
+//           required
+//         />
+
+//       {/* <label>Train No:</label>
+//         <input
+//         type="number"
+//         value={editedTrain.train_Number}
+//         onChange={handleChange}
+//         name="train_Number"
+//         required
+//         /> */}
+
+//       <label>Arrival Time:</label>
+//         <input
+//         type="time"
+//         value={editedTrain.startTime}
+//         onChange={handleChange}
+//         name="startTime"
+//         required
+//         />
 
 
-      <label>Dept Time:</label>
-        <input
-        type="time"
-        value={editedTrain.endTime}
-        onChange={handleChange}
-        name="endTime"
-        required
-        />
+//       <label>Dept Time:</label>
+//         <input
+//         type="time"
+//         value={editedTrain.endTime}
+//         onChange={handleChange}
+//         name="endTime"
+//         required
+//         />
 
 
-        <label>No of coaches:</label>
-        <input
-        type="number"
-        value={editedTrain.numberOfCoach}
-        onChange={handleChange}
-        name="numberOfCoach"
-        required
-        />
+//         <label>No of coaches:</label>
+//         <input
+//         type="number"
+//         value={editedTrain.numberOfCoach}
+//         onChange={handleChange}
+//         name="numberOfCoach"
+//         required
+//         />
 
-      <label>No of Seats Per Coach:</label>
-        <input
-        type="number"
-        value={editedTrain.numberOfSeatsPerCoach}
-        onChange={handleChange}
-        name="numberOfSeatsPerCoach"
-        required
-        />
-<label>Fare :</label>
-        <input
-        type="number"
-        value={editedTrain.fare}
-        onChange={handleChange}
-        name="fare"
-        required
-        />
+//       <label>No of Seats Per Coach:</label>
+//         <input
+//         type="number"
+//         value={editedTrain.numberOfSeatsPerCoach}
+//         onChange={handleChange}
+//         name="numberOfSeatsPerCoach"
+//         required
+//         />
+// <label>Fare :</label>
+//         <input
+//         type="number"
+//         value={editedTrain.fare}
+//         onChange={handleChange}
+//         name="fare"
+//         required
+//         />
 
         
 
-        {/* Add other input fields for other train details here */}
-        <button type="button" onClick={handleSave}>
-          Save
-        </button>
-        <button type="button" onClick={onRequestClose}>
-          Cancel
-        </button>
+//         <button type="button" onClick={handleSave}>
+//           Save
+//         </button>
+//         <Button variant="danger" onClick={handleDelete}>Delete Train</Button>
+//         <button type="button" onClick={onRequestClose}>
+//           Cancel
+//         </button>
         
-      </div>
-    </Modal>
+//       </div>
+//     </Modal>
   );
 };
 
 const AdminHomePage = () => {
-  // const [TrainData, setTrainData] = useState();
-  // useEffect(() => {
-  //   console.log(TrainData)
-  // }, [TrainData])
   
-
   const navigate = useNavigate();
-
+  const [searchtrainNumber, setSearchTrainNumber] = useState('');
+  const [searchResult, setSearchResult] = useState('');
+  const [trainDetails ,setTrainDetails]=useState([])
+  const [originaltrainDetails ,setOriginalTrainDetails]=useState([])
 
   const [selectedTrain, setSelectedTrain] = useState(null);
+
+  const handleTrainNumberChange = (event) => {
+    setSearchTrainNumber(event.target.value);
+  };
+
+  const handleSearch = () => {
+    // Here, you can perform the actual search based on the train number
+    // For demonstration purposes, we'll just display the result on the page.
+    // setSearchResult(`Searching for train number: ${searchtrainNumber}`);
+    if(!searchtrainNumber){
+      setTrainDetails(originaltrainDetails)
+    }
+
+    try {
+            
+      fetch(`http://localhost:3001/api/v1/admin/searchTrain?trainNumber=${searchtrainNumber}`, {
+    method: "GET",
+    crossDomain: true,
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      "Accesss-Control-Allow-Origin": "*",
+    },
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      // console.log("recieved data is", data.data)
+      
+
+      if (data.flag=="OK") {
+        setTrainDetails(data.data)
+            } else {
+              
+          }
+
+      });
+  } catch (err) {
+    console.error("Error:", err);
+    
+  }
+
+  };
 
   const handleEdit = (index) => {
     console.log("hello the index is ",index)
@@ -170,12 +361,7 @@ const AdminHomePage = () => {
     navigate('/AdminAddTrains');
   };
 
-  // const hardcodedTrainData = [
-  //   // Your train data here
-  //   { trainNo: '10', trainName: 'Train 1', Dept_Time: '09:00 am', Arrival_Time: '04:00 pm', Number_Of_Coaches: '5', Seats_Per_Coach: '72' },
-  //   { trainNo: '11', trainName: 'Train 2', Dept_Time: '12:00 pm', Arrival_Time: '11:00 pm', Number_Of_Coaches: '5', Seats_Per_Coach: '72' },
-  //   { trainNo: '12', trainName: 'Train 3', Dept_Time: '07:00 am', Arrival_Time: '03:00 am', Number_Of_Coaches: '5', Seats_Per_Coach: '72' }
-  // ];
+
 
   const handleSaveEdit = (editedTrain) => {
     // Perform any actions to save the edited details
@@ -189,7 +375,7 @@ const AdminHomePage = () => {
   };
 
 
-  const [trainDetails ,setTrainDetails]=useState([])
+  
   const displayTrainDetails =()=>{
 
     // console.log("hello")
@@ -213,6 +399,7 @@ const AdminHomePage = () => {
         // let temp=data.data
             // console.log(temp[0])
         setTrainDetails(data.data)
+        setOriginalTrainDetails(data.data)
             } else {
               // alert("No Trains Found")
               
@@ -233,17 +420,35 @@ const AdminHomePage = () => {
   useEffect(() => {
 
     displayTrainDetails();
-  },[trainDetails]);
+  },[]);
 
   return (
     <>
     {/* {console.log(trainDetails)} */}
-      <NavbarComponent />
+      <NavbarAdminComponent />
       
       <div className='page-container'>
         <div className="content-box train-details-container">
-        <AdminSearchTrain/>
+        {/* <AdminSearchTrain/> */}
 
+
+
+
+        <div>
+        <label htmlFor="trainNumber" style={{color:"black"}}>Enter Train Number:</label>
+        <input
+          type="text"
+          id="trainNumber"
+          value={searchtrainNumber}
+          onChange={handleTrainNumberChange}
+        />
+      </div>
+      <div>
+        <button onClick={handleSearch} style={{ marginRight: '10px', borderRadius:'5px',padding: '5px 10px' }}>Submit</button>
+      </div>
+      <div>
+        <p>{searchResult}</p>
+      </div>
           <h2>Train Details</h2>
           <table>
             <thead>
@@ -274,13 +479,13 @@ const AdminHomePage = () => {
                   <td>{train.numberOfSeatsPerCoach}</td>
                   <td>{train.fare}</td>
                   <td>
-                    <button onClick={() => handleEdit(index)}>Edit</button>
+                    <button onClick={() => handleEdit(index)} style={{borderRadius:'5px'}}>Edit</button>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
-          <button onClick={handleAdd}>Add Train</button>
+          <button onClick={handleAdd} style={{borderRadius:'5px'}}>Add Train</button>
         
         </div>
       </div>
@@ -293,6 +498,7 @@ const AdminHomePage = () => {
           train={trainDetails[selectedTrain]}
           trainNumber = {trainDetails[selectedTrain].train_Number}
           onSave={handleSaveEdit}
+          displayTrainDetails = {displayTrainDetails}
           
         />
       )}

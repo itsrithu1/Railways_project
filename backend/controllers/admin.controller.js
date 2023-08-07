@@ -359,15 +359,12 @@ exports.updateTrain = async (req, res) => {
 };
 
 exports.deleteTrain = async (req, res) => {
-  // const { trainNumber, trainName } = req.params.id;
-  const trainNumber = req.query.trainNumber;
-  const trainName = req.query.trainName;
 
-  // console.log("hello",trainName,trainNumber)
+  const trainNumber = req.query.trainNumber;
 
   try {
     const query = {
-      $or: [{ train_Number: trainNumber }, { name: trainName }],
+      $or: [{ train_Number: trainNumber }],
     };
 
     const deletedTrain = await Train.findOneAndDelete(query);
@@ -377,6 +374,10 @@ exports.deleteTrain = async (req, res) => {
         .status(httpStatusCodes[404].code)
         .json(formResponse(httpStatusCodes[404].code, "Train not found"));
     }
+
+
+    const result = await SeatAllocation.deleteMany({ train_Number:trainNumber });
+    console.log(result.deletedCount)
 
     return res
       .status(httpStatusCodes[200].code)

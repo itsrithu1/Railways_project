@@ -14,8 +14,7 @@ const BookingPassengerDetails = () => {
 
   const location =useLocation()
 
-  var farePerTicket = 100; // Set the fare per ticket
-
+  // var farePerTicket = 100; // Set the fare per ticket
 
   const [passengers, setPassengers] = useState([
     {
@@ -23,8 +22,8 @@ const BookingPassengerDetails = () => {
       dob: '',
       gender: '',
       phone: null,
-      travelInsurance: '',
-      foodPreferences: '',
+      travelInsurance: 'no',
+      foodPreferences: 'no',
     },
   ]);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
@@ -51,8 +50,8 @@ const BookingPassengerDetails = () => {
         gender: '',
         phone: '',
        
-        travelInsurance: '',
-        foodPreferences: '',
+        travelInsurance: 'no',
+        foodPreferences: 'no',
       },
     ]);
     setIsFormValid(true);
@@ -180,9 +179,7 @@ const BookingPassengerDetails = () => {
 			t.json()
 		)
 
-		console.log(data)
-
-		const options = {
+    const options = {
 			key: __DEV__ ? 'rzp_test_fgWk4ynD9HVS0a' : 'PRODUCTION_KEY',
 			currency: data.currency,
 			amount: data.amount.toString(),
@@ -208,6 +205,29 @@ const BookingPassengerDetails = () => {
    
 	}
 
+
+    getFarePrice();
+
+
+    // const hasEmptyFields = passengers.some((passenger) =>
+    //   Object.values(passenger).some((value) => value === null || value === '')
+    // );
+
+    // if (hasEmptyFields) {
+    //   setIsFormValid(false);
+    // } else {
+    //   setIsFormValid(true);
+      setShowModal(true);
+    // }
+  };
+
+  const handleInputChange = (index, e) => {
+    // ... (existing handleChange logic)
+
+    // When a field is updated, we mark the form as valid
+    // setIsFormValid(true);
+  };
+    
   
 
   const handleDeletePassenger = (index) => {
@@ -222,11 +242,48 @@ const BookingPassengerDetails = () => {
 
   };
 
-  const [date, setdate] = useState();
+  const [farePerTicket ,setFarePerTicket] = useState(null)
+
+  const getFarePrice = () =>{
+
+    try {
+            
+      fetch(`http://localhost:3001/api/v1/user/getfare?train_Number=${trainNumber}`, {
+    method: "GET",
+    crossDomain: true,
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      "Accesss-Control-Allow-Origin": "*",
+    },
+    
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      
+      if(data.flag=="OK"){
+        console.log("fare is ",data.data)
+        setFarePerTicket(data.data)
+      }
+
+      });
+
+
+
+  } catch (err) {
+    console.error("Error:", err);
+    
+  }
+
+
+  }
+
+  
   useEffect(() => {
     const queryParams= new URLSearchParams(location.search);
     setTrainNumber( queryParams.get("train_Number"))
     setdate( queryParams.get("date"))
+
     
   }, []);
 
@@ -350,7 +407,7 @@ const BookingPassengerDetails = () => {
                     onChange={(e) => handleChange(index, e)}
                     required
                   >
-                    <option value="">Select Gender</option>
+                    <option value="" disabled>Select Gender</option>
                     <option value="male">Male</option>
                     <option value="female">Female</option>
                     <option value="other">Other</option>
@@ -384,7 +441,7 @@ const BookingPassengerDetails = () => {
                       type="radio"
                       name={`travelInsurance${index}`}
                       value="no"
-                      // checked={passenger.travelInsurance === 'no'}
+                      //checked={passenger.travelInsurance === 'no'}
                       onChange={(e) => handleChange(index, e)}
                     />
                     No
@@ -396,7 +453,7 @@ const BookingPassengerDetails = () => {
                       type="radio"
                       name={`foodPreferences${index}`}
                       value="no"
-                      // checked={passenger.foodPreferences === 'no'}
+                      //checked={passenger.foodPreferences === 'no'}
                       onChange={(e) => handleChange(index, e)}
                     />
                     No
@@ -432,10 +489,12 @@ const BookingPassengerDetails = () => {
 
         {/* {!isFormValid && <p style={{ color: 'red' }}>Please fill in all the required details before proceeding.</p>} */}
         
-        <button type="button" onClick={handleAddPassenger}>
+
+        <button  onClick={handleSubmit} style={{borderRadius:'5px'}}>Proceed</button>
+
+        <button type="button" onClick={handleAddPassenger} style={{borderRadius:'5px',width:'120px'}}>
           Add Passenger
         </button>
-        <button  onClick={handleSubmit}>Proceed</button>
       </form>
 
       <Modal show={showModal} onHide={handleCloseModal}>
@@ -454,17 +513,7 @@ const BookingPassengerDetails = () => {
 
               <p>Name: {passenger.name}</p>
 
-              <p>Dob: {passenger.dob}</p>
-
-              <p>Gender: {passenger.gender}</p>
-
               <p>Phone No: {passenger.phone}</p>
-
-              {/* <p>Email ID: {passenger.email}</p> */}
-
-              <p>Travel Insurance: {passenger.travelInsurance}</p>
-
-              <p>Food Preferences: {passenger.foodPreferences}</p>
 
               <Button
 
@@ -491,7 +540,7 @@ const BookingPassengerDetails = () => {
           {/* <Button onClick={handleClose}>Close</Button> */}
 
           <hr />
-          <p><b>Total Fare: ${calculateTotalFare()} </b></p>
+          <p><b>Total Fare: Rs. {calculateTotalFare()} </b></p>
           <hr />
 
           <Button variant="secondary" onClick={handleCloseModal}>

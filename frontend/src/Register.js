@@ -67,6 +67,9 @@ const Register = () => {
     setValidNo(result);
   }, [number]);
 
+  const handleRegister = ()=> {
+    navigate('/SignIn')
+}
   useEffect(() => {
     //email
     // const result = USER_REGEX.test(email);
@@ -167,16 +170,7 @@ const Register = () => {
     
             });
 
-    //   const response = await axios.post(
-    //     `http://127.0.0.1:8000/register?username=${user}&email=abc@example.com&password=${pwd}&confirm_password=${matchPwd}`
-    //   );
-    //   console.log(response.data);
-    //   console.log(response.accessToken);
-    //   console.log(JSON.stringify(response));
-    //   setSuccess(true);
-    //   //clear input fields
-
-
+    
     } catch (err) {
       if (!err?.response) {
         setErrMsg("noserver response");
@@ -210,7 +204,7 @@ const Register = () => {
             >
               {errMsg}
             </p>
-            <h1>Register</h1>
+            <h2>Register</h2>
             <form onSubmit={handleSubmit}>
               <label htmlFor="username">
                 Username:
@@ -339,7 +333,7 @@ const Register = () => {
               />
              
               <div className="button">
-                <button
+                <button onClick={handleRegister}
                   disabled={
                     !validName || !validPwd || !validMatch ? true : false
                   }
