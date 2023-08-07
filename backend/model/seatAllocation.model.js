@@ -32,28 +32,85 @@ const SeatAllocationDetailsSchema = Schema(
 
 const SeatAllocation = model("SeatAllocation", SeatAllocationDetailsSchema);
 
-// // Schedule a cron job to run daily to delete documents with past dates
-// cron.schedule("0 0 * * *", async () => {
-//   const currentDate = new Date();
 
-//   // Calculate the future date, 30 days from the current date
-//   const futureDate = new Date();
-//   futureDate.setDate(futureDate.getDate() + 30);
 
-//   // Create a new document with the calculated future date
 
-//   //CALL THE RESTAPI TO FILL ALL THE REQUIRED FIELDS IN SEATALLOC
-//   // const newAllocation = new SeatAllocation({
-//   //   date: futureDate,
-//   // });
+async function updateSeatAllocations() {
+  const currentDate = new Date();
+  const pastDate = new Date(currentDate);
+  pastDate.setDate(currentDate.getDate() - 1); // Adjust as needed
 
-//   // Save the new document
-//   // await newAllocation.save();
+  const day = String(pastDate.getDate()).padStart(2, "0");
+  const month = String(pastDate.getMonth() + 1).padStart(2, "0");
+  const year = pastDate.getFullYear();
 
-//   // Delete documents where the date is less than the current date
-//   await SeatAllocation.deleteMany({ date: { $lt: currentDate } });
+  const formattedPastDate = `${day}-${month}-${year}`;
 
-//   console.log("Expired documents deleted and new document created");
-// });
+  try {
+    const pastSeatAllocations = await SeatAllocation.find();
+
+    for (const allocation of pastSeatAllocations) {
+      const { train_Number, name, unreservedSeats, reservedSeats, date } =
+        allocation;
+
+      const allocationDateComponents = date.split("-");
+      const allocationDate = new Date(
+        allocationDateComponents[2], // year
+        allocationDateComponents[1] - 1, // month (months are 0-indexed in JavaScript)
+        allocationDateComponents[0] // day
+      );
+
+      if (allocationDate < pastDate) {
+        // console.log(`Allocation for Train ${train_Number} (${name}) is in the past with date${allocationDate}.`);
+        await SeatAllocation.deleteOne({ train_Number, name, date });
+        if (unreservedSeats != undefined) {
+          for (const obj of unreservedSeats) {
+            for (const key in obj) {
+              obj[key] = 0;
+            }
+          }
+        }
+
+        if (reservedSeats != undefined) {
+          for (const obj of reservedSeats) {
+            for (const key in obj) {
+              obj[key] = 0;
+            }
+          }
+        }
+
+        const newDate = new Date(currentDate);
+        newDate.setDate(currentDate.getDate() + 30);
+        const day = String(newDate.getDate()).padStart(2, "0");
+        const month = String(newDate.getMonth() + 1).padStart(2, "0");
+        const year = newDate.getFullYear();
+
+        const formattedCurrentDate = `${day}-${month}-${year}`;
+
+        await SeatAllocation.create({
+          train_Number,
+          name,
+          unreservedSeats: unreservedSeats,
+          reservedSeats: reservedSeats,
+          ptrURS: "0",
+          ptrRS: "0",
+          date: formattedCurrentDate,
+        });
+      }
+    }
+
+    return res
+      .status(httpStatusCodes[200].code)
+      .json(formResponse(httpStatusCodes[200].code, "ok"));
+  } catch (error) {
+    console.error("Error updating Seat Allocations:", error);
+  }
+}
+
+// Schedule the cron job
+cron.schedule("0 0 * * *", () => {
+  updateSeatAllocations();
+  console.log("Cron job executed");
+});
 
 module.exports.SeatAllocation = SeatAllocation;
