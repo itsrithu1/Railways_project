@@ -171,7 +171,6 @@ console.log(train)
 
         
 
-        {/* Add other input fields for other train details here */}
         <button type="button" onClick={handleSave}>
           Save
         </button>

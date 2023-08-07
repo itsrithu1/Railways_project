@@ -361,10 +361,12 @@ const BookingPassengerDetails = () => {
 
         {!isFormValid && <p style={{ color: 'red' }}>Please fill in all the required details before proceeding.</p>}
         
+
+        <button  onClick={handleSubmit}>Proceed</button>
+
         <button type="button" onClick={handleAddPassenger}>
           Add Passenger
         </button>
-        <button  onClick={handleSubmit}>Proceed</button>
       </form>
 
       <Modal show={showModal} onHide={handleCloseModal}>
