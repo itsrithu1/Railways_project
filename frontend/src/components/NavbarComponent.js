@@ -72,6 +72,7 @@ function NavbarComponent() {
 
             <Nav.Link href="/LandingPage">Modify Seach</Nav.Link>
 
+            <Nav.Link href="/AboutUs">About Us</Nav.Link>
  
 
             {/* <Nav.Link href="#link">Destinations</Nav.Link> */}
