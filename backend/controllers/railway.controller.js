@@ -145,11 +145,11 @@ exports.getFare = async (req,res) => {
 exports.searchTrainUserNew = async (req, res) => {
   // const { source, destination, date } = req.body;
 
-  // const source=req.query.source;
-  // const destination=req.query.destination;
-  // const date=req.query.date;
+  const source=req.query.source;
+  const destination=req.query.destination;
+  const date=req.query.date;
 
-  const {source,destination, date} = req.body
+  // const {source,destination, date} = req.body
   const inputStation = [source, destination];
   console.log(inputStation);
 
@@ -193,6 +193,7 @@ var source_ptr=0,destination_ptr=0,i=0,j=0;
         train_Number: train.train_Number,
         date
       });
+      // console.log("this is the train : ",findTrainWithSeats[0].seatsAvailable)
 
       if(!findTrainWithSeats){
         return res.status(httpStatusCodes[204].code).json(
@@ -237,19 +238,21 @@ console.log(distanceArray[source_ptr]);
 console.log(distanceArray[destination_ptr]);
 
 
-      let reserverdSeatsPerCoach =Math.floor( 0.1 * train.numberOfSeatsPerCoach)
-      let totalReservedSeats = reserverdSeatsPerCoach* train.numberOfCoach
+      // let reserverdSeatsPerCoach =Math.floor( 0.1 * train.numberOfSeatsPerCoach)
+      // let totalReservedSeats = reserverdSeatsPerCoach* train.numberOfCoach
 
-      let totalUnreservedSeats = (train.numberOfCoach*train.numberOfSeatsPerCoach)-totalReservedSeats
+      // let totalUnreservedSeats = (train.numberOfCoach*train.numberOfSeatsPerCoach)-totalReservedSeats
 
-      let totalSeatsAvailable = totalReservedSeats - findTrainWithSeats[0].ptrRS +totalUnreservedSeats - findTrainWithSeats[0].ptrURS 
+      // let totalSeatsAvailable = totalReservedSeats - findTrainWithSeats[0].ptrRS +totalUnreservedSeats - findTrainWithSeats[0].ptrURS 
       
+
+
 
       return {
         train_Number: train.train_Number,
         name : train.name,
         fare:train.fare,
-        totalSeatsAvailable: totalSeatsAvailable,
+        totalSeatsAvailable: findTrainWithSeats[0].seatsAvailable,
 
       };
     });

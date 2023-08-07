@@ -24,6 +24,9 @@ const SeatAllocationDetailsSchema = Schema(
     date: {
       type: String,
     },
+    seatsAvailable :{
+      type:Number
+    }
   },
   {
     timestamps: true,
@@ -79,6 +82,8 @@ async function updateSeatAllocations() {
           }
         }
 
+        const totalSeatsAvailable =  unreservedSeat.length +reservedSeat.length
+
         const newDate = new Date(currentDate);
         newDate.setDate(currentDate.getDate() + 30);
         const day = String(newDate.getDate()).padStart(2, "0");
@@ -95,6 +100,7 @@ async function updateSeatAllocations() {
           ptrURS: "0",
           ptrRS: "0",
           date: formattedCurrentDate,
+          seatsAvailable:totalSeatsAvailable,
         });
       }
     }

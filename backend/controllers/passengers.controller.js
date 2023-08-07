@@ -111,6 +111,9 @@ exports.addPassenger = async (req, res) => {
             [`reservedSeats.${seatnum}`]: 1,
             ptrRS: ptrRS
           },
+          $inc: {
+            seatsAvailable: -1
+          }
           
           };
           // By setting { new: true }, you will get the updated document as a result

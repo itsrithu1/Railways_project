@@ -433,21 +433,7 @@ exports.createTrainNew = async (req, res) => {
     } = req.body;
   
     const Tnumber = parseInt(train_Number,2) 
-  
-    console.log(
-      {Tnumber,
-      name,
-      Stations,
-      numberOfCoach,
-      numberOfSeatsPerCoach,
-      Distance,
-      fare});
-  
-  
-    // const numberOfCoach = parseInt(numberOfCoach,2) 
-    // const numberOfSeatsPerCoach = parseInt(numberOfSeatsPerCoach,2) 
-    console.log(Stations);
-    console.log(Distance);
+
     
   
     try {
@@ -490,8 +476,10 @@ exports.createTrainNew = async (req, res) => {
   
       await newTrain.save();
   
+
       try {
       
+const totalSeats = numberOfCoach*numberOfSeatsPerCoach
       const args = [numberOfCoach,numberOfSeatsPerCoach]
       var reservedArray = []
       var unreservedArray = []
@@ -551,6 +539,7 @@ exports.createTrainNew = async (req, res) => {
             ptrURS:0,
             ptrRS:0,
             date:formattedDate,
+            seatsAvailable:totalSeats
           });
   
           await newSeatAllocation.save();
