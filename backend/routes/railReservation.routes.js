@@ -8,7 +8,7 @@ const railwayRouter=Router();
 railwayRouter.get('/api/v1/user/searchTrain',searchTrainUser)
 railwayRouter.get('/api/v1/user/displayTrains',displayTrains)
 railwayRouter.get('/api/v1/user/getfare',getFare)
-railwayRouter.post('/api/v1/user/searchTrainNew',searchTrainUserNew)
+railwayRouter.get('/api/v1/user/searchTrainNew',searchTrainUserNew)
 
 
 module.exports=railwayRouter

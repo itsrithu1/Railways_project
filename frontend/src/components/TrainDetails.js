@@ -19,23 +19,12 @@ import Footer from '../components/Footer';
  
 
 const DisplayTrains = () => {
-
- 
-
   const location =useLocation()
-
- 
-
   const navigate = useNavigate();
-
- 
-
   const [selectedTrainNumber, setSelectedTrainNumber] = useState(null);
 
   const [showMessage, setShowMessage] = useState(false);
-
   const handleRadioChange = (event) => {
-
     setSelectedTrainNumber(event.target.value);
 
   };
@@ -86,112 +75,41 @@ const DisplayTrains = () => {
 
   const displayTrainDetails = ()=>{
 
- 
-
     try {
-
-           
-
-      fetch(`http://localhost:3001/api/v1/user/searchTrain?source=${source}&destination=${destination}&date=${date}`, {
-
+      fetch(`http://localhost:3001/api/v1/user/searchTrainNew?source=${source}&destination=${destination}&date=${date}`, {
     method: "GET",
-
     crossDomain: true,
-
     headers: {
-
       "Content-Type": "application/json",
-
       Accept: "application/json",
-
       "Accesss-Control-Allow-Origin": "*",
-
     },
 
   })
 
     .then((res) => res.json())
-
     .then((data) => {
-
       console.log("recieved data is", data.data)
-
-     
-
- 
-
       if (data.flag=="OK") {
-
-           
-
         setTrainData(data.data)
-
             } else {
-
               // alert("No Trains Found")
-
-             
-
-          }
-
- 
-
+            }
       });
-
- 
-
- 
-
- 
-
   } catch (err) {
-
     console.error("Error:", err);
-
-   
-
   }
-
- 
-
- 
-
- 
-
- 
-
- 
-
     // console.log(source,destination,date)
-
   }
 
   useEffect(() => {
 
     const queryParams= new URLSearchParams(location.search);
-
     setSource( queryParams.get("source"))
-
     setDestination( queryParams.get("destination"))
-
- 
-
-   
-
     const parts = queryParams.get("date").split("-");
-
     const formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
-
-   
-
- 
-
     setDate(formattedDate)
-
- 
-
- 
-
     displayTrainDetails();
 
   }, [date]);
