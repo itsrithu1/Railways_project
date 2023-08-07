@@ -31,14 +31,15 @@
   /* Styling for the "Book Now" button */
   button[type="submit"] {
     padding: 10px;
-    background-color: #007bff;
+    background-color: #218838;
     color: #fff;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    opacity: 100%;
   }
   
   button[type="submit"]:hover {
-    background-color: #0056b3;
+    background-color: #218838;
   }
   
