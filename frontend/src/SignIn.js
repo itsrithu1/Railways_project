@@ -1,112 +1,129 @@
 //sign in
-import { useRef, useState, useEffect, useContext } from "react"
+import { useRef, useState, useEffect, useContext } from "react";
 import AuthContext from "./context/AuthProvider";
 import axios from "./api/axios";
 import { NavLink, useNavigate } from "react-router-dom";
 
-const LOGIN_URL = './auth'
+const LOGIN_URL = "./auth";
 const Login = () => {
-    const { setAuth } = useContext(AuthContext);
-    const navigate = useNavigate();
+  const { setAuth } = useContext(AuthContext);
+  const navigate = useNavigate();
 
-    const userRef = useRef();// user input
-    const errRef = useRef();//error
+  const userRef = useRef(); // user input
+  const errRef = useRef(); //error
 
-    const [user, setUser] = useState('');  //input
+  const [user, setUser] = useState(""); //input
 
-    const [pwd, setPwd] = useState(''); //password
+  const [pwd, setPwd] = useState(""); //password
 
-    const [errMsg, setErrMsg] = useState(''); //error
-    const [success, setSuccess] = useState(false); //can remove later to route to diff page
+  const [errMsg, setErrMsg] = useState(""); //error
+  const [success, setSuccess] = useState(false); //can remove later to route to diff page
 
-    useEffect(() => {  //nothing in dependency
-        userRef.current.focus();
-    }, [])
+  useEffect(() => {
+    //nothing in dependency
+    userRef.current.focus();
+  }, []);
 
-    useEffect(() => {
-        setErrMsg('');
-    }, [user, pwd])
+  useEffect(() => {
+    setErrMsg("");
+  }, [user, pwd]);
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-    
-        try {
-            
-            fetch("http://localhost:3001/api/v1/user/login", {
-          method: "POST",
-          crossDomain: true,
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-            "Accesss-Control-Allow-Origin": "*",
-          },
-          body: JSON.stringify({
-            user,
-             pwd
-          }),
-        })
-          .then((res) => res.json())
-          .then((data) => {
-            console.log("recieved data is",data)
-            
-    
-            if (data.flag=="OK") {
-                    setUser("");
-                    setPwd("");
-                    setSuccess(true);
-                  } else {
-                    // Handle unsuccessful login response here
-                    if (data.status_code === 400) {
-                      setErrMsg("not a valid email");
-                    } else if (data.status_code === 401) {
-                      setErrMsg("unauthorized");
-                    } else {
-                      setErrMsg("login failed");
-                    }
-                }
-    
-            });
-    
-    
-     
-        } catch (err) {
-          console.error("Error:", err);
-          setErrMsg("An error occurred during login");
-          errRef.current.focus();
-        }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
+    try {
+      fetch("http://localhost:3001/api/v1/user/login", {
+        method: "POST",
+        crossDomain: true,
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          "Accesss-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify({
+          user,
+          pwd,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log("recieved data is", data);
+
+          if (data.flag == "OK") {
+            setUser("");
+            setPwd("");
+            setSuccess(true);
+            navigate("/LandingPage");
+          } else {
+            // Handle unsuccessful login response here
+            if (data.status_code === 400) {
+              setErrMsg("not a valid email");
+            } else if (data.status_code === 401) {
+              setErrMsg("unauthorized");
+            } else {
+              setErrMsg("login failed");
+            }
+          }
+        });
+    } catch (err) {
+      console.error("Error:", err);
+      setErrMsg("An error occurred during login");
+      errRef.current.focus();
     }
+  };
 
-    const handleSignIn = ()=> {
-        navigate('/LandingPage')
-    }
-    return (
-        <>
-            {success ? (
-                <section>
-                    
-                    <p>
-                        <NavLink to="/LandingPage"></NavLink>
-                    </p>
-                </section>
-            ) : (
+  return (
+    <>
+      {success ? (
+        <section>
+          <p>
+            <NavLink to="/LandingPage"></NavLink>
+          </p>
+        </section>
+      ) : (
+        <div className="div">
+          <section>
+            <p
+              ref={errRef}
+              className={errMsg ? "errmsg" : "offscreen"}
+              aria-live="assertive"
+            >
+              {errMsg}
+            </p>{" "}
+            {/*assertive allows ro reach msg immediately*/}
+            <h1>Sign In</h1>
+            <form onSubmit={handleSubmit}>
+              <label htmlFor="username">Username:</label>
+              <input
+                type="text"
+                id="username"
+                ref={userRef}
+                autoComplete="off"
+                onChange={(e) => setUser(e.target.value)}
+                value={user}
+                required
+              />
+              <br />
+              <label htmlFor="password">Password:</label>
+              <input
+                type="password"
+                id="password"
+                autoComplete="off"
+                onChange={(e) => setPwd(e.target.value)}
+                value={pwd}
+                required
+              />
+              <br />
 
-<div className="div">
-                <section >
-                    <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p> {/*assertive allows ro reach msg immediately*/}
-                    <h1>Sign In</h1>
-                    <form onSubmit={handleSubmit}>
-                        <label htmlFor="username">Username:</label>
-                        <input type="text" id="username" ref={userRef} autoComplete="off" onChange={(e) => setUser(e.target.value)} value={user} required />
-                        <br />
-                        <label htmlFor="password">Password:</label>
-                        <input type="password" id="password" autoComplete="off" onChange={(e) => setPwd(e.target.value)} value={pwd} required />
-                        <br />
+              <button
+                className="button"
+                type="submit"
+                // onClick={handleSignIn}
+              >
+                Sign In
+              </button>
 
-
-                        <button className="button" onClick={handleSignIn}>Sign In</button>
-
-                        {/* <div className="button">
+              {/* <div className="button">
                                 <button >
                                     <div class="svg-wrapper-1">
                                         <div class="svg-wrapper">
@@ -119,26 +136,24 @@ const Login = () => {
                                     <p>Sign In</p>
                                 </button>
                             </div> */}
-                    </form >
-                    <p>
-                        Need an Account?<br />
-                        <span className="line">
-                            {/*put router link here */}
-                            {/* <a href="src\Register.js">Sign Up</a> */}
-                            <NavLink to="/Register">Sign Up</NavLink>
-                        </span>
-                    </p>
-                </section>
-                </div>
-             ) 
-                        }
-        </>
-    )
-}
+            </form>
+            <p>
+              Need an Account?
+              <br />
+              <span className="line">
+                {/*put router link here */}
+                {/* <a href="src\Register.js">Sign Up</a> */}
+                <NavLink to="/Register">Sign Up</NavLink>
+              </span>
+            </p>
+          </section>
+        </div>
+      )}
+    </>
+  );
+};
 
 export default Login;
-
-
 
 // // import { useRef, useState, useEffect, useContext } from "react";
 // // import AuthContext from "./context/AuthProvider";
@@ -243,7 +258,6 @@ export default Login;
 
 // // export default Login;
 
-
 // import React, { useState } from 'react'
 // import Form from 'react-bootstrap/Form'
 // import Button from 'react-bootstrap/Button'
@@ -267,7 +281,6 @@ export default Login;
 
 //     const getdata = (e) => {
 //         // console.log(e.target.value);
-
 
 //         const { value, name } = e.target;
 //         // console.log(value,name);
@@ -301,7 +314,6 @@ export default Login;
 //         data.append("password", inpval.password);
 //         console.log(data);
 
-
 //         fetch("http://127.0.0.1:8000/login", data, {
 //             headers: {
 //                 "Content-Type": "application/json",
@@ -316,7 +328,7 @@ export default Login;
 
 //             .then((res) => {
 //                 console.log(res.data);
-            
+
 //                 if (email === "") {
 //                     toast.error('email field is requred', {
 //                         position: "top-center",

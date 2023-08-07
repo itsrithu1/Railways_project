@@ -435,7 +435,7 @@ const AdminHomePage = () => {
 
 
         <div>
-        <label htmlFor="trainNumber">Enter Train Number:</label>
+        <label htmlFor="trainNumber" style={{color:"black"}}>Enter Train Number:</label>
         <input
           type="text"
           id="trainNumber"
