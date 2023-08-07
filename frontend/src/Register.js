@@ -67,9 +67,7 @@ const Register = () => {
     setValidNo(result);
   }, [number]);
 
-  const handleRegister = ()=> {
-    navigate('/SignIn')
-}
+  
   useEffect(() => {
     //email
     // const result = USER_REGEX.test(email);
@@ -157,6 +155,7 @@ const Register = () => {
                     setEmail("")
                     setNo("")
                     setSuccess(true);
+                    navigate('/SignIn')
                   } else {
                     // Handle unsuccessful login response here
                     if (data.status_code === 202) {
@@ -333,7 +332,7 @@ const Register = () => {
               />
              
               <div className="button">
-                <button onClick={handleRegister}
+                <button 
                   disabled={
                     !validName || !validPwd || !validMatch ? true : false
                   }
