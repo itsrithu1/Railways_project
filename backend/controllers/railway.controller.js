@@ -103,3 +103,34 @@ exports.displayTrains = async (req, res) => {
 
 
 };
+
+
+exports.getFare = async (req,res) => {
+  const trainNumber = req.query.train_Number;
+  console.log(trainNumber);
+
+
+  try {
+    const foundTrain = await Train.find({train_Number: trainNumber});
+
+    if (!foundTrain || foundTrain.length === 0) {
+      return res
+        .status(httpStatusCodes[404].code)
+        .json(formResponse(httpStatusCodes[404].code, "Train not found"));
+    }
+
+    console.log(foundTrain[0].fare)
+
+    
+    return res
+      .status(httpStatusCodes[200].code)
+      .json(formResponse(httpStatusCodes[200].code, foundTrain[0].fare));
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(httpStatusCodes[500].code)
+      .json(formResponse(httpStatusCodes[500].code, error));
+  }
+
+
+}
