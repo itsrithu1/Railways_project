@@ -65,6 +65,7 @@ const BookingPassengerDetails = () => {
   
 
   const [trainNumber,setTrainNumber]=useState(null)
+  const [date,setdate]=useState(null)
   const [name, setName] = useState('First Class')
 
   function loadScript(src) {
@@ -86,11 +87,15 @@ const BookingPassengerDetails = () => {
 
   
   const [isFormValid, setIsFormValid] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setIsFormValid(true);
       setShowModal(true);
+
+      getFarePrice();
     // const hasEmptyFields = passengers.some((passenger) =>
     //   Object.values(passenger).some((value) => value === null || value === '')
     // );
@@ -206,7 +211,7 @@ const BookingPassengerDetails = () => {
 	}
 
 
-    getFarePrice();
+    // 
 
 
     // const hasEmptyFields = passengers.some((passenger) =>
@@ -217,16 +222,11 @@ const BookingPassengerDetails = () => {
     //   setIsFormValid(false);
     // } else {
     //   setIsFormValid(true);
-      setShowModal(true);
+      // setShowModal(true);
     // }
-  };
+  
 
-  const handleInputChange = (index, e) => {
-    // ... (existing handleChange logic)
-
-    // When a field is updated, we mark the form as valid
-    // setIsFormValid(true);
-  };
+  
     
   
 
@@ -299,7 +299,6 @@ const BookingPassengerDetails = () => {
   // }
  
 
-  const [showModal, setShowModal] = useState(false);
 
  
 
@@ -362,7 +361,7 @@ const BookingPassengerDetails = () => {
   return (
     <>
       <NavbarComponent />
-      <form onSubmit={handleSubmit}>
+      <form >
         <table className="table table-bordered">
           <thead>
             <tr>
