@@ -6,8 +6,8 @@
     margin: 0 auto;
   }
    */
-  /* Styling for form inputs */
-  /* label {
+/* Styling for form inputs */
+/* label {
     margin-bottom: 5px;
   }
   
@@ -23,22 +23,41 @@
     border-radius: 5px;
   }
    */
-  /* Styling for radio buttons */
-  /* input[type="radio"] {
+/* Styling for radio buttons */
+/* input[type="radio"] {
     margin-right: 7px;
   }
    */
-  /* Styling for the "Book Now" button */
-  button[type="submit"] {
-    padding: 10px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  button[type="submit"]:hover {
-    background-color: #0056b3;
-  }
-  
+/* Styling for the "Book Now" button */
+button[type="submit"] {
+  padding: 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button[type="submit"]:hover {
+  background-color: #0056b3;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button {
+  width: 200px;
+}
+
+.input {
+  margin: 5px;
+  padding: 5px;
+}
+
+label {
+  width: 150px;
+  margin: 5px;
+}
+
+input {
+  width: 200px;
+}
