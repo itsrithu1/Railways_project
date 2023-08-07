@@ -7,7 +7,9 @@ import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Navigate ,useLocation} from 'react-router-dom';
 import { PDFViewer, Document, Page, Text, View, StyleSheet, PDFDownloadLink } from '@react-pdf/renderer';
+const shortid = require('shortid')
 // import { useHistory } from 'react-router-dom';
+
 
 
 const BookingPassengerDetails = () => {
@@ -26,8 +28,11 @@ const BookingPassengerDetails = () => {
       foodPreferences: 'no',
     },
   ]);
-  const [paymentSuccess, setPaymentSuccess] = useState(false);
+  // const [ticket_id, setticket_id] = useState();
 
+  const [trainNumber,setTrainNumber]=useState(null)
+  const [date,setdate]=useState(null)
+  const [name, setName] = useState('First Class')
 
   const handleChange = (index, e) => {
     const { name, value } = e.target;
@@ -64,9 +69,7 @@ const BookingPassengerDetails = () => {
   };
   
 
-  const [trainNumber,setTrainNumber]=useState(null)
-  const [date,setdate]=useState(null)
-  const [name, setName] = useState('First Class')
+  
 
   function loadScript(src) {
     return new Promise((resolve) => {
@@ -108,6 +111,8 @@ const BookingPassengerDetails = () => {
     // }
   };
 
+
+
   const handleInputChange = (index, e) => {
     // ... (existing handleChange logic)
 
@@ -126,15 +131,15 @@ const BookingPassengerDetails = () => {
   const printinconsole = () => {
     console.log({passengers})
   }
+
+ 
   
 
   const handleConfirm = () => {
-    // e.preventDefault();
-
+    
     console.log("Im in handleConfirm");
     console.log(passengers);
 
-    // e.preventDefault();
     
         try {
             
@@ -156,6 +161,9 @@ const BookingPassengerDetails = () => {
             if(data.flag=="OK"){
               alert("Seat Booked Successfully")
             }
+            if(data.flag == "Not created"){
+              alert("No Seats Available")
+            }
     
             });
     
@@ -165,6 +173,8 @@ const BookingPassengerDetails = () => {
           console.error("Error:", err);
           
         }
+
+        // Navigate('/successBooking');
 
 
   };
@@ -193,20 +203,25 @@ const BookingPassengerDetails = () => {
 			description: 'Thank you for using our service',
 			image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/%D0%9F%D0%BE%D0%B5%D0%B7%D0%B4_%D0%BD%D0%B0_%D1%84%D0%BE%D0%BD%D0%B5_%D0%B3%D0%BE%D1%80%D1%8B_%D0%A8%D0%B0%D1%82%D1%80%D0%B8%D1%89%D0%B5._%D0%92%D0%BE%D1%80%D0%BE%D0%BD%D0%B5%D0%B6%D1%81%D0%BA%D0%B0%D1%8F_%D0%BE%D0%B1%D0%BB%D0%B0%D1%81%D1%82%D1%8C.jpg/1200px-%D0%9F%D0%BE%D0%B5%D0%B7%D0%B4_%D0%BD%D0%B0_%D1%84%D0%BE%D0%BD%D0%B5_%D0%B3%D0%BE%D1%80%D1%8B_%D0%A8%D0%B0%D1%82%D1%80%D0%B8%D1%89%D0%B5._%D0%92%D0%BE%D1%80%D0%BE%D0%BD%D0%B5%D0%B6%D1%81%D0%BA%D0%B0%D1%8F_%D0%BE%D0%B1%D0%BB%D0%B0%D1%81%D1%82%D1%8C.jpg',
 			// callback_url: `http://localhost:3000/SuccessBooking?passengers=${passengersData}&train_Number=${trainNumber}`,
-			prefill: {
+			handler: function(response){
+        // console.log("This is added after successful payment");
+        handleConfirm();
+      },
+      prefill: {
 				name,
 				email: 'sdfdsjfh2@ndsfdf.com',
 				phone_number: '9899999999'
-			}
+			},
+      
 		}
 		const paymentObject = new window.Razorpay(options)
     
 
 		const result = paymentObject.open()
 
-    console.log("Payment Finish");
+    console.log("Payment started");
     console.log(result);
-    handleConfirm();
+    // handleConfirm();
    
 	}
 
@@ -280,12 +295,10 @@ const BookingPassengerDetails = () => {
 
   
   useEffect(() => {
-    const queryParams= new URLSearchParams(location.search);
-    setTrainNumber( queryParams.get("train_Number"))
-    setdate( queryParams.get("date"))
-
-    
-  }, []);
+    const queryParams = new URLSearchParams(location.search);
+    setTrainNumber(queryParams.get("train_Number"));
+    setdate(queryParams.get("date"));
+  }, [location]);
 
  
 
@@ -548,7 +561,7 @@ const BookingPassengerDetails = () => {
 
           </Button>
 
-          <Button variant="success" onClick={displayRazorpay}>
+          <Button variant="success" onClick={handleConfirm}>
 
             Pay Now
 

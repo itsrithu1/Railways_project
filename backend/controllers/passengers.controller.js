@@ -24,12 +24,24 @@ function calculateAge(dateOfBirth) {
 }
 
 exports.addPassenger = async (req, res) => {
+
+  console.log(req.body);
   const { passengers } = req.body;
   var i = 0;
   var name, gender, dob, phoneNo, insurance, food, seatnum, ptrRS, ptrURS;
 
   const train_Number = req.query.train_Number;
   const date = req.query.date;
+
+  var seatsAvailable = 1;
+  var PassengerLength = passengers.length;  
+
+  if(PassengerLength > seatsAvailable)
+  {
+    return res.status(httpStatusCodes[202].code).json(
+      formResponse(httpStatusCodes[202].code, "No Seats Available")
+    );
+  }
 
 
   const maxTicket_id = await Passenger.aggregate([

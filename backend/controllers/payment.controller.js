@@ -22,7 +22,7 @@ const razorpay = new Razorpay({
 exports.paymentuser = async (req, res) => {
 
     const payment_capture = 1
-	const amount = 499
+	const amount = 2
 	const currency = 'INR'
 
 	const options = {

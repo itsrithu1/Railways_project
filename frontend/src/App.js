@@ -16,7 +16,9 @@ import LandingPage from './components/LandingPage';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import AdminSearchTrain from './components/AdminSearchTrain';
 
+
 import AboutUs from './components/AboutUs'; // Import the AboutUs component
+import SuccessBooking from './components/SuccessBooking';
 
 // import NavbarAdminComponent from './components/NavbarAdmin'
 // import NavbarComponent from './components/NavbarComponent';
@@ -35,6 +37,7 @@ function App() {
           <Route path='/AdminAddTrains' element={<AdminAddTrains />} />
           <Route path='/AdminSearchTrain' element={<AdminSearchTrain/>}/>
           <Route path='/aboutus' element={<AboutUs />} /> 
+          <Route path='/successBooking' element={<SuccessBooking />} /> 
 
         </Routes>
       </BrowserRouter>
