@@ -39,7 +39,7 @@ const LandingPage = () => {
       Swal.fire({
         toast: true,
         icon: 'error',
-        title: "Please Enter Valid Date",
+        title: "Please select a date within 30 days from now!",
         position: 'top',
         showConfirmButton: false,
         confirmButtonColor: '#FF4433',
@@ -66,12 +66,14 @@ const LandingPage = () => {
     <NavbarComponent/>
     <div className='page-container'>
       <div className='card-container'>
-        <Card>
+        <Card className='custom-card'>
           <Card.Body>
             <Card.Title>Travel Information</Card.Title>
             <Form>
-              <Form.Group>
-                <Form.Label>Source Place</Form.Label>
+            <div className="form-row">
+              <Form.Group className="inline-form-group">
+                <Form.Label>Source</Form.Label>
+                <div className="inline-input">
                 <Form.Control
                   id='source'
                   as='select'
@@ -79,17 +81,23 @@ const LandingPage = () => {
                   value={source}
                   onChange={handleSourceChange}
                 >
-                  <option value=''>Select Source</option>
+                  <option value=''>Select</option>
                   {places.map((place, index) => (
                     <option key={index} value={place}>
                       {place}
                     </option>
                   ))}
                 </Form.Control>
+                </div>
               </Form.Group>
+              </div>
+              
 
-              <Form.Group>
+              
+              <div className="form-row">
+              <Form.Group className="inline-form-group">
                 <Form.Label>Destination Place</Form.Label>
+                <div className="inline-input">
                 <Form.Control
                   id='destination'
                   as='select'
@@ -104,10 +112,14 @@ const LandingPage = () => {
                     </option>
                   ))}
                 </Form.Control>
+                </div>
               </Form.Group>
+              </div>
 
-              <Form.Group>
+              <div className="form-row">
+              <Form.Group className="inline-form-group">
                 <Form.Label>Enter Date of Travel</Form.Label>
+                <div className="inline-input">
                 <Form.Control
                   id='date'
                   type='date'
@@ -116,7 +128,9 @@ const LandingPage = () => {
                   onChange={handleDateChange}
                   required
                 />
+                </div>
               </Form.Group>
+              </div>
 
               {/* <Form.Group>
                 <Form.Label>Are you a Senior Citizen</Form.Label>
