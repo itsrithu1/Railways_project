@@ -614,6 +614,7 @@ const [showPDFLink, setshowPDFLink] = useState(false);
           </Button>
 
           <Button variant="success" onClick={displayRazorpay}>
+
             Pay Now
           </Button>
           {showPDFLink && (
