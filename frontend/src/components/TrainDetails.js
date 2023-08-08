@@ -233,7 +233,7 @@ const DisplayTrains = () => {
 
     if (selectedTrainNumber) {
       navigate(
-        `/bookingPassengerDetails?train_Number=${selectedTrainNumber}&date=${date}`
+        `/bookingPassengerDetails?train_Number=${selectedTrainNumber}&date=${date}&source=${source}&destination=${destination}`
       );
     } else {
       setShowMessage(true);

@@ -43,3 +43,221 @@
     background-color: #218838;
   }
   
+  .table-custom-width {
+    width: 80%;
+    margin: auto;
+    /* border-collapse: separate; */
+    border-spacing: 0 10px;
+    
+   
+  }
+  .table-custom-width th{
+    background-color: #ffffff;
+    
+  }
+
+ 
+  .table-custom-width tr{
+    padding: 10px;
+  text-align: center;
+  border-radius: 20px;
+ 
+
+  }
+  .addpass-button {
+    border-radius: 5px;
+    padding: 10px 20px; 
+    width: auto; /* Allow the button to expand to fit its content */
+    padding: 10px 12px; /* Adjust padding as needed */
+    margin: auto;
+    white-space: nowrap;
+    text-align: center;
+    display: inline-block; /* Make sure the button behaves as an inline element */
+  }
+
+
+  .cardbpd{
+
+    display: flex;
+
+    justify-content: space-between;
+
+    min-height: 200px;
+
+    width: 75%;
+
+    /* background: #b8aae7; */
+
+    /* margin: auto; */
+
+    margin-top: 20px;
+
+}
+
+ 
+
+.name-bpd{
+
+    text-align: left;
+
+    margin-left: 10px;
+
+}
+
+ 
+
+.tnum-bpd{
+
+    text-align: left;
+
+    margin-left: 10px;
+
+    opacity: 70%;
+
+}
+
+ 
+
+.tdetails-bpd{
+
+    width: 600px;
+
+    /* height: 100px; */
+
+    /* background-color: blue; */
+
+    margin-left: 50px;
+
+ 
+
+}
+
+ 
+
+.ttimebpd{
+
+    display: flex;
+
+    justify-content: space-between;
+
+    width: 700px;
+
+    /* height: 100px; */
+
+    /* background-color: yellow; */
+
+    margin-right: 50px;
+
+   
+
+}
+
+ 
+
+.linebpd{
+
+    min-width: 100px;
+
+    margin-top: 15px;
+
+    align-self: top;
+
+    border-top: 2px solid #000000;
+
+    margin-left: 20;
+
+    margin-right: 20;
+
+    opacity: 40%;
+
+}
+
+ 
+
+.stationbpd{
+
+    display: flex;
+
+    justify-content: space-between;
+
+    margin-right: 50px;
+
+    opacity: 80%;
+
+}
+
+ 
+
+ 
+
+.paymentbpd{
+
+    width: 300px;
+
+    min-height: 250px;
+
+    background-color: rgb(242, 241, 247);
+
+    border: 5px #000000;
+
+    border-radius: 10px;
+
+    position: fixed;
+
+    top: 20px;
+
+    left: 800px;
+
+   
+
+    margin: 50px;
+
+ 
+
+}
+
+ 
+
+ 
+
+.outsidebpd{
+
+    display: flex;
+
+    position: relative;
+
+}
+
+ 
+
+.paybpd{
+
+    width: 200px;
+
+    border-radius: 5px;
+
+    margin: auto;
+
+    margin-top: 30px;
+
+}
+
+ 
+
+.paynowbpd{
+
+    margin: auto;
+
+}
+
+ 
+
+.detailsbpd{
+
+    display: flex;
+
+    justify-content: space-between;
+
+    margin: 30px;
+
+}

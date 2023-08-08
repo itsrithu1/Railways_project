@@ -188,29 +188,51 @@ const EditPopup = ({
           <button
             type="button"
             onClick={handleSave}
+            className="opaque-button"
             style={{
-              marginRight: "220px",
+              backgroundColor: "#007bff",
+              color: "white",
               borderRadius: "5px",
               padding: "5px 10px",
+              marginRight: "10px",
+              cursor: "pointer",
             }}
+            //style={{
+            //  marginRight: "220px",
+            //  borderRadius: "5px",
+            //  padding: "5px 10px",
+            //}}
           >
             Save
           </button>
           <Button
             variant="danger"
             onClick={handleDelete}
-            style={{ padding: "5px 10px" }}
+            className="opaque-button"
+            style={{
+              padding: "5px 10px",
+              cursor: "pointer",
+            }}
+            //style={{ padding: "5px 10px" }}
           >
             Delete Train
           </Button>
           <button
             type="button"
             onClick={onRequestClose}
+            className="opaque-button"
             style={{
-              marginLeft: "140px",
-              padding: "5px 10px",
+              backgroundColor: "#007bff",
+              color: "white",
               borderRadius: "5px",
+              padding: "5px 10px",
+              cursor: "pointer",
             }}
+            //style={{
+            //  marginLeft: "140px",
+            //  padding: "5px 10px",
+            //  borderRadius: "5px",
+            //}}
           >
             Cancel
           </button>
@@ -358,6 +380,15 @@ const AdminHomePage = () => {
     navigate("/AdminAddTrains");
   };
 
+  const handleMouseEnter = (index) => {
+    setSelectedTrain(index); // Set the selectedTrain state to the index of the hovered row
+  };
+
+  const handleMouseLeave = () => {
+    setSelectedTrain(null); // Reset the selectedTrain state when the mouse leaves the row
+  };
+
+
   const handleSaveEdit = (editedTrain) => {
     // Perform any actions to save the edited details
     // console.log("edited ",editedTrain)
@@ -466,8 +497,8 @@ const AdminHomePage = () => {
         <div className="content-boxx train-details-container">
           {/* <AdminSearchTrain/> */}
 
-          <div>
-            <label htmlFor="trainNumber" style={{ color: "black" }}>
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <label htmlFor="trainNumber" style={{ color: "black", marginRight: "10px"  }}>
               Enter Train Number:
             </label>
             <input
@@ -475,18 +506,19 @@ const AdminHomePage = () => {
               id="trainNumber"
               value={searchtrainNumber}
               onChange={handleTrainNumberChange}
+              style={{ marginRight: "20px" }}
             />
-          </div>
-          <div>
+
             <button
               onClick={handleSearch}
               style={{
-                marginRight: "10px",
                 borderRadius: "5px",
                 padding: "5px 10px",
+                backgroundColor: "#007bff",
+                color: "white",
               }}
             >
-              Submit
+              Search
             </button>
           </div>
           <div>
@@ -505,7 +537,7 @@ const AdminHomePage = () => {
                 <th>Arrival Time</th> */}
                 <th>Number Of Coaches</th>
                 <th>Seats Per Coach</th>
-                <th>Fare</th>
+                <th>Fare per km</th>
                 <th></th>
               </tr>
             </thead>
@@ -513,8 +545,15 @@ const AdminHomePage = () => {
               {trainDetails &&
                 trainDetails.map((train, index) => (
                   <tr
-                    key={index}
-                    onClick={() => displayAllDetails(train.train_Number)}
+                  key={index}
+        className="scrollable-table" 
+        onClick={() => displayAllDetails(train.train_Number)}
+
+                    //key={index}
+                    //onClick={() => displayAllDetails(train.train_Number)}
+                    //onMouseEnter={() => handleMouseEnter(index)}
+                    //onMouseLeave={() => handleMouseLeave(index)}
+                    //className={selectedTrain === index ? "hovered" : ""}
                   >
                     <td>{train.train_Number}</td>
                     <td>{train.name}</td>
