@@ -102,6 +102,7 @@ const DisplayTrains = () => {
         >
           <h2>Train Details</h2>
 
+<<<<<<< HEAD
           <p>
             <b>Source: {source}</b>
           </p>
@@ -124,6 +125,34 @@ const DisplayTrains = () => {
                 <th>Train Name</th>
 
                 <th>Departure Time</th>
+=======
+    
+
+      
+      <div className='train-details-top-container'>
+      <div className='header-item'>
+              <div className='header-label'>Source:</div>
+              <div className='header-value'>{source}</div>
+            </div>
+            <div className='header-item'>
+              <div className='header-label'>Destination:</div>
+              <div className='header-value'>{destination}</div>
+            </div>
+            <div className='header-item'>
+              <div className='header-label'>Date:</div>
+              <div className='header-value'>{date}</div>
+            </div>
+            <Button variant='link' onClick={() => navigate(`/modifyDetails`)}>
+              Modify
+            </Button>
+          </div>
+          
+
+          <div className='page-container'>
+          <div className="content-box train-details-container">
+
+          <h2>Train Details</h2>
+>>>>>>> 383961bbbbe55f83a328023cea11fc4c31fff680
 
                 <th>Arrival Time</th>
 
@@ -181,6 +210,7 @@ const DisplayTrains = () => {
             </Button>
           </div>
 
+<<<<<<< HEAD
           {showMessage && (
             <p style={{ color: "red" }}>Please select a train.</p>
           )}
@@ -188,6 +218,78 @@ const DisplayTrains = () => {
       </div>
 
       <Footer />
+=======
+        </thead>
+
+        <tbody>
+
+ 
+
+          {trainData && trainData.map((train, index) => (
+
+            <tr key={index}
+
+            onClick={(event) => handleRowClick(event, train.train_Number)}>
+
+              <td>
+
+              <Form.Check
+
+                  type="radio"
+
+                  name="TrainBooking"
+
+                  id={`Train${index + 1}`}
+
+                  value={train.train_Number}
+
+                  checked={selectedTrainNumber === train.train_Number}
+
+                  onChange={handleRadioChange}
+                  required
+
+                />
+
+              </td>
+
+              <td>{train.train_Number}</td>
+
+              <td>{train.name}</td>
+
+              <td>{train.departure_time}</td>
+
+              <td>{train.arrival_time}</td>
+
+              <td>{train.fare}</td>
+
+              <td>{train.totalSeatsAvailable}</td>
+
+            </tr>
+
+          ))}
+
+        </tbody>
+
+      </table>
+
+ 
+
+      <Button variant="primary" type="submit" onClick={handleSubmit} >
+
+        Submit
+
+      </Button>
+
+      {showMessage && <p style={{ color: 'red' }}>Please select a train.</p>}
+
+    </div>
+
+    </div>
+  
+
+    <Footer/>
+
+>>>>>>> 383961bbbbe55f83a328023cea11fc4c31fff680
     </>
   );
 };

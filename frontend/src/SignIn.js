@@ -49,12 +49,20 @@ const Login = () => {
         .then((data) => {
           console.log("recieved data is", data);
 
-          if (data.data == "Logged in as User") {
+          if (data.message == "Logged in as User") {
             setUser("");
             setPwd("");
             setSuccess(true);
+            window.localStorage.setItem("token",data.data)
+            // console.log("data :token : ",data.data)
             navigate("/LandingPage");
+<<<<<<< HEAD
           } else if (data.data == "Logged in as Admin") {
+=======
+
+          }else if(data.message =="Logged in as Admin"){
+            window.localStorage.setItem("token",data.data)
+>>>>>>> 383961bbbbe55f83a328023cea11fc4c31fff680
             navigate("/AdminHomePage");
           } else {
             // Handle unsuccessful login response here

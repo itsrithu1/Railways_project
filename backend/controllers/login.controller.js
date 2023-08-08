@@ -9,7 +9,7 @@ const { Passenger } = require("../model/passenger.model");
 
 exports.loginUser = async (req, res) => {
 
-  console.log(req.body)
+  // console.log(req.body)
   const { user, pwd } = req.body;
 
   let username=user
@@ -54,12 +54,12 @@ exports.loginUser = async (req, res) => {
     if(username=="Admin" && password=="@Admin123"){
       return res
       .status(httpStatusCodes[200].code)
-      .json(formResponse(httpStatusCodes[200].code, "Logged in as Admin"));
+      .json({message: "Logged in as Admin",data:token});
     }
 
     return res
       .status(httpStatusCodes[200].code)
-      .json(formResponse(httpStatusCodes[200].code, "Logged in as User"));
+      .json({message: "Logged in as User",data:token} );
   }
   return res
     .status(httpStatusCodes[404].code)
