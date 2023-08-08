@@ -416,19 +416,21 @@ const AdminHomePage = () => {
     console.log(train_Number);
 
     try {
-      const token = localStorage.getItem('token');
-      console.log(token)
+   
       fetch(`http://localhost:3001/api/v1/admin/displayAllTrainDetails`, 
-      {headers: {
-        // "Content-Type": "application/json",
-        // Accept: "application/json",
-        // "Accesss-Control-Allow-Origin": "*",
-        Authorization: `Bearer ${token}`,
-      }},
       {
+        method: "POST",
 
-    method: "POST",
-    crossDomain: true,
+        crossDomain: true,
+
+        headers: {
+          "Content-Type": "application/json",
+
+          Accept: "application/json",
+
+          "Accesss-Control-Allow-Origin": "*",
+        },
+      
     body: JSON.stringify({
       train_Number
     }),
