@@ -9,7 +9,7 @@ import {useNavigate } from "react-router-dom";
 import '../styles/Navbar.css';
 import logo from './Rail_Logo.png';
 import "../styles/Navbar.css";
-import logo from "./Rail_Logo.png";
+
  
 
 function NavbarAdminComponent() {
