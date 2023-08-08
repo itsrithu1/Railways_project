@@ -29,7 +29,17 @@ function NavbarComponent() {
           <Nav className="ml-auto">
            <Nav.Link href="/LandingPage">Modify Search</Nav.Link>
             <Nav.Link href="/AboutUs">About Us</Nav.Link>
+
+            {/* <Nav.Link href="#link">Destinations</Nav.Link> */}
+
+            {/* <Nav.Link href="#link">Features</Nav.Link> */}
+
+ 
+
             <Nav.Link onClick={logOut}>Logout </Nav.Link>
+
+ 
+
           </Nav>
         </Navbar.Collapse>
       </Container>

@@ -475,6 +475,7 @@ const AdminHomePage = () => {
             <p>{searchResult}</p>
           </div>
           <h2>Train Details</h2>
+          <div className="scrollable-table">
           <table>
             <thead>
               <tr>
@@ -522,6 +523,7 @@ const AdminHomePage = () => {
                 ))}
             </tbody>
           </table>
+          </div>
           <button onClick={handleAdd} style={{ borderRadius: "5px" }}>
             Add Train
           </button>

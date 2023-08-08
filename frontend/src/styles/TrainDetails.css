@@ -4,68 +4,122 @@
   /* Existing styles for .train-details-container */
 
   display: flex;
+
   justify-content: center;
+
   align-items: center;
+
   flex-direction: column;
+
   height: 100vh; /* Set the container height to fill the entire viewport */
 
   .train-details-header {
     display: flex;
+
     justify-content: space-between;
+
     align-items: center;
+
     margin-bottom: 20px;
   }
-
 
   /* Other existing styles for the rest of the component */
 }
 
 .train-details-top-container {
   background-color: #f8f9fa; /* Set the background color */
-  padding: 12px 0; /* Add padding to create space around the top line */
+
+  padding: 12px 20px; /* Add padding to create space around the top line */
+
   margin-bottom: 20px;
+
   display: flex;
+
   justify-content: space-between;
+
   align-items: center;
+
+  margin-left: 70px; /* Add left margin */
+
+  margin-right: 70px; /* Add right margin */
+
+  border-radius: 15px;
+
+  /*background-image: url('../components/bg1.jpg');
+
+  background-size: cover;*/
 }
 
 .header-item {
   display: flex;
+
   align-items: center;
+
+  margin: 8px;
+
+  position: relative;
 }
+
+/*.header-item::after {
+
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+
+  bottom: 0;
+
+  left: 100%; /* Position the line to the right of the header item
+
+  width: 1px; /* Set the width of the line
+
+  background-color: #ccc; /* Set the color of the line
+
+}*/
 
 .header-label {
   font-weight: bold;
+
   margin-right: 8px;
 }
 
 .header-value {
   background-color: #f4f4f4;
+
   padding: 6px 10px;
+
   border-radius: 4px;
+
   margin-right: 12px;
 }
 
+.modify-button {
+  background-color: transparent;
+
+  color: #000;
+
+  border: none;
+
+  cursor: pointer;
+
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.modify-button:hover {
+  background-color: green;
+
+  color: white;
+}
 
 /* Enclose content in a box with a white background */
 
- 
-
 .content-box {
-
- 
-
   background-color: white;
-
- 
 
   padding: 20px;
 
- 
-
   border-radius: 10px;
-
- 
 
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
@@ -76,173 +130,68 @@
   height: 75%;
 
   margin: auto;
-
- 
-
 }
-
- 
-
- 
-
- 
 
 /* Center the table */
 
- 
-
 table {
-
- 
-
   margin: 20px 0;
-
- 
 
   /*width: 90%;*/
 
- 
-
   border-collapse: collapse;
 
- 
-
   width: 100%;
-
- 
-
 }
 
- 
-
- 
-
- 
-
-th, td {
-
- color: #000;
+th,
+td {
+  color: #000;
 
   border: 1px solid #ccc;
 
- 
-
   padding: 8px;
 
- 
-
   text-align: center;
-
- 
-
 }
-
- 
-
- 
-
- 
 
 th {
-
- 
-
   background-color: #f2f2f2;
-
- 
-
 }
-
- 
-
- 
-
- 
 
 /* Center the submit button */
 
- 
-
 button {
-
- 
-
   margin-top: 20px;
-
- 
-
 }
-
- 
-
- 
-
- 
 
 /* Add some spacing between radio buttons and text */
 
- 
-
 input[type="radio"] {
-
- 
-
   margin-right: 5px;
-
- 
-
 }
 
- 
-
- 
-
- 
-
 .page-container {
-
- 
-
   display: flex;
-
- 
 
   justify-content: center;
 
- 
-
   align-items: center;
-
- 
 
   height: 100vh; /* Set the container height to fill the entire viewport */
 
- 
-
   background-image: url("../../public/Train1.png");
-
- 
 
   background-repeat: no-repeat;
 
- 
-
   background-position: center;
 
- 
-
   background-size: cover;
-
- 
-
 }
-
- 
 
 /* Darken the radio button circle */
 
 input[type="radio"] {
-
   margin-right: 5px;
 
   appearance: none; /* Remove default appearance */
@@ -256,33 +205,20 @@ input[type="radio"] {
   border-radius: 50%; /* Make it a circle */
 
   background-color: transparent;
-
 }
-
- 
 
 input[type="radio"]:checked {
-
   background-color: #000; /* Darken the circle when selected */
-
 }
-
- 
 
 /* Apply some padding to the table rows for better interaction */
 
 tr {
-
   cursor: pointer;
 
   padding: 10px;
-
 }
 
- 
-
 tr:hover {
-
   background-color: #f2f2f2; /* Change background color on hover */
-
 }
