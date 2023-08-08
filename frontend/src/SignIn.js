@@ -3,6 +3,7 @@ import { useRef, useState, useEffect, useContext } from "react";
 import AuthContext from "./context/AuthProvider";
 import axios from "./api/axios";
 import { NavLink, useNavigate } from "react-router-dom";
+import "./styles/signin.css";
 
 const LOGIN_URL = "./auth";
 const Login = () => {
@@ -79,7 +80,9 @@ const Login = () => {
   };
 
   return (
+    <div className="divbg">
     <>
+    
       {success ? (
         <section>
           <p>
@@ -124,7 +127,7 @@ const Login = () => {
               <button
                 className="button"
                 type="submit"
-                style={{ marginLeft: "120px", width: "70px" }}
+                style={{ marginLeft: "100px", width: "70px", backgroundColor: "white", color:"blue" }}
                 // onClick={handleSignIn}
               >
                 Sign In
@@ -145,18 +148,20 @@ const Login = () => {
                             </div> */}
             </form>
             <p>
+              <br/>
               Need an Account?
               <br />
               <span className="line">
                 {/*put router link here */}
                 {/* <a href="src\Register.js">Sign Up</a> */}
-                <NavLink to="/Register">Sign Up</NavLink>
+                <NavLink to="/Register" style={{ color: 'white' }}> <u>Sign Up</u></NavLink>
               </span>
             </p>
           </section>
         </div>
       )}
     </>
+      </div>
   );
 };
 

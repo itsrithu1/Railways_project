@@ -175,7 +175,9 @@ const Register = () => {
   };
 
   return (
+    
     <>
+    <div className="divbg">
       {success ? (
         <section>
           <h1>Sucess!</h1>
@@ -317,9 +319,11 @@ const Register = () => {
                 onBlur={() => setMatchFocus(false)}
               />
 
+              <br/>
+
               <div className="button">
                 <button
-                  style={{ marginLeft: "100px" }}
+                  style={{ marginLeft: "80px", width: "170px", backgroundColor: "white", color:"blue", borderRadius:"10px" }}
                   disabled={
                     !validName || !validPwd || !validMatch ? true : false
                   }
@@ -347,15 +351,19 @@ const Register = () => {
 
             <p>
               {" "}
+              <br/>
               Already have an account?
               <span>
-                <NavLink to="/SignIn">Sign In</NavLink>
+                <NavLink to="/SignIn" style={{ color: 'white' }}>  <br/><u>Sign In</u>  </NavLink>
               </span>
             </p>
           </section>
         </div>
-      )}
+      )
+      }
+      </div>
     </>
+    
   );
 };
 

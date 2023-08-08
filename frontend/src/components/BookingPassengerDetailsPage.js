@@ -53,6 +53,7 @@ const [showPDFLink, setshowPDFLink] = useState(false);
 
   const handleChange = (index, e) => {
     const { name, value } = e.target;
+    // const newValue = type === 'radio' ? (checked ? value : 'no'): value;
     setPassengers((prevPassengers) => {
       const updatedPassengers = [...prevPassengers];
       updatedPassengers[index] = {
@@ -410,7 +411,7 @@ const [showPDFLink, setshowPDFLink] = useState(false);
                       type="radio"
                       name={`foodPreferences${index}`}
                       value="no"
-                      //checked={passenger.foodPreferences === 'no'}
+                      // checked={passenger.foodPreferences === 'no'}
                       onChange={(e) => handleChange(index, e)}
                     />
                     No
@@ -453,7 +454,7 @@ const [showPDFLink, setshowPDFLink] = useState(false);
 
         <button
           onClick={handleSubmit}
-          style={{ borderRadius: "5px", width: "100px", marginLeft: "450px" }}
+          style={{ borderRadius: "5px", width: "100px", marginLeft: "550px" }}
         >
           Proceed
         </button>
@@ -461,7 +462,7 @@ const [showPDFLink, setshowPDFLink] = useState(false);
         <button
           type="button"
           onClick={handleAddPassenger}
-          style={{ borderRadius: "5px", width: "120px", marginLeft: "440px" }}
+          style={{ borderRadius: "5px", width: "120px", marginLeft: "540px" }}
         >
           Add Passenger
         </button>

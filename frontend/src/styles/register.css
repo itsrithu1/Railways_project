@@ -8,6 +8,27 @@
   border-radius: 5px;
 }
 
+/*body {
+  background-image: url('./signin_bg.jpg');
+  background-size: cover; /* Adjust the background size as needed 
+  background-position: center;
+}
+*/
+
+.divbg {
+  max-width: 400px;
+  margin: 100px auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  background-image: url('./signin_bg.jpg'); /* Add background image */
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: white;
+
+}
+
 h1 {
   text-align: center;
 }
