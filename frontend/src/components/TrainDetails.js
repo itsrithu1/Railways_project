@@ -440,6 +440,7 @@ const DisplayTrains = () => {
       <div className="page-container">
         <div className="content-box train-details-container">
           <h2>Train Details</h2>
+          <div className="scrollable-tablee">
 
           <table>
             <thead>
@@ -496,7 +497,7 @@ const DisplayTrains = () => {
                 ))}
             </tbody>
           </table>
-
+</div>
           <Button variant="primary" type="submit" onClick={handleSubmit}>
             Submit
           </Button>
