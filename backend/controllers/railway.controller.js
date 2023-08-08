@@ -224,8 +224,8 @@ var source_ptr=0,destination_ptr=0,i=0,j=0;
         formResponse(httpStatusCodes[202].code, "No Trains found for this route")
       );
     }
-    console.log("Trains: ");
-console.log(trains);
+//     console.log("Trains: ");
+// console.log(trains);
   
 
     const foundTrainsPromises = trains.map(async (train) => {
@@ -235,7 +235,7 @@ console.log(trains);
         train_Number: train.train_Number,
         date
       });
-      console.log("this is the train : ",findTrainWithSeats[0].seatsAvailable)
+      console.log("Seats Available : ",findTrainWithSeats)
 
       if(!findTrainWithSeats){
         return res.status(httpStatusCodes[204].code).json(
@@ -248,8 +248,8 @@ console.log(trains);
       const trainDataArray = Object.keys(train.Stations);
       const distanceArray = Object.values(train.Distance);
 
-console.log("This is the distance");
-console.log(distanceArray)
+// console.log("This is the distance");
+// console.log(distanceArray)
 
 
 // console.log(source);
@@ -257,13 +257,13 @@ for(i=0;i<trainDataArray.length;i++)
 {
   if(trainDataArray[i] == source)
   {
-    console.log(i);
+    // console.log(i);
     source_ptr =i;
   }
 
   if(trainDataArray[i] == destination)
   {
-    console.log(i);
+    // console.log(i);
     destination_ptr =i;
   }
   
@@ -274,10 +274,10 @@ if (source_ptr>destination_ptr) {
 
 
 
-console.log("Distance");
-console.log(distanceArray);
-console.log(distanceArray[source_ptr]);
-console.log(distanceArray[destination_ptr]);
+// console.log("Distance");
+// console.log(distanceArray);
+// console.log(distanceArray[source_ptr]);
+// console.log(distanceArray[destination_ptr]);
 
 
       // let reserverdSeatsPerCoach =Math.floor( 0.1 * train.numberOfSeatsPerCoach)

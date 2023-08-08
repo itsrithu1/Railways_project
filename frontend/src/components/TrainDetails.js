@@ -109,6 +109,7 @@ const DisplayTrains = () => {
           console.log("recieved data is", data.data)
           if (data.flag == "OK") {
             setTrainData(data.data)
+            console.log(data.data);
           } else {
             // alert("No Trains Found")
           }
@@ -127,11 +128,11 @@ const DisplayTrains = () => {
     const parts = queryParams.get("date").split("-");
     const formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
     setDate(formattedDate)
-    if (!showModify) {
+    // if (!showModify) {
       displayTrainDetails();
-    }
+    // }
 
-  }, [date, showModify, selectedSource, selectedDestination]);
+  }, [date]);
 
 
 
@@ -187,7 +188,7 @@ const DisplayTrains = () => {
               <Form.Control
                 type="date"
                 value={date}
-                onChange={(e) => setDate(e.target.value)}
+                // onChange={(e) => setDate(e.target.value)}
                 readOnly={!showModify} 
               />
             </div>

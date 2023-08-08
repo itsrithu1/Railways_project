@@ -33,8 +33,6 @@ const BookingPassengerDetails = () => {
       dob: "",
       gender: "",
       phone: null,
-      travelInsurance: "no",
-      foodPreferences: "no",
     },
   ]);
 
@@ -73,8 +71,6 @@ const [showPDFLink, setshowPDFLink] = useState(false);
         dob: "",
         gender: "",
         phone: null,
-        travelInsurance: "no",
-        foodPreferences: "no",
       },
     ]);
     setIsFormValid(true);
@@ -299,9 +295,9 @@ const [showPDFLink, setshowPDFLink] = useState(false);
 
               {/* <Text>Email ID: {passenger.email}</Text> */}
 
-              <Text>Travel Insurance: {passenger.travelInsurance}</Text>
+              {/* <Text>Travel Insurance: {passenger.travelInsurance}</Text>
 
-              <Text>Food Preferences: {passenger.foodPreferences}</Text>
+              <Text>Food Preferences: {passenger.foodPreferences}</Text> */}
             </View>
           ))}
         </Page>
@@ -332,8 +328,8 @@ const [showPDFLink, setshowPDFLink] = useState(false);
               <th>Gender</th>
               <th>Phone No</th>
 
-              <th>Travel Insurance</th>
-              <th>Food Preferences</th>
+              {/* <th>Travel Insurance</th>
+              <th>Food Preferences</th> */}
             </tr>
           </thead>
           <tbody>
@@ -385,7 +381,7 @@ const [showPDFLink, setshowPDFLink] = useState(false);
                   />
                 </td>
 
-                <td>
+                {/* <td>
                   <label>
                     <input
                       type="radio"
@@ -439,7 +435,7 @@ const [showPDFLink, setshowPDFLink] = useState(false);
                     />
                     Non-Veg
                   </label>
-                </td>
+                </td> */}
                 <td>
                   <Button
                     variant="danger"
@@ -508,7 +504,7 @@ const [showPDFLink, setshowPDFLink] = useState(false);
             Back
           </Button>
 
-          <Button variant="success" onClick={displayRazorpay}>
+          <Button variant="success" onClick={handleConfirm}>
 
             Pay Now
           </Button>

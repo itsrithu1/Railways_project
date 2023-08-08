@@ -18,18 +18,6 @@ const PassengerDetailsSchema=Schema({
     type:String,
     required:true
   },
-  insurance:{
-    type:Boolean,
-    required:false
-  },
-  food:{
-    type:String,
-    required:false
-  },
-  ticket_id:{
-    type:String,
-    required:true
-  },
   train_Number:{
     type:String,
     required:true
@@ -38,12 +26,6 @@ const PassengerDetailsSchema=Schema({
     type:String,
     required: true
   },
-  insurance:{
-    type:String,
-  },
-  food:{
-    type:String,
-  }
 
 
 },{

@@ -38,8 +38,7 @@ exports.addPassenger = async (req, res) => {
   var PassengerLength = passengers.length;  
   const seats = await SeatAllocation.findOne({ train_Number, date }).exec();
 
-  // sAvailable = seats.seatsAvailable;
-  sAvailable = 1;
+  sAvailable = seats.seatsAvailable;
 
   if(PassengerLength > sAvailable)
   {
@@ -48,19 +47,6 @@ exports.addPassenger = async (req, res) => {
     );
   }
 
-
-  const maxTicket_id = await Passenger.aggregate([
-    {
-      $group: {
-        _id: "$item",
-        maxT: { $max: "$ticket_id" },
-      },
-    },
-  ]);
-  var result = 0;
-  if (maxTicket_id) {
-    result = parseInt(maxTicket_id[0].maxT) + 1;
-  }
 
 
   
@@ -125,7 +111,8 @@ console.log(temp_passengers);
       // // By setting { new: true }, you will get the updated document as a result
       options = { new: true };
 
-      updatedSeatAllocation = await SeatAllocation.findOneAndUpdate(filter, update, options);
+      const updatedSeatAllocation = await SeatAllocation.findOneAndUpdate(filter, update, options);
+      console.log(updatedSeatAllocation);
     }
     if(text === 'unres')
     {
@@ -140,7 +127,8 @@ console.log(temp_passengers);
         // // By setting { new: true }, you will get the updated document as a result
         options = { new: true };
 
-        updatedSeatAllocation = await SeatAllocation.findOneAndUpdate(filter, update, options);
+        const updatedSeatAllocation = await SeatAllocation.findOneAndUpdate(filter, update, options);
+        console.log(updatedSeatAllocation);
     }
     
   }
@@ -155,6 +143,7 @@ console.log(temp_passengers);
             // console.log("id:" + passenger[0] + " age:" + passenger[1] + " seat:" + seat);
             a = passenger
             a[1] = seat
+            seatnum = seat
             passengerSeats.push(a)
             noOfBookedSeats += 1;
             allocated = true;
@@ -186,6 +175,7 @@ if (temp_passengers.length <= totalSeats - noOfBookedSeats) { //there are less p
                   a = passenger
                   a[1] = seat
                   passengerSeats.push(a)
+                  seatnum = seat
                   allocated = true;
                   noOfBookedSeats += 1;
                   sAvailable--;
@@ -278,23 +268,20 @@ console.log(passengerSeats[0][0])
 
         // if(passengerSeats)
 
-    //     try {
-    //       await Passenger .create({
+        try {
+          await Passenger .create({
             
-    //         name,
-    //         gender,
-    //         dob,
-    //         phoneNo,
-    //         insurance,
-    //         food,
-    //         ticket_id:result,
-    //         train_Number,
-    //         seat_Number: seatnum
-    //       });
+            name,
+            gender,
+            dob,
+            phoneNo,
+            train_Number,
+            seat_Number: seatnum
+          });
 
-    //     } catch (error) {
-    //       console.log(error);
-    //     }
+        } catch (error) {
+          console.log(error);
+        }
     }
 
   res.status(httpStatusCodes[200].code).json(formResponse(httpStatusCodes[200].code, "Passenger Created"));
