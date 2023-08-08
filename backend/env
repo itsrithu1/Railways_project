@@ -1,0 +1,3 @@
+PORT=3001
+MONGODB_URL_ATLAS = "mongodb+srv://testproject5779:W8Png1ynrOCtXqsk@cluster0.nvom1lz.mongodb.net/?retryWrites=true&w=majority"
+JWT_SECRET ="jroejihfhehfehjndnewfghbcherjm.rjen=832u4i3hjr3u4nkq#Uh4jn8UB#DIBjnjekndiuw((Fui3"

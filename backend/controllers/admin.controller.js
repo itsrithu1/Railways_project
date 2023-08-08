@@ -18,7 +18,7 @@ console.log(trainNumber);
     //   $or: [{ train_Number: trainNumber }, { name: trainName }],
     // };
 
-    const foundTrains = await Train.find({train_Number: trainNumber});
+    const foundTrains = await TrainData.find({train_Number: trainNumber});
 
     if (!foundTrains || foundTrains.length === 0) {
       return res
@@ -245,7 +245,7 @@ exports.updateTrain = async (req, res) => {
     if (fare) updateObject.fare = fare;
 
 
-    const findTrain = await Train.findOne({train_Number})
+    const findTrain = await TrainData.findOne({train_Number})
     if(!findTrain){
       return res.status(404).json({ message: "Train not found" });
     }else{
@@ -296,6 +296,7 @@ exports.updateTrain = async (req, res) => {
                   reservedSeats: reservedArray,
                   ptrURS:0,
                   ptrRS:0,
+                  seatsAvailable:numberOfCoach*numberOfSeatsPerCoach,
                 },
               }
             );
@@ -329,7 +330,7 @@ exports.updateTrain = async (req, res) => {
 
 
     // Find the document by ID and update with the provided fields
-    const updatedTrain = await Train.findOneAndUpdate(
+    const updatedTrain = await TrainData.findOneAndUpdate(
       { train_Number },
       updateObject,
       {
@@ -367,7 +368,7 @@ exports.deleteTrain = async (req, res) => {
       $or: [{ train_Number: trainNumber }],
     };
 
-    const deletedTrain = await Train.findOneAndDelete(query);
+    const deletedTrain = await TrainData.findOneAndDelete(query);
 
     if (!deletedTrain) {
       return res
@@ -395,7 +396,7 @@ exports.deleteTrain = async (req, res) => {
 
 
 exports.displayTrains = async (req, res) => {
-  const findAll = await Train.find();
+  const findAll = await TrainData.find();
   if(!findAll){
     return res
       .status(httpStatusCodes[202].code)
@@ -418,22 +419,41 @@ exports.displayTrains = async (req, res) => {
 
 
 
-exports.createTrainNew = async (req, res) => {
-  console.log(req.body);
-  
-  
-    const {
-      train_Number,
-      name,
-      Stations,
-      numberOfCoach,
-      numberOfSeatsPerCoach,
-      Distance,
-      fare
-    } = req.body;
-  
-    const Tnumber = parseInt(train_Number,2) 
 
+
+
+
+
+
+function processStationsData(sourceToDest, sourceToDestDepTime) {
+  const stationsArray = sourceToDest.split(',');
+  const depTimeArray = sourceToDestDepTime.split(',');
+
+  const stationsData = {};
+  for (let i = 0; i < stationsArray.length; i++) {
+    stationsData[stationsArray[i]] = depTimeArray[i];
+  }
+
+  return stationsData;
+}
+
+
+
+
+exports.createTrainNew = async (req, res) => {
+  const frontendData = req.body.Trains;
+
+
+  const train_Number = parseInt(frontendData.train_Number);
+  const name = frontendData.name;
+  const Stations = processStationsData(frontendData.sourceToDest, frontendData.sourceToDestDepTime);
+  const Distance = frontendData.distanceFromSource.split(',').map(Number);
+  const numberOfCoach = parseInt(frontendData.numberOfCoach);
+  const numberOfSeatsPerCoach = parseInt(frontendData.numberOfSeatsPerCoach);
+  const fare = parseFloat(frontendData.fare);
+  
+    // const Tnumber = parseInt(train_Number,2) 
+// console.log("processed data ", processedData)
     
   
     try {
@@ -558,3 +578,23 @@ const totalSeats = numberOfCoach*numberOfSeatsPerCoach
         .json(formResponse(httpStatusCodes[500].code, error));
     }
   };
+
+
+  exports.displayAllTrainDetails = async (req, res) => {
+    const {train_Number} = req.body
+    // console.log(train_Number);
+    const findTrain = await TrainData.findOne({train_Number})
+    if(!findTrain){
+      return res
+        .status(httpStatusCodes[202].code)
+        .json(
+          formResponse(httpStatusCodes[202].code, "No Trains found")
+        );
+    }
+  
+    return res
+        .status(httpStatusCodes[200].code)
+        .json(
+          formResponse(httpStatusCodes[200].code, findTrain)
+        );
+  }

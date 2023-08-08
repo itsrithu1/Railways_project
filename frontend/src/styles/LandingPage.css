@@ -1,119 +1,67 @@
-.card-container {
-
-  width: 400px;
-
+/* LandingPage.css */
+.custom-card {
+  width: 80%;
   margin: 0 auto;
-
   padding: 20px;
-
-  border: 1px solid #ccc;
-
-  border-radius: 5px;
-
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-
 }
-
-
-
-.card-container h5 {
-
-  text-align: center;
-
-  margin-bottom: 20px;
-
-}
-
-
-
-.form-container {
-
-  display: flex;
-
-  flex-direction: column;
-
-}
-
-
-
-.form-group {
-
-  margin-bottom: 20px;
-
-}
-
-
-
-.form-control {
-
-  font-size: 14px;
-
-  padding: 5px 10px;
-
-  width: 50%;
-
-}
-
-
-
-.form-check {
-
-  display: inline-block;
-
-  margin-right: 20px;
-
-}
-
-
-
-button {
-
-  margin-top: 5px; /* Adjust the value as needed */
-
-
-  margin-left: auto;
-
-  margin-right: auto;
-
-  display: block;
-
-}
-
-
-
-.card-container {
-
-  width: 400px;
-
-  margin: 0 20px; /* Add some spacing on the right side */
-
-  padding: 20px;
-
-  border: 1px solid #ccc;
-
-  border-radius: 5px;
-
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-
-}
-
-
 
 .page-container {
-
   display: flex;
-
-  justify-content: flex-end; /* Align items to the right */
-
-  height: 100vh; /* Set the container height to fill the entire viewport */
-
-  background-image: url("../../public/Train1.png");
-
-  background-repeat: no-repeat;
-
-  background-position: center;
-
-  background-size: cover;
-
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
 }
 
+.card-container {
+  width: 100%;
+  max-width: 600px;
+}
+
+.form-row {
+  width: 100%;
+  text-align: center; /* Center the content within the form row */
+}
+
+.inline-form-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.inline-input {
+  flex: 1;
+  margin-left: 10px;
+}
+
+/* Adjust input width for uniformity */
+.form-control {
+  width: 100%;
+}
+
+/* Center the submit button */
+.form-row .inline-form-group:last-child {
+  display: flex;
+  justify-content: center; /* Align items horizontally in the center */
+  margin-top: 20px; /* Add margin for spacing */
+}
+
+/* Style for Card Title (h5) */
+.custom-card h5 {
+  margin-bottom: 15px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+/* Button Styling */
+.form-row .inline-form-group:last-child button {
+  background-color: blue;
+  color: white;
+  transition: background-color 0.3s, color 0.3s;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.form-row .inline-form-group:last-child button:hover {
+  background-color: green;
+}

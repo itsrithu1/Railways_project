@@ -1,113 +1,37 @@
+/* styles/Navbar.css */
+
 .navbar {
-
- 
-
   background-color: #f8f9fa; /* Set the background color of the navbar */
-
-
-
 }
-
-
-
-
-
-
 
 .navbar-brand {
-
-
-
   font-size: 1.5rem; /* Adjust the font size of the brand */
-
-
-
   font-weight: bold;
-
-
-
 }
-
-
-
-
-
-
 
 .navbar-nav {
-
-
-
   margin-left: auto; /* Align the nav links to the right */
-
-
-
 }
-
-
-
-
-
-
 
 .nav-link {
-
-
-
   margin-right: 20px; /* Add spacing between nav links */
-
-
-
   color: #212529; /* Set the color of the nav links */
-
-
-
+  transition: color 0.2s, background-color 0.2s; /* Add transition for color and background-color */
 }
-
-
-
-
-
-
 
 .nav-link:not(:last-child) {
-
-
-
   margin-right: 20px;
-
-
-
 }
-
-
-
-
-
-
 
 /* Add hover effect to nav links */
-
-
-
 .nav-link:hover {
-
-
-
-  color: #007bff; /* Set the hover color of the nav links */
-
-
-
+  color: white; /* Set the hover color of the nav links */
+  background-color: #007bff; /* Set the background color on hover */
+  border-radius: 5px;
 }
 
-
-
 /* Add styles for the logo image */
-
 .logo-image {
-
-width: 40px; /* Adjust the width as needed */
-
-margin-right: 10px; /* Add spacing between logo and text */
-
+  width: 40px; /* Adjust the width as needed */
+  margin-right: 10px; /* Add spacing between logo and text */
 }
