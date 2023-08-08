@@ -163,6 +163,7 @@ const [showPDFLink, setshowPDFLink] = useState(false);
         .then((data) => {
           if (data.flag == "OK") {
             // alert("Seat Booked Successfully")
+
             handlePrintNow();
             // navigate("/successBooking");
           }
@@ -231,7 +232,7 @@ const [showPDFLink, setshowPDFLink] = useState(false);
 
   const getFarePrice = () => {
     try {
-            
+         console.log(source,destination);   
       fetch(`http://localhost:3001/api/v1/user/getfare?train_Number=${trainNumber}&date=${date}&source=${source}&destination=${destination}`, {
     method: "GET",
     crossDomain: true,
@@ -266,9 +267,11 @@ const [showPDFLink, setshowPDFLink] = useState(false);
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
     setTrainNumber(queryParams.get("train_Number"));
-    setsource(queryParams.get("soruce"));
+    setsource(queryParams.get("source"));
     setdestination(queryParams.get("destination"));
     setdate(queryParams.get("date"));
+
+    console.log("source is ",queryParams.get("source"))
   }, [location ]);
 
  
@@ -285,21 +288,52 @@ const [showPDFLink, setshowPDFLink] = useState(false);
       <Document>
         <Page style={styles.page}>
           {passengers.map((passenger, index) => (
-            <View key={index} style={styles.passenger}>
-              <Text>Name: {passenger.name}</Text>
 
-              <Text>Dob: {passenger.dob}</Text>
+            <View style={styles.section}>
+        <Text style={styles.header}>Train Ticket</Text>
+        <View style={styles.row}>
+          <Text style={styles.label}>Passenger Name:</Text>
+          <Text style={styles.value}>{passenger.name}</Text>
+        </View>
+        
+        <View style={styles.row}>
+          <Text style={styles.label}>Gender:</Text>
+          <Text style={styles.value}>{passenger.gender}</Text>
+        </View>
+        <View style={styles.row}>
+          <Text style={styles.label}>DOB:</Text>
+          <Text style={styles.value}>{passenger.dob}</Text>
+        </View>
 
-              <Text>Gender: {passenger.gender}</Text>
+        <View style={styles.row}>
+          <Text style={styles.label}>Phone Number:</Text>
+          <Text style={styles.value}>{passenger.phoneNo}</Text>
+        </View>
+        <View style={styles.row}>
+          <Text style={styles.label}>Train Number:</Text>
+          <Text style={styles.value}>{trainNumber}</Text>
+        </View>
+        <View style={styles.row}>
+          <Text style={styles.label}>Source:</Text>
+          <Text style={styles.value}>{source}</Text>
+        </View>
+        <View style={styles.row}>
+          <Text style={styles.label}>Destination:</Text>
+          <Text style={styles.value}>{destination}</Text>
+        </View>
+        
+        <View style={styles.section}>
+          <Text style={styles.label}>Indian Railways Passenger Reservation System (PRS) GuideTextnes:</Text>
+          <Text>
+            <Text>Ticketing and Booking Timings: The system should adhere to the designated timings for the opening of booking for different classes of travel. It should also consider the timing for Tatkal bookings and Premium Tatkal bookings, which are available a day in advance.</Text>
+            <Text>Quota System: The reservation system should incorporate the various quotas available for different categories of passengers, such as General Quota, Ladies Quota, Senior Citizen Quota, and others. These quotas allocate a certain number of seats to specific passenger categories.</Text>
+            <Text>Payment Gateway CompTextance: The payment processing system should adhere to the Payment Card Industry Data Security Standard (PCI DSS) to ensure the secure handTextng of credit/debit card information.</Text>
+          </Text>
+        </View>
+        
+      </View>
 
-              <Text>Phone No: {passenger.phone}</Text>
 
-              {/* <Text>Email ID: {passenger.email}</Text> */}
-
-              {/* <Text>Travel Insurance: {passenger.travelInsurance}</Text>
-
-              <Text>Food Preferences: {passenger.foodPreferences}</Text> */}
-            </View>
           ))}
         </Page>
       </Document>
@@ -308,11 +342,36 @@ const [showPDFLink, setshowPDFLink] = useState(false);
 
   const styles = StyleSheet.create({
     page: {
-      padding: 20,
+      flexDirection: 'column',
+      backgroundColor: '#F0F0F0',
+      padding: 30,
+      fontSize: 12,
     },
-
-    passenger: {
+    section: {
+      marginBottom: 15,
+    },
+    header: {
+      fontSize: 18,
+      fontWeight: 'bold',
       marginBottom: 10,
+      textATextgn: 'center',
+    },
+    label: {
+      fontWeight: 'bold',
+      marginBottom: 5,
+    },
+    value: {
+      marginBottom: 10,
+      borderBottom: '1pt soTextd black',
+    },
+    footer: {
+      textATextgn: 'center',
+      fontSize: 10,
+      marginTop: 10,
+    },
+    row: {
+      flexDirection: 'row',
+      marginBottom: 5,
     },
   });
 
@@ -545,7 +604,7 @@ const [showPDFLink, setshowPDFLink] = useState(false);
             Back
           </Button>
 
-          <Button variant="success" onClick={handleConfirm}>
+          <Button variant="success" onClick={displayRazorpay}>
             Pay Now
           </Button>
           {showPDFLink && (
