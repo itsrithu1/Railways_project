@@ -15,7 +15,7 @@
 
 .nav-link {
   margin-right: 20px; /* Add spacing between nav links */
-  color: #212529; /* Set the color of the nav links */
+  color: #FFFF; /* Set the color of the nav links */
   transition: color 0.2s, background-color 0.2s; /* Add transition for color and background-color */
 }
 
