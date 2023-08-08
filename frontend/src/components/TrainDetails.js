@@ -124,19 +124,32 @@ const DisplayTrains = () => {
 
     <NavbarComponent/>
 
-    <div className='page-container'>
+    
 
- 
+      
+      <div className='train-details-top-container'>
+      <div className='header-item'>
+              <div className='header-label'>Source:</div>
+              <div className='header-value'>{source}</div>
+            </div>
+            <div className='header-item'>
+              <div className='header-label'>Destination:</div>
+              <div className='header-value'>{destination}</div>
+            </div>
+            <div className='header-item'>
+              <div className='header-label'>Date:</div>
+              <div className='header-value'>{date}</div>
+            </div>
+            <Button variant='link' onClick={() => navigate(`/modifyDetails`)}>
+              Modify
+            </Button>
+          </div>
+          
 
-      <div className="content-box train-details-container" style={{color:'black'}}> 
+          <div className='page-container'>
+          <div className="content-box train-details-container">
 
-      <h2>Train Details</h2>
-
-      <p><b>Source: {source}</b></p>
-
-      <p><b>Destination: {destination}</b></p>
-
-      <p><b>Date: {date}</b></p>
+          <h2>Train Details</h2>
 
       <table>
 
@@ -214,19 +227,19 @@ const DisplayTrains = () => {
       </table>
 
  
-<div style={{opacity:'100%'}}>
-      <Button variant="primary" type="submit" onClick={handleSubmit} style={{opacity:'100%'}}  >
+
+      <Button variant="primary" type="submit" onClick={handleSubmit} >
 
         Submit
 
       </Button>
-      </div>
 
       {showMessage && <p style={{ color: 'red' }}>Please select a train.</p>}
 
     </div>
 
     </div>
+  
 
     <Footer/>
 
