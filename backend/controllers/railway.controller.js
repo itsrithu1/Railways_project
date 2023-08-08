@@ -104,6 +104,8 @@ exports.displayTrains = async (req, res) => {
 
 
 };
+
+
 exports.getFare = async (req,res) => {
   const trainNumber = req.query.train_Number;
   const source = req.query.source;
@@ -319,4 +321,61 @@ if (source_ptr>destination_ptr) {
       .status(httpStatusCodes[500].code)
       .json(formResponse(httpStatusCodes[500].code, "Internal Server Error"));
   }
+};
+
+exports.getdetails= async (req, res) => {
+const trainNumber= req.query.train_Number
+const source= req.query.source
+const destination= req.query.destination
+
+console.log(trainNumber);
+try {
+  const findAll = await TrainData.find({train_Number:trainNumber});
+
+if(!findAll){
+
+  return res
+    .status(httpStatusCodes[202].code)
+    .json(
+      formResponse(httpStatusCodes[202].code, "No Trains found")
+    );
+}
+const trainDataArray = Object.keys(findAll[0].Stations);
+let src_ptr,dst_ptr;
+
+for(i=0;i<trainDataArray.length;i++)
+{
+  if(trainDataArray[i] == source)
+  {
+    console.log(i);
+    src_ptr =i;
+  }
+
+  if(trainDataArray[i] == destination)
+  {
+    console.log(i);
+    dst_ptr =i;
+  }
+  
+}
+const timeData = Object.values(findAll[0].Stations);
+const dist = findAll[0].Distance
+
+const obj={
+  name:findAll[0].name,
+  sourcetime:timeData[src_ptr],
+  destinationtime:timeData[dst_ptr],
+distance : dist[dst_ptr]-dist[src_ptr]
+}
+
+
+return res
+    .status(httpStatusCodes[200].code)
+    .json(
+      formResponse(httpStatusCodes[200].code, obj)
+    );
+} catch (error) {
+  console.log(error)
+}
+
 };

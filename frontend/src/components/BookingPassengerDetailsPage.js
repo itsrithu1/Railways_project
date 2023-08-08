@@ -267,7 +267,9 @@ const [showPDFLink, setshowPDFLink] = useState(false);
 
 
   }
+  let trNumber 
 
+  const [showData,setShowData]=useState()
   
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
@@ -276,8 +278,44 @@ const [showPDFLink, setshowPDFLink] = useState(false);
     setdestination(queryParams.get("destination"));
     setdate(queryParams.get("date"));
 
-    console.log("source is ",queryParams.get("source"))
-  }, [location ]);
+    // console.log("source is ",queryParams.get("source"))
+    trNumber = queryParams.get("train_Number")
+    console.log(trNumber);
+    
+
+
+    try {
+        
+   fetch(`http://localhost:3001/api/v1/user/getdetails?train_Number=${trNumber}&source=${queryParams.get("source")}&destination=${queryParams.get("destination")}`, {
+ method: "GET",
+ crossDomain: true,
+ headers: {
+   "Content-Type": "application/json",
+   Accept: "application/json",
+   "Accesss-Control-Allow-Origin": "*",
+ },
+ 
+})
+ .then((res) => res.json())
+ .then((data) => {
+   
+   if(data.flag=="OK"){
+    setShowData(data.data)
+     console.log("data is equal to ",data.data)
+    
+   }
+
+   });
+
+
+
+} catch (err) {
+ console.error("Error:", err);
+ 
+}
+
+    
+  }, [date]);
 
  
 
@@ -391,14 +429,14 @@ const [showPDFLink, setshowPDFLink] = useState(false);
 
 
       <div className="outsidebpd">
-
+      {showData && (
 <div className="cardbpd">
 
   <div className="tdetails-bpd">
 
-  <h1 className="name-bpd">Shatabdi Express</h1>
+  <h1 className="name-bpd">{showData.name}</h1>
 
-      <h6 className="tnum-bpd">#12052</h6>
+      <h6 className="tnum-bpd">{trainNumber}</h6>
 
   </div>
 
@@ -408,15 +446,15 @@ const [showPDFLink, setshowPDFLink] = useState(false);
 
   <div className="ttimebpd">
 
-      <h3 className="timebpd">10:10, 04 Sept</h3>
+      <h3 className="timebpd">{showData.sourcetime}</h3>
 
       <div className="linebpd"></div>
 
-      <h3 className="timebpd" >11h 33mins</h3>
+      <h3 className="timebpd" >{showData.distance} kms</h3>
 
       <div className="linebpd"></div>
 
-      <h3 className="timebpd">09:43, 04 Sept</h3>                
+      <h3 className="timebpd">{showData.destinationtime}</h3>                
 
       </div>
 
@@ -424,53 +462,16 @@ const [showPDFLink, setshowPDFLink] = useState(false);
 
       <div className="stationbpd">
 
-          <h6>Margao</h6>
+          <h6>{source}</h6>
 
-          <h6>Thane</h6>
+          <h6>{destination}</h6>
 
       </div>
 
   </div>
 
 </div>  
-
-
-
-
-
-<div className="paymentbpd">
-
-     
-
-      <div className="detailsbpd">
-
-          <h5>Gst (Inc)</h5>
-
-          <h5>18%</h5>
-
-      </div>
-
-      <div className="detailsbpd">
-
-          <h5>convinence Fee</h5>
-
-          <h5>rs 20</h5>
-
-      </div>
-
-
-
-          <div className="paynowColor">
-
-      <div className="linebpd"></div>
-
-      <button className="paybpd"><span className="paynowbpd">Pay Now</span></button>
-
-      </div>
-
-  </div>
-
-
+)}
 
 </div>
 
