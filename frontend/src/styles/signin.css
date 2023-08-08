@@ -16,6 +16,28 @@
   border-radius: 5px;
 }
 
+/*body {
+  background-image: url('./signin_bg.jpg');
+  background-size: cover; /* Adjust the background size as needed 
+  background-position: center;
+}*/
+
+
+.divbg {
+  max-width: 400px;
+  margin: 100px auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  background-color: white;
+  background-image: url('./signin_bg.jpg');
+  background-size: cover; /* Adjust the background size as needed */
+  background-position: center;
+  color: white;
+}
+
+
+/*
 section {
   max-width: 50%;
   padding: 20px;
@@ -23,14 +45,14 @@ section {
   border-radius: 10px;
 }
 
-/* Centering the login box contents */
+/* Centering the login box contents 
 section {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-/* Additional styling for the input fields */
+/* Additional styling for the input fields 
 input[type="text"],
 input[type="password"] {
   width: 100%;
@@ -50,7 +72,8 @@ input[type="password"] {
   border: none;
   border-radius: 5px;
   transition: background-color 0.3s ease;
-} */
+} 
+
 #button{
   max-width: 10px;
 }
