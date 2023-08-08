@@ -27,7 +27,7 @@ function NavbarComponent() {
   const navigate = useNavigate();
  const logOut =()=>{
   window.localStorage.removeItem("token")  
-  navigate("/");
+  navigate("/SignIn")
  }
 
   return (

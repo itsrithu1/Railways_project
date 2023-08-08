@@ -396,14 +396,18 @@ exports.deleteTrain = async (req, res) => {
 
 
 exports.displayTrains = async (req, res) => {
+  console.log("the username from token is :",req.name)
   const findAll = await TrainData.find();
+  // console.log("here", findAll);
   if(!findAll){
+
     return res
       .status(httpStatusCodes[202].code)
       .json(
         formResponse(httpStatusCodes[202].code, "No Trains found")
       );
   }
+
 
   return res
       .status(httpStatusCodes[200].code)

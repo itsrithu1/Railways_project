@@ -5,13 +5,18 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 
 import NavDropdown from 'react-bootstrap/NavDropdown';
-
+import {useNavigate } from "react-router-dom";
 import '../styles/Navbar.css';
 import logo from './Rail_Logo.png';
 
  
 
 function NavbarAdminComponent() {
+  const navigate = useNavigate();
+ const logOut =()=>{
+  window.localStorage.removeItem("token")  
+  navigate("/SignIn")
+ }
 
   return (
 
@@ -44,7 +49,7 @@ className="d-inline-block align-top logo-image"
 
             {/* <Nav.Link href="#link">Features</Nav.Link> */}
 
-            <Nav.Link href="/">Logout </Nav.Link>
+            <Nav.Link onClick={logOut}>Logout </Nav.Link>
 
           </Nav>
 

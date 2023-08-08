@@ -384,28 +384,35 @@ const AdminHomePage = () => {
 
     // console.log("hello")
     try {
+      const token = localStorage.getItem('token');
+      // console.log(token)
             
-      fetch(`http://localhost:3001/api/v1/admin/displayAllTrains`, {
+      fetch(`http://localhost:3001/api/v1/admin/displayAllTrains`,{headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        "Accesss-Control-Allow-Origin": "*",
+        Authorization: `Bearer ${token}`,
+      }} ,
+      {
     method: "GET",
     crossDomain: true,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      "Accesss-Control-Allow-Origin": "*",
-    },
   })
     .then((res) => res.json())
     .then((data) => {
-      // console.log("recieved data is", data.data)
+      console.log("recieved data is", data)
       
-
+      if(data.status===401 || data.status===402){
+        alert("Please Login")
+        navigate("/SignIn")
+      }
       if (data.flag=="OK") {
         // let temp=data.data
             console.log(data.data)
         setTrainDetails(data.data)
         setOriginalTrainDetails(data.data)
             } else {
-              // alert("No Trains Found")
+              // alert("Missing Token")
+              // navigate("/")
               
           }
 
@@ -429,23 +436,26 @@ const AdminHomePage = () => {
     console.log(train_Number);
     
     try {
-            
-      fetch(`http://localhost:3001/api/v1/admin/displayAllTrainDetails`, {
+      const token = localStorage.getItem('token');
+      console.log(token)
+      fetch(`http://localhost:3001/api/v1/admin/displayAllTrainDetails`, 
+      {headers: {
+        // "Content-Type": "application/json",
+        // Accept: "application/json",
+        // "Accesss-Control-Allow-Origin": "*",
+        Authorization: `Bearer ${token}`,
+      }},
+      {
+
     method: "POST",
     crossDomain: true,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      "Accesss-Control-Allow-Origin": "*",
-    },
     body: JSON.stringify({
       train_Number
     }),
-    
   })
     .then((res) => res.json())
     .then((data) => {
-      console.log("recieved data is", data.data)
+      console.log("recieved data is", data)
       
 
       if (data.flag=="OK") {
