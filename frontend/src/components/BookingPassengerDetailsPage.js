@@ -38,10 +38,16 @@ const BookingPassengerDetails = () => {
     },
   ]);
 
-  const [showPDFLink, setshowPDFLink] = useState(false);
-  const [trainNumber, setTrainNumber] = useState(null);
-  const [date, setdate] = useState(null);
-  const [name, setName] = useState("First Class");
+
+ 
+
+const [showPDFLink, setshowPDFLink] = useState(false);
+  const [trainNumber,setTrainNumber]=useState(null)
+  const [date,setdate]=useState(null)
+  const [name, setName] = useState('First Class')
+  const [source,setsource]=useState(null)
+  const [destination,setdestination]=useState(null)
+  var razorpayFare =0;
 
   const handlePrintNow = () => {
     setshowPDFLink(true);
@@ -126,9 +132,12 @@ const BookingPassengerDetails = () => {
   };
 
   const calculateTotalFare = () => {
-    const numberOfPassengers = passengers.length;
-    return numberOfPassengers * farePerTicket;
-  };
+  const numberOfPassengers = passengers.length;
+  var fareprice = numberOfPassengers * farePerTicket;
+  razorpayFare= fareprice;
+  console.log({razorpayFare});
+  return numberOfPassengers * farePerTicket;
+};
 
   const printinconsole = () => {
     console.log({ passengers });
@@ -181,9 +190,9 @@ const BookingPassengerDetails = () => {
       return;
     }
 
-    const data = await fetch("http://localhost:3001/api/v1/payment", {
-      method: "POST",
-    }).then((t) => t.json());
+		const data = await fetch(`http://localhost:3001/api/v1/payment?amount=${razorpayFare}`, { method: 'POST' }).then((t) =>
+			t.json()
+		)
 
     const options = {
       key: __DEV__ ? "rzp_test_fgWk4ynD9HVS0a" : "PRODUCTION_KEY",
@@ -226,35 +235,47 @@ const BookingPassengerDetails = () => {
 
   const getFarePrice = () => {
     try {
-      fetch(
-        `http://localhost:3001/api/v1/user/getfare?train_Number=${trainNumber}`,
-        {
-          method: "GET",
-          crossDomain: true,
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-            "Accesss-Control-Allow-Origin": "*",
-          },
-        }
-      )
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.flag == "OK") {
-            console.log("fare is ", data.data);
-            setFarePerTicket(data.data);
-          }
-        });
-    } catch (err) {
-      console.error("Error:", err);
-    }
-  };
+            
+      fetch(`http://localhost:3001/api/v1/user/getfare?train_Number=${trainNumber}&date=${date}&source=${source}&destination=${destination}`, {
+    method: "GET",
+    crossDomain: true,
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      "Accesss-Control-Allow-Origin": "*",
+    },
+    
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      
+      if(data.flag=="OK"){
+        console.log("fare is ",data.data)
+        setFarePerTicket(data.data)
+      }
 
+      });
+
+
+
+  } catch (err) {
+    console.error("Error:", err);
+    
+  }
+
+
+  }
+
+  
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
     setTrainNumber(queryParams.get("train_Number"));
+    setsource(queryParams.get("soruce"));
+    setdestination(queryParams.get("destination"));
     setdate(queryParams.get("date"));
-  }, [location]);
+  }, [location ]);
+
+ 
 
   const handleCloseModal = () => {
     setShowModal(false);
@@ -488,7 +509,8 @@ const BookingPassengerDetails = () => {
             Back
           </Button>
 
-          <Button variant="success" onClick={handleConfirm}>
+          <Button variant="success" onClick={displayRazorpay}>
+
             Pay Now
           </Button>
           {showPDFLink && (

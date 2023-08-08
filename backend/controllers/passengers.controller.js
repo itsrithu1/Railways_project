@@ -4,6 +4,8 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const { Passenger } = require("../model/passenger.model");
 const { SeatAllocation } = require("../model/seatAllocation.model");
+const { TrainData } = require("../model/trainDataNew.model");
+
 
 function calculateAge(dateOfBirth) {
   console.log("In Function");
@@ -28,15 +30,18 @@ exports.addPassenger = async (req, res) => {
   console.log(req.body);
   const { passengers } = req.body;
   var i = 0;
-  var name, gender, dob, phoneNo, insurance, food, seatnum, ptrRS, ptrURS;
+  var name, gender, dob, phoneNo, insurance, food, seatnum, ptrRS, ptrURS, sAvailable;
 
   const train_Number = req.query.train_Number;
   const date = req.query.date;
 
-  var seatsAvailable = 1;
   var PassengerLength = passengers.length;  
+  const seats = await SeatAllocation.findOne({ train_Number, date }).exec();
 
-  if(PassengerLength > seatsAvailable)
+  // sAvailable = seats.seatsAvailable;
+  sAvailable = 1;
+
+  if(PassengerLength > sAvailable)
   {
     return res.status(httpStatusCodes[202].code).json(
       formResponse(httpStatusCodes[202].code, "No Seats Available")
@@ -58,99 +63,238 @@ exports.addPassenger = async (req, res) => {
   }
 
 
-  const seats = await SeatAllocation.findOne({ train_Number, date }).exec();
+  
+  console.log("Seats Available ", sAvailable);
+
+  // to get passenger age array do the following
+let temp_passengers = {};
+  for (i = 0; i < passengers.length; i++) {
+    temp_passengers[i] = age = calculateAge(passengers[i].dob)
+}
+
+console.log(temp_passengers);
 
   const unreservedSeat = seats.unreservedSeats;
   const reservedSeat = seats.reservedSeats;
   ptrURS = seats.ptrURS;
   ptrRS = seats.ptrRS;
+// console.log("Unreserved Seats :",unreservedSeat);
+// console.log("Reserved Seats :",reservedSeat);
 
-  const seatArray = Object.keys(unreservedSeat);
-  const urseatArray = Object.keys(reservedSeat);
-  const bookedStatusArray = Object.values(unreservedSeat);
+  const urseatArray = Object.keys(unreservedSeat);
+  const rseatArray = Object.keys(reservedSeat);
+  const urbookedStatusArray = Object.values(unreservedSeat);
+  const rbookedStatusArray = Object.values(reservedSeat);
 
-  console.log(seatArray[0]);
-  console.log(bookedStatusArray[0]);
-  console.log(ptrURS);
-  console.log(ptrRS);
+  const urobject = Object(unreservedSeat)
+  const robject = Object(reservedSeat)
+
+
+  const trainData = await TrainData.find({
+    train_Number
+  });
+
+
+  let numberOfSeatsPerCoach = trainData[0].numberOfCoach;
+  let numberOfCoach = trainData[0].numberOfSeatsPerCoach;
+  
+  let totalSeats=numberOfSeatsPerCoach*numberOfCoach//db
+  let noOfBookedSeats = totalSeats - sAvailable;
+
+  console.log("Number of Seats Per Coach : ", numberOfSeatsPerCoach);
+  console.log("Number of Coach : ", numberOfCoach);
+  console.log("Number of seat Booked: ", noOfBookedSeats);
+  
+  
+  let allocated = false;
+  let passengerSeats = [];
+
+  async function updateDB(text){
+
+    console.log(text);
+    if(text === "res")
+    {
+      filter = { train_Number, date };
+      update = {
+        $set: {
+          [`reservedSeats.${seatnum}`]: 1,
+          seatsAvailable: sAvailable
+        },
+      };
+
+      // // By setting { new: true }, you will get the updated document as a result
+      options = { new: true };
+
+      updatedSeatAllocation = await SeatAllocation.findOneAndUpdate(filter, update, options);
+    }
+    if(text === 'unres')
+    {
+      filter = { train_Number, date };
+        update = {
+          $set: {
+            [`unreservedSeats.${seatnum}`]: 1,
+            seatsAvailable: sAvailable
+          },
+        };
+
+        // // By setting { new: true }, you will get the updated document as a result
+        options = { new: true };
+
+        updatedSeatAllocation = await SeatAllocation.findOneAndUpdate(filter, update, options);
+    }
+    
+  }
+
+
+  function alloc_in(seats_object, passenger) { //seats booking
+
+    for (let seat in seats_object) {
+        if (seats_object[seat] === 0) {
+            seats_object[seat] = 1
+            // passengers[passenger[0]].name or passengers[passenger[0]].phone to get data of that passenger
+            // console.log("id:" + passenger[0] + " age:" + passenger[1] + " seat:" + seat);
+            a = passenger
+            a[1] = seat
+            passengerSeats.push(a)
+            noOfBookedSeats += 1;
+            allocated = true;
+            sAvailable--;
+            return seat;
+        }
+    }
+}
+
+var items = Object.keys(temp_passengers).map(function (key) {
+  return [key, temp_passengers[key]];
+});
+items.sort(function (first, second) {
+  return second[1] - first[1];
+});
+
+temp_passengers = items //ordered wrt age in descending order
+passengerSeats = []
+
+if (temp_passengers.length <= totalSeats - noOfBookedSeats) { //there are less passengers than no of available seats
+  for (let passenger of temp_passengers) {
+      allocated = false
+      if (passenger[1] >= 65) {
+          for (let seat in urobject) {
+              if (urobject[seat] === 0 && parseInt(seat.substr(seat.lastIndexOf('S') + 1)) % 2) {
+                urobject[seat] = 1;
+                  // passengers[passenger[0]].name or passengers[passenger[0]].phone to get data of that passenger
+                  // console.log("id:" + passenger[0] + " age:" + passenger[1] + " seat:" + seat);
+                  a = passenger
+                  a[1] = seat
+                  passengerSeats.push(a)
+                  allocated = true;
+                  noOfBookedSeats += 1;
+                  sAvailable--;
+                  updateDB("unres")
+                  break;
+              }
+          }
+          if (!allocated) {
+            robject[alloc_in(robject, passenger)] = 1;
+            updateDB("res")
+          }
+          if (!allocated) {
+            urobject[alloc_in(urobject, passenger)] = 1;
+            updateDB("unres")
+          }
+      } else {
+        urobject[alloc_in(urobject, passenger)] = 1;
+        updateDB("unres")
+          if (!allocated) {
+            robject[alloc_in(robject, passenger)] = 1;
+            updateDB("res")
+          }
+      }
+      if (!allocated) {
+          console.log("id:" + passenger[0] + "age:" + passenger[1] + " couldn't allocate seat");
+      }
+  }
+} 
+
+
+console.log(passengerSeats) //output.
+console.log(passengerSeats[0][0])
 
   var filter,update,options,updatedSeatAllocation;
 
 
-    for (i = 0; i < passengers.length; i++) {
-      name = passengers[i].name;
-      gender = passengers[i].gender;
-      dob = passengers[i].dob;
-      phoneNo = passengers[i].phone;
-      insurance = passengers[i].insurance;
-      food = passengers[i].food;
+    for (i = 0; i < passengerSeats.length; i++) {
+      j=passengerSeats[i][0]
+      seatnum=passengerSeats[i][1]
+      name = passengers[j].name;
+      gender = passengers[j].gender;
+      dob = passengers[j].dob;
+      phoneNo = passengers[j].phone;
+      insurance = passengers[j].insurance;
+      food = passengers[j].food;
 
-      const age = calculateAge(dob);
-      console.log(name);
-        if (age < 65) {
-          seatnum = seatArray[ptrURS];
-          ptrURS++;
-          console.log("p1");
-          console.log(age);
-          console.log(seatnum);
-          console.log(ptrURS);
+      console.log("Index:",j);
+      console.log("Seat Num:",seatnum);
+      console.log("Name:",name);
 
-          filter = { train_Number, date };
-        update = {
-          $set: {
-            [`unreservedSeats.${seatnum}`]: 1,
-            ptrURS: ptrURS
-          },
-        };
+      
 
-        // By setting { new: true }, you will get the updated document as a result
-        options = { new: true };
+        // if (age < 65) {
+        //   // seatnum = urseatArray[ptrURS];
+        //   ptrURS++;
+        //   sAvailable--;
+        //   console.log("p1");
+        //   console.log(age);
+        //   console.log(seatnum);
+        //   console.log(ptrURS);
 
-        updatedSeatAllocation = await SeatAllocation.findOneAndUpdate(filter, update, options);
-
-        } 
-        else {
-          seatnum = urseatArray[ptrRS];
-          ptrRS++;
-          console.log("p2");
-          console.log(age);
-          console.log(seatnum);
-          console.log(ptrRS);
-
-          filter = { train_Number, date };
-        update = {
-          $set: {
-            [`reservedSeats.${seatnum}`]: 1,
-            ptrRS: ptrRS
-          },
-          $inc: {
-            seatsAvailable: -1
-          }
           
-          };
-          // By setting { new: true }, you will get the updated document as a result
-          options = { new: true };
-          updatedSeatAllocation = await SeatAllocation.findOneAndUpdate(filter, update, options);
 
-        }
+        // } 
+        // else {
+        //   seatnum = rseatArray[ptrRS];
+        //   ptrRS++;
+        //   sAvailable--;
+        //   console.log("p2");
+        //   console.log(age);
+        //   console.log(seatnum);
+        //   console.log(ptrRS);
 
-        try {
-          await Passenger .create({
+        //   filter = { train_Number, date };
+        // update = {
+        //   $set: {
+        //     [`reservedSeats.${seatnum}`]: 1,
+        //     ptrRS: ptrRS,
+        //     seatsAvailable: sAvailable
+        //   },
+          
+          
+          
+        //   };
+        //   // By setting { new: true }, you will get the updated document as a result
+        //   options = { new: true };
+        //   updatedSeatAllocation = await SeatAllocation.findOneAndUpdate(filter, update, options);
+
+        // }
+
+        // if(passengerSeats)
+
+    //     try {
+    //       await Passenger .create({
             
-            name,
-            gender,
-            dob,
-            phoneNo,
-            insurance,
-            food,
-            ticket_id:result,
-            train_Number,
-            seat_Number: seatnum
-          });
+    //         name,
+    //         gender,
+    //         dob,
+    //         phoneNo,
+    //         insurance,
+    //         food,
+    //         ticket_id:result,
+    //         train_Number,
+    //         seat_Number: seatnum
+    //       });
 
-        } catch (error) {
-          console.log(error);
-        }
+    //     } catch (error) {
+    //       console.log(error);
+    //     }
     }
 
   res.status(httpStatusCodes[200].code).json(formResponse(httpStatusCodes[200].code, "Passenger Created"));
