@@ -81,7 +81,7 @@ const LandingPage = () => {
                   value={source}
                   onChange={handleSourceChange}
                 >
-                  <option value=''>Select</option>
+                  <option value='' disabled>Select</option>
                   {places.map((place, index) => (
                     <option key={index} value={place}>
                       {place}
@@ -105,7 +105,7 @@ const LandingPage = () => {
                   value={destination}
                   onChange={(e) => setDestination(e.target.value)}
                 >
-                  <option value=''>Select Destination</option>
+                  <option value='' disabled>Select Destination</option>
                   {destinationOptions.map((place, index) => (
                     <option key={index} value={place}>
                       {place}
@@ -153,7 +153,7 @@ const LandingPage = () => {
                 </div>
               </Form.Group> */}
 
-              <Button variant='primary' type='submit' onClick={handleSubmit}>
+              <Button variant='primary' type='submit' onClick={handleSubmit} style={{marginLeft:'130px'}} >
                 Submit
               </Button>
             </Form>

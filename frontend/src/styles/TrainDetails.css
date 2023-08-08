@@ -1,38 +1,51 @@
 /* Create a flex container to center the content vertically and horizontally */
 
- 
-
 .train-details-container {
-
- 
+  /* Existing styles for .train-details-container */
 
   display: flex;
-
- 
-
   justify-content: center;
-
- 
-
   align-items: center;
-
- 
-
   flex-direction: column;
-
- 
-
   height: 100vh; /* Set the container height to fill the entire viewport */
 
- 
+  .train-details-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
 
+
+  /* Other existing styles for the rest of the component */
 }
 
- 
+.train-details-top-container {
+  background-color: #f8f9fa; /* Set the background color */
+  padding: 12px 0; /* Add padding to create space around the top line */
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
- 
+.header-item {
+  display: flex;
+  align-items: center;
+}
 
- 
+.header-label {
+  font-weight: bold;
+  margin-right: 8px;
+}
+
+.header-value {
+  background-color: #f4f4f4;
+  padding: 6px 10px;
+  border-radius: 4px;
+  margin-right: 12px;
+}
+
 
 /* Enclose content in a box with a white background */
 
@@ -60,7 +73,7 @@
 
   width: 95%;
 
-  height: 95%;
+  height: 75%;
 
   margin: auto;
 

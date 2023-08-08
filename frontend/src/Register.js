@@ -67,13 +67,11 @@ const Register = () => {
     setValidNo(result);
   }, [number]);
 
-  
   useEffect(() => {
     //email
     // const result = USER_REGEX.test(email);
     console.log(email);
     console.log(email);
-    
   }, [email]);
 
   useEffect(() => {
@@ -92,30 +90,27 @@ const Register = () => {
   const handlePhoneNumberChange = (e) => {
     var value = e.target.value;
     // Remove any non-digit characters from the input
-    const cleanedValue = value.replace(/\D/g, '');
-  var result = value.length;
+    const cleanedValue = value.replace(/\D/g, "");
+    var result = value.length;
     // Check if the cleanedValue has exactly 10 digits
     if (value.length < 10) {
       setNo(value);
       setValidNo(false);
-    }
-      
-    else if(value.length == 10) {
+    } else if (value.length == 10) {
       setValidNo(true);
-    }
-    else {
+    } else {
       setValidNo(false);
     }
   };
-  
+
   const handleEmailChange = (e) => {
     const value = e.target.value;
-    console.log({setValidEmail})
+    console.log({ setValidEmail });
     setEmail(value);
     // Check if the input contains the "@" symbol
     const pattern = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}$/;
     const matches = pattern.test(value);
-    setValidEmail(matches); 
+    setValidEmail(matches);
   };
 
   const handleSubmit = async (e) => {
@@ -128,48 +123,43 @@ const Register = () => {
       return;
     }
     try {
-
       fetch("http://localhost:3001/api/v1/user/create", {
-          method: "POST",
-          crossDomain: true,
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-            "Accesss-Control-Allow-Origin": "*",
-          },
-          body: JSON.stringify({
-            user,
-             pwd,
-             email,
-             number
-          }),
-        })
-          .then((res) => res.json())
-          .then((data) => {
-            console.log("recieved data is",data)
-            
-    
-            if (data.status_code==200) {
-                    setUser("");
-                    setPwd("");
-                    setEmail("")
-                    setNo("")
-                    setSuccess(true);
-                    navigate('/SignIn')
-                  } else {
-                    // Handle unsuccessful login response here
-                    if (data.status_code === 202) {
-                      setErrMsg(data.message);
-                    } else if (data.status_code === 401) {
-                      setErrMsg("unauthorized");
-                    } else {
-                      setErrMsg("login failed");
-                    }
-                }
-    
-            });
+        method: "POST",
+        crossDomain: true,
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          "Accesss-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify({
+          user,
+          pwd,
+          email,
+          number,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log("recieved data is", data);
 
-    
+          if (data.status_code == 200) {
+            setUser("");
+            setPwd("");
+            setEmail("");
+            setNo("");
+            setSuccess(true);
+            navigate("/SignIn");
+          } else {
+            // Handle unsuccessful login response here
+            if (data.status_code === 202) {
+              setErrMsg(data.message);
+            } else if (data.status_code === 401) {
+              setErrMsg("unauthorized");
+            } else {
+              setErrMsg("login failed");
+            }
+          }
+        });
     } catch (err) {
       if (!err?.response) {
         setErrMsg("noserver response");
@@ -251,7 +241,7 @@ const Register = () => {
 
               <label htmlFor="email">
                 Email:
-                <span className={validEmail? "valid" : "hide"}>
+                <span className={validEmail ? "valid" : "hide"}>
                   <FontAwesomeIcon icon={faCheck} />
                 </span>
                 <span className={validEmail || !email ? "hide" : "invalid"}>
@@ -261,7 +251,7 @@ const Register = () => {
               <input
                 type="email"
                 id="email"
-                ref={userRef} 
+                ref={userRef}
                 autoComplete="off"
                 onChange={handleEmailChange}
                 required
@@ -270,9 +260,6 @@ const Register = () => {
                 onFocus={() => setEmailFocus(true)}
                 onBlur={() => setEmailFocus(false)}
               />
-
-             
-
 
               <label htmlFor="password">
                 Password:
@@ -293,7 +280,6 @@ const Register = () => {
                 onFocus={() => setPwdFocus(true)}
                 onBlur={() => setPwdFocus(false)}
               />
-             
 
               <p
                 id="uidnote"
@@ -330,9 +316,10 @@ const Register = () => {
                 onFocus={() => setMatchFocus(true)}
                 onBlur={() => setMatchFocus(false)}
               />
-             
+
               <div className="button">
-                <button 
+                <button
+                  style={{ marginLeft: "100px" }}
                   disabled={
                     !validName || !validPwd || !validMatch ? true : false
                   }

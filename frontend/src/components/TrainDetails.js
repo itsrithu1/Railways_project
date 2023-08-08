@@ -6,9 +6,9 @@ import Form from 'react-bootstrap/Form';
 
 import { Button } from 'react-bootstrap';
 
-import { Router, useNavigate ,useLocation} from 'react-router-dom';
+import { Router, useNavigate, useLocation } from 'react-router-dom';
 
- 
+
 
 import '../styles/TrainDetails.css';
 
@@ -16,12 +16,14 @@ import NavbarComponent from '../components/NavbarComponent';
 
 import Footer from '../components/Footer';
 
- 
+
 
 const DisplayTrains = () => {
-  const location =useLocation()
+  const location = useLocation()
   const navigate = useNavigate();
   const [selectedTrainNumber, setSelectedTrainNumber] = useState(null);
+  const [selectedSource, setSelectedSource] = useState();
+  const [selectedDestination, setSelectedDestination] = useState();
 
   const [showMessage, setShowMessage] = useState(false);
   const handleRadioChange = (event) => {
@@ -29,9 +31,9 @@ const DisplayTrains = () => {
 
   };
 
- 
 
- 
+
+
 
   const handleSubmit = () => {
 
@@ -51,7 +53,18 @@ const DisplayTrains = () => {
 
   };
 
- 
+  const handleModify = () => {
+    setShowModify(true);
+  };
+
+  const handleSearch = () => {
+    setSource(selectedSource);
+    setDestination(selectedDestination);
+    setShowModify(false);
+    displayTrainDetails();
+  };
+
+
 
   const handleRowClick = (event, trainNumber) => {
 
@@ -59,175 +72,247 @@ const DisplayTrains = () => {
 
   };
 
- 
 
-  const [trainData ,setTrainData]=useState()
 
- 
+  const [trainData, setTrainData] = useState()
 
-  const [source,setSource]=useState();
 
-  const [destination,setDestination]=useState();
 
-  const [date,setDate]=useState();
+  const [source, setSource] = useState();
 
- 
+  const [destination, setDestination] = useState();
 
-  const displayTrainDetails = ()=>{
+  const [date, setDate] = useState();
+
+  const [showModify, setShowModify] = useState(false);
+
+  const sourceOptions = ['Margao', 'Thane', 'Bangalore', 'Panvel', 'Chennai', 'Canacona', 'Ratnagiri'];
+  const destinationOptions = ['Margao', 'Thane', 'Bangalore', 'Panvel', 'Chennai', 'Canacona', 'Ratnagiri'];
+
+
+  const displayTrainDetails = () => {
 
     try {
       fetch(`http://localhost:3001/api/v1/user/searchTrainNew?source=${source}&destination=${destination}&date=${date}`, {
-    method: "GET",
-    crossDomain: true,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      "Accesss-Control-Allow-Origin": "*",
-    },
+        method: "GET",
+        crossDomain: true,
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          "Accesss-Control-Allow-Origin": "*",
+        },
 
-  })
+      })
 
-    .then((res) => res.json())
-    .then((data) => {
-      console.log("recieved data is", data.data)
-      if (data.flag=="OK") {
-        setTrainData(data.data)
-            } else {
-              // alert("No Trains Found")
-            }
-      });
-  } catch (err) {
-    console.error("Error:", err);
-  }
+        .then((res) => res.json())
+        .then((data) => {
+          console.log("recieved data is", data.data)
+          if (data.flag == "OK") {
+            setTrainData(data.data)
+          } else {
+            // alert("No Trains Found")
+          }
+        });
+    } catch (err) {
+      console.error("Error:", err);
+    }
     // console.log(source,destination,date)
   }
 
   useEffect(() => {
 
-    const queryParams= new URLSearchParams(location.search);
-    setSource( queryParams.get("source"))
-    setDestination( queryParams.get("destination"))
+    const queryParams = new URLSearchParams(location.search);
+    setSource(queryParams.get("source"))
+    setDestination(queryParams.get("destination"))
     const parts = queryParams.get("date").split("-");
     const formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
     setDate(formattedDate)
-    displayTrainDetails();
+    if (!showModify) {
+      displayTrainDetails();
+    }
 
-  }, [date]);
+  }, [date, showModify, selectedSource, selectedDestination]);
 
- 
+
 
   return (
 
-   
+
 
     <>
 
-    <NavbarComponent/>
+      <NavbarComponent />
 
-    <div className='page-container'>
 
- 
+      <br/><br/>
 
-      <div className="content-box train-details-container">
+      <div className='train-details-top-container'>
+        {showModify ? (
+          <>
+            <div className='header-item'>
+            <div className='header-label'>Source:</div>
+            {showModify ? (
+              <Form.Control
+                as="select"
+                value={selectedSource}
+                onChange={(e) => setSelectedSource(e.target.value)}
+              >
+                {sourceOptions.map((option, index) => (
+                  <option key={index} value={option}>{option}</option>
+                ))}
+              </Form.Control>
+            ) : (
+              <div className='header-value'>{selectedSource}</div>
+            )}
+          </div>
+          <div className='header-item'>
+            <div className="header-label">Destination:</div>
+            {showModify ? (
+              <Form.Control
+                as="select"
+                value={selectedDestination}
+                onChange={(e) => setSelectedDestination(e.target.value)}
+              >
+                {destinationOptions.map((option, index) => (
+                  <option key={index} value={option}>{option}</option>
+                ))}
+              </Form.Control>
+            ) : (
+              <div className='header-value'>{selectedDestination}</div>
+            )}
+          </div>
 
-      <h2>Train Details</h2>
+            <div className='header-item'>
+              <div className="header-label">Date:</div>
+              <Form.Control
+                type="date"
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+                readOnly={!showModify} 
+              />
+            </div>
 
-      <p><b>Source: {source}</b></p>
+          </>
+        ) : (
 
-      <p><b>Destination: {destination}</b></p>
+          <>
+            <div className="header-item">
+              <div className="header-label">Source:</div>
+              <div className="header-value">{source}</div>
+            </div>
+            <div className="header-item">
+              <div className="header-label">Destination:</div>
+              <div className="header-value">{destination}</div>
+            </div>
+            <div className="header-item">
+              <div className="header-label">Date:</div>
+              <div className="header-value">{date}</div>
+            </div>
+          </>
+        )}
 
-      <p><b>Date: {date}</b></p>
+        <Button variant="link" onClick={showModify ? handleSearch : handleModify}>
+          {showModify ? 'Search' : 'Modify'}
+        </Button>
+      </div>
 
-      <table>
 
-        <thead>
+      <div className='page-container'>
+        <div className="content-box train-details-container">
 
-          <tr>
+          <h2>Train Details</h2>
 
-            <th>Book This?</th>
+          <table>
 
-            <th>Train No.</th>
+            <thead>
 
-            <th>Train Name</th>
+              <tr>
 
-            <th>Departure Time</th>
+                <th>Book This?</th>
 
-            <th>Arrival Time</th>
+                <th>Train No.</th>
 
-            <th>Fare</th>
+                <th>Train Name</th>
 
-            <th>Seats Available</th>
+                <th>Departure Time</th>
 
-          </tr>
+                <th>Arrival Time</th>
 
-        </thead>
+                <th>Fare</th>
 
-        <tbody>
+                <th>Seats Available</th>
 
- 
+              </tr>
 
-          {trainData && trainData.map((train, index) => (
+            </thead>
 
-            <tr key={index}
+            <tbody>
 
-            onClick={(event) => handleRowClick(event, train.train_Number)}>
 
-              <td>
 
-              <Form.Check
+              {trainData && trainData.map((train, index) => (
 
-                  type="radio"
+                <tr key={index}
 
-                  name="TrainBooking"
+                  onClick={(event) => handleRowClick(event, train.train_Number)}>
 
-                  id={`Train${index + 1}`}
+                  <td>
 
-                  value={train.train_Number}
+                    <Form.Check
 
-                  checked={selectedTrainNumber === train.train_Number}
+                      type="radio"
 
-                  onChange={handleRadioChange}
-                  required
+                      name="TrainBooking"
 
-                />
+                      id={`Train${index + 1}`}
 
-              </td>
+                      value={train.train_Number}
 
-              <td>{train.train_Number}</td>
+                      checked={selectedTrainNumber === train.train_Number}
 
-              <td>{train.name}</td>
+                      onChange={handleRadioChange}
+                      required
 
-              <td>{train.departure_time}</td>
+                    />
 
-              <td>{train.arrival_time}</td>
+                  </td>
 
-              <td>{train.fare}</td>
+                  <td>{train.train_Number}</td>
 
-              <td>{train.totalSeatsAvailable}</td>
+                  <td>{train.name}</td>
 
-            </tr>
+                  <td>{train.departure_time}</td>
 
-          ))}
+                  <td>{train.arrival_time}</td>
 
-        </tbody>
+                  <td>{train.fare}</td>
 
-      </table>
+                  <td>{train.totalSeatsAvailable}</td>
 
- 
+                </tr>
 
-      <Button variant="primary" type="submit" onClick={handleSubmit} >
+              ))}
 
-        Submit
+            </tbody>
 
-      </Button>
+          </table>
 
-      {showMessage && <p style={{ color: 'red' }}>Please select a train.</p>}
 
-    </div>
 
-    </div>
+          <Button variant="primary" type="submit" onClick={handleSubmit} >
 
-    <Footer/>
+            Submit
+
+          </Button>
+
+          {showMessage && <p style={{ color: 'red' }}>Please select a train.</p>}
+
+        </div>
+
+      </div>
+
+
+      <Footer />
 
     </>
 
@@ -235,6 +320,6 @@ const DisplayTrains = () => {
 
 };
 
- 
+
 
 export default DisplayTrains;
