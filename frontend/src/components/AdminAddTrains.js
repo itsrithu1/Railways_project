@@ -630,7 +630,7 @@ const AdminAddTrains = () => {
           </div>
 
           <label>
-            <button type="submit" onClick={handleSubmit}>
+            <button type="submit" onClick={handleSubmit} style={{marginLeft:'250px'}}>
               Add
             </button>
           </label>
@@ -639,7 +639,7 @@ const AdminAddTrains = () => {
             <button
               type="button"
               onClick={handleBack}
-              style={{ borderRadius: "5px", marginLeft: "100px" }}
+              style={{ borderRadius: "5px", marginLeft: "120px" }}
             >
               Back
             </button>

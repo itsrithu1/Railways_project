@@ -331,8 +331,8 @@ const Register = () => {
                 onBlur={() => setMatchFocus(false)}
               />
              
-              <div className="button">
-                <button 
+              <div className="button" >
+                <button style={{marginLeft:'100px'}}
                   disabled={
                     !validName || !validPwd || !validMatch ? true : false
                   }

@@ -1,4 +1,4 @@
-import React, { useEffect,useState } from 'react';
+import React, { useEffect,useState, useRef } from 'react';
 import "../styles/bookingDetails.css";
 import NavbarComponent from './NavbarComponent';
 import Footer from './Footer';
@@ -8,14 +8,19 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate ,useLocation} from 'react-router-dom';
 import { PDFViewer, Document, Page, Text, View, StyleSheet, PDFDownloadLink } from '@react-pdf/renderer';
 const shortid = require('shortid')
+
 // import { useHistory } from 'react-router-dom';
 
 
 
 const BookingPassengerDetails = () => {
 
+
   const location =useLocation()
   const navigate = useNavigate();
+
+ 
+    const pdfLinkRef = useRef();
 
 
   // var farePerTicket = 100; // Set the fare per ticket
@@ -34,10 +39,14 @@ const BookingPassengerDetails = () => {
 
  
 
-
+const [showPDFLink, setshowPDFLink] = useState(false);
   const [trainNumber,setTrainNumber]=useState(null)
   const [date,setdate]=useState(null)
   const [name, setName] = useState('First Class')
+
+  const handlePrintNow = () => {
+    setshowPDFLink(true)
+  }
 
   const handleChange = (index, e) => {
     const { name, value } = e.target;
@@ -137,7 +146,7 @@ const BookingPassengerDetails = () => {
   }
 
 
-  
+ 
 
   const handleConfirm = () => {
     
@@ -165,10 +174,12 @@ const BookingPassengerDetails = () => {
             
             if(data.flag=="OK"){
               // alert("Seat Booked Successfully")
-              navigate("/successBooking");
+              handlePrintNow();
+              // navigate("/successBooking");
             }
             if(data.flag == "Not created"){
               alert("No Seats Available")
+
             }
     
             });
@@ -231,19 +242,7 @@ const BookingPassengerDetails = () => {
 	}
 
 
-    // 
-
-
-    // const hasEmptyFields = passengers.some((passenger) =>
-    //   Object.values(passenger).some((value) => value === null || value === '')
-    // );
-
-    // if (hasEmptyFields) {
-    //   setIsFormValid(false);
-    // } else {
-    //   setIsFormValid(true);
-      // setShowModal(true);
-    // }
+    
   
 
   
@@ -303,7 +302,7 @@ const BookingPassengerDetails = () => {
     const queryParams = new URLSearchParams(location.search);
     setTrainNumber(queryParams.get("train_Number"));
     setdate(queryParams.get("date"));
-  }, [location]);
+  }, [location, ]);
 
  
 
@@ -507,9 +506,9 @@ const BookingPassengerDetails = () => {
         {/* {!isFormValid && <p style={{ color: 'red' }}>Please fill in all the required details before proceeding.</p>} */}
         
 
-        <button  onClick={handleSubmit} style={{borderRadius:'5px'}}>Proceed</button>
+        <button  onClick={handleSubmit} style={{borderRadius:'5px' ,width:'100px', marginLeft:'450px'}}>Proceed</button>
 
-        <button type="button" onClick={handleAddPassenger} style={{borderRadius:'5px',width:'120px'}}>
+        <button type="button" onClick={handleAddPassenger} style={{borderRadius:'5px',width:'120px', marginLeft:'440px'}}>
           Add Passenger
         </button>
       </form>
@@ -571,22 +570,17 @@ const BookingPassengerDetails = () => {
             Pay Now
 
           </Button>
-
-          <PDFDownloadLink
-
-            document={<PDFDocument passengers={passengers} />}
-
-            fileName="passenger_details.pdf"
-
-          >
-
-            {({ blob, url, loading, error }) =>
-
-              loading ? 'Loading document...' : 'Print Now'
-
-            }
-
-          </PDFDownloadLink>
+          {showPDFLink && (
+        <PDFDownloadLink
+          document={<PDFDocument passengers={passengers} />}
+          fileName="Ticket.pdf"
+          id="Printnow"
+        >
+          {({ blob, url, loading, error }) =>
+            loading ? 'Loading document...' : 'Print Now'
+          }
+        </PDFDownloadLink>
+      )}
 
         </Modal.Footer>
 
