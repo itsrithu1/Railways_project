@@ -127,12 +127,16 @@ const [showPDFLink, setshowPDFLink] = useState(false);
     setIsFormValid(true);
   };
 
+  const [seatNumber,setSeatNumber]=useState()
+
   const calculateTotalFare = () => {
   const numberOfPassengers = passengers.length;
-  var fareprice = numberOfPassengers * farePerTicket;
+  var conveniencefee = numberOfPassengers*20;
+  var fareprice = (numberOfPassengers * farePerTicket)+conveniencefee;
   razorpayFare= fareprice;
   console.log({razorpayFare});
-  return numberOfPassengers * farePerTicket;
+  
+  return fareprice;
 };
 
   const printinconsole = () => {
@@ -161,9 +165,10 @@ const [showPDFLink, setshowPDFLink] = useState(false);
       )
         .then((res) => res.json())
         .then((data) => {
-          if (data.flag == "OK") {
-            // alert("Seat Booked Successfully")
-
+          // console.log(data)
+          if (data.message == "seat booked") {
+           
+            setSeatNumber(data.data)
             handlePrintNow();
             // navigate("/successBooking");
           }
@@ -322,6 +327,10 @@ const [showPDFLink, setshowPDFLink] = useState(false);
           <Text style={styles.value}>{destination}</Text>
         </View>
         
+        <View style={styles.row}>
+          <Text style={styles.label}>Seat Number:</Text>
+          <Text style={styles.value}>{seatNumber}</Text>
+        </View>
         <View style={styles.section}>
           <Text style={styles.label}>Indian Railways Passenger Reservation System (PRS) GuideTextnes:</Text>
           <Text>

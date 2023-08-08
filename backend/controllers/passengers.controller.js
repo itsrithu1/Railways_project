@@ -27,7 +27,7 @@ function calculateAge(dateOfBirth) {
 
 exports.addPassenger = async (req, res) => {
 
-  console.log(req.body);
+  // console.log(req.body);
   const { passengers } = req.body;
   var i = 0;
   var name, gender, dob, phoneNo, insurance, food, seatnum, ptrRS, ptrURS, sAvailable;
@@ -58,7 +58,7 @@ let temp_passengers = {};
     temp_passengers[i] = age = calculateAge(passengers[i].dob)
 }
 
-console.log(temp_passengers);
+// console.log(temp_passengers);
 
   const unreservedSeat = seats.unreservedSeats;
   const reservedSeat = seats.reservedSeats;
@@ -87,17 +87,17 @@ console.log(temp_passengers);
   let totalSeats=numberOfSeatsPerCoach*numberOfCoach//db
   let noOfBookedSeats = totalSeats - sAvailable;
 
-  console.log("Number of Seats Per Coach : ", numberOfSeatsPerCoach);
-  console.log("Number of Coach : ", numberOfCoach);
-  console.log("Number of seat Booked: ", noOfBookedSeats);
+  // console.log("Number of Seats Per Coach : ", numberOfSeatsPerCoach);
+  // console.log("Number of Coach : ", numberOfCoach);
+  // console.log("Number of seat Booked: ", noOfBookedSeats);
   
   
   let allocated = false;
   let passengerSeats = [];
 
   async function updateDB(text){
-
-    console.log(text);
+    sAvailable--;
+    console.log("hhe",sAvailable);
     if(text === "res")
     {
       filter = { train_Number, date };
@@ -112,7 +112,7 @@ console.log(temp_passengers);
       options = { new: true };
 
       const updatedSeatAllocation = await SeatAllocation.findOneAndUpdate(filter, update, options);
-      console.log(updatedSeatAllocation);
+      // console.log(updatedSeatAllocation);
     }
     if(text === 'unres')
     {
@@ -128,7 +128,7 @@ console.log(temp_passengers);
         options = { new: true };
 
         const updatedSeatAllocation = await SeatAllocation.findOneAndUpdate(filter, update, options);
-        console.log(updatedSeatAllocation);
+        // console.log(updatedSeatAllocation);
     }
     
   }
@@ -147,7 +147,7 @@ console.log(temp_passengers);
             passengerSeats.push(a)
             noOfBookedSeats += 1;
             allocated = true;
-            sAvailable--;
+            // sAvailable--;
             return seat;
         }
     }
@@ -178,25 +178,67 @@ if (temp_passengers.length <= totalSeats - noOfBookedSeats) { //there are less p
                   seatnum = seat
                   allocated = true;
                   noOfBookedSeats += 1;
-                  sAvailable--;
+                  
                   updateDB("unres")
+                  console.log("unresswas called 1")
                   break;
               }
           }
           if (!allocated) {
-            robject[alloc_in(robject, passenger)] = 1;
-            updateDB("res")
+
+           let a=alloc_in(robject, passenger)
+           console.log("a1 is",a);
+            if(a!=null){
+              robject[alloc_in(robject, passenger)] = 1;
+              console.log("resswas called 2")
+              updateDB("res")
+            }
+
+            
+            // robject[alloc_in(robject, passenger)] = 1;
+            // console.log("resswas called")
+            // updateDB("res")
+            
           }
           if (!allocated) {
-            urobject[alloc_in(urobject, passenger)] = 1;
-            updateDB("unres")
+
+
+           let a=alloc_in(urobject, passenger)
+           console.log("a2 is",a);
+            if(a!=null){
+              urobject[alloc_in(urobject, passenger)] = 1;
+              console.log("unresswas called 3")
+              updateDB("unres")
+            }
+
+            // urobject[alloc_in(urobject, passenger)] = 1;
+            // console.log("unresswas called")
+            // updateDB("unres")
           }
       } else {
-        urobject[alloc_in(urobject, passenger)] = 1;
+
+        let a=alloc_in(urobject, passenger)
+        console.log("a3 is",a);
+        if(a!=null){
+          urobject[alloc_in(urobject, passenger)] = 1;
+        console.log("unresswas called 4")
         updateDB("unres")
+        }
+
+        // urobject[alloc_in(urobject, passenger)] = 1;
+        // console.log("unresswas called")
+        // updateDB("unres")
           if (!allocated) {
-            robject[alloc_in(robject, passenger)] = 1;
-            updateDB("res")
+           let a=alloc_in(robject, passenger)
+           console.log("a4 is",a);
+            if(a!=null){
+              robject[alloc_in(robject, passenger)] = 1;
+              console.log("resswas called 5")
+              updateDB("res")
+            }
+            
+            
+            
           }
       }
       if (!allocated) {
@@ -206,8 +248,8 @@ if (temp_passengers.length <= totalSeats - noOfBookedSeats) { //there are less p
 } 
 
 
-console.log(passengerSeats) //output.
-console.log(passengerSeats[0][0])
+// console.log(passengerSeats) //output.
+// console.log(passengerSeats[0][0])
 
   var filter,update,options,updatedSeatAllocation;
 
@@ -278,6 +320,10 @@ console.log(passengerSeats[0][0])
             train_Number,
             seat_Number: seatnum
           });
+
+         return res
+        .status(httpStatusCodes[200].code)
+        .json({message:"seat booked",data: seatnum});
 
         } catch (error) {
           console.log(error);
