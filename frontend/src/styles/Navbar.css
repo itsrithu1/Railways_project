@@ -15,7 +15,7 @@
 
 .nav-link {
   margin-right: 20px; /* Add spacing between nav links */
-  color: #212529; /* Set the color of the nav links */
+  color: #FFFF; /* Set the color of the nav links */
   transition: color 0.2s, background-color 0.2s; /* Add transition for color and background-color */
 }
 
@@ -25,6 +25,12 @@
 
 /* Add hover effect to nav links */
 .nav-link:hover {
+  color: white; /* Set the hover color of the nav links */
+  background-color: #007bff; /* Set the background color on hover */
+  border-radius: 5px;
+}
+
+.navbar-nav .nav-link:hover {
   color: white; /* Set the hover color of the nav links */
   background-color: #007bff; /* Set the background color on hover */
   border-radius: 5px;

@@ -106,11 +106,65 @@ exports.displayTrains = async (req, res) => {
 };
 exports.getFare = async (req,res) => {
   const trainNumber = req.query.train_Number;
+  const source = req.query.source;
+  const destination = req.query.destination;
+  
   console.log(trainNumber);
+
+  const train = await TrainData.find({
+    train_Number: trainNumber,
+  });
+var source_ptr=0,destination_ptr=0,i=0,j=0;
+
+console.log(train);
+
+const trainDataArray = Object.keys(train[0].Stations);
+      const distanceArray = Object.values(train[0].Distance);
+
+console.log("This is the Stations array");
+console.log(trainDataArray)
+
+
+console.log(source);
+console.log(destination);
+
+for(i=0;i<trainDataArray.length;i++)
+{
+  if(trainDataArray[i] == source)
+  {
+    console.log(i);
+    source_ptr =i;
+  }
+
+  if(trainDataArray[i] == destination)
+  {
+    console.log(i);
+    destination_ptr =i;
+  }
+  
+}
+if (source_ptr>destination_ptr) {
+  return;
+}
+
+
+
+console.log("Distance");
+console.log(distanceArray);
+console.log(distanceArray[source_ptr]);
+console.log(distanceArray[destination_ptr]);
+
+const Distance = distanceArray[destination_ptr] -  distanceArray[source_ptr] ;
+
+console.log("The final Distance is :");
+console.log(Distance);
+
+
+
 
 
   try {
-    const foundTrain = await Train.find({train_Number: trainNumber});
+    const foundTrain = await TrainData.find({train_Number: trainNumber});
 
     if (!foundTrain || foundTrain.length === 0) {
       return res
@@ -118,12 +172,16 @@ exports.getFare = async (req,res) => {
         .json(formResponse(httpStatusCodes[404].code, "Train not found"));
     }
 
-    console.log(foundTrain[0].fare)
+    // console.log(foundTrain[0].Distance);
+    // Tdate = 
+    const Fare = (Distance*foundTrain[0].fare) 
+    console.log("The Fare is :");
+    console.log(Fare)
 
     
     return res
       .status(httpStatusCodes[200].code)
-      .json(formResponse(httpStatusCodes[200].code, foundTrain[0].fare));
+      .json(formResponse(httpStatusCodes[200].code, Fare));
   } catch (error) {
     console.log(error);
     return res
