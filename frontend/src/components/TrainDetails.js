@@ -128,7 +128,7 @@ const DisplayTrains = () => {
 
  
 
-      <div className="content-box train-details-container">
+      <div className="content-box train-details-container" style={{color:'black'}}> 
 
       <h2>Train Details</h2>
 
@@ -214,12 +214,13 @@ const DisplayTrains = () => {
       </table>
 
  
-
-      <Button variant="primary" type="submit" onClick={handleSubmit} >
+<div style={{opacity:'100%'}}>
+      <Button variant="primary" type="submit" onClick={handleSubmit} style={{opacity:'100%'}}  >
 
         Submit
 
       </Button>
+      </div>
 
       {showMessage && <p style={{ color: 'red' }}>Please select a train.</p>}
 

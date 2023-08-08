@@ -195,7 +195,7 @@ console.log(train)
       <button
         type="button"
         onClick={handleSave}
-        style={{ marginRight: '140px',borderRadius:'5px', padding: '5px 10px' }}
+        style={{ marginRight: '220px',borderRadius:'5px', padding: '5px 10px' }}
       >
         Save
       </button>

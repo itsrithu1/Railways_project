@@ -121,6 +121,7 @@ const Login = () => {
               <button
                 className="button"
                 type="submit"
+                style={{marginLeft:'120px',width:'70px'}}
                 // onClick={handleSignIn}
               >
                 Sign In

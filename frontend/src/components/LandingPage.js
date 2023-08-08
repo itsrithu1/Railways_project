@@ -153,7 +153,7 @@ const LandingPage = () => {
                 </div>
               </Form.Group> */}
 
-              <Button variant='primary' type='submit' onClick={handleSubmit}>
+              <Button variant='primary' type='submit' onClick={handleSubmit} style={{marginLeft:'130px'}} >
                 Submit
               </Button>
             </Form>

@@ -507,9 +507,9 @@ const BookingPassengerDetails = () => {
         {/* {!isFormValid && <p style={{ color: 'red' }}>Please fill in all the required details before proceeding.</p>} */}
         
 
-        <button  onClick={handleSubmit} style={{borderRadius:'5px'}}>Proceed</button>
+        <button  onClick={handleSubmit} style={{borderRadius:'5px' ,width:'100px', marginLeft:'450px'}}>Proceed</button>
 
-        <button type="button" onClick={handleAddPassenger} style={{borderRadius:'5px',width:'120px'}}>
+        <button type="button" onClick={handleAddPassenger} style={{borderRadius:'5px',width:'120px', marginLeft:'440px'}}>
           Add Passenger
         </button>
       </form>
