@@ -505,7 +505,7 @@ const [showPDFLink, setshowPDFLink] = useState(false);
             Back
           </Button>
 
-          <Button variant="success" onClick={handleConfirm}>
+          <Button variant="success" onClick={displayRazorpay}>
 
             Pay Now
           </Button>
