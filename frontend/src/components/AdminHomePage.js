@@ -3,10 +3,12 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { Router, useNavigate } from 'react-router-dom';
 import Modal from 'react-modal';
+import ModalNew from 'react-bootstrap/Modal';
 import NavbarAdminComponent from './NavbarAdmin';
 import Footer from './Footer';
 import { computeHeadingLevel } from '@testing-library/react';
 import AdminSearchTrain from './AdminSearchTrain';
+import '../styles/adminHomePage.css';
 
 
 
@@ -78,7 +80,9 @@ console.log(train)
     .then((data) => {      
 
       if (data.flag=="OK") {
+
             alert("Train Deleted Successfully")
+            displayTrainDetails()
         console.log("successful")
             } else {
               alert("Some Error Occured, try after some time")
@@ -137,7 +141,7 @@ console.log(train)
       style={{ width: '100%', padding: '5px' }}
     /> */}
 
-    <label style={{ display: 'block' }}>Arrival Time:</label>
+    {/* <label style={{ display: 'block' }}>Arrival Time:</label>
     <input
       type="time"
       value={editedTrain.startTime}
@@ -155,7 +159,7 @@ console.log(train)
       name="endTime"
       required
       style={{ width: '100%', padding: '5px' }}
-    />
+    /> */}
 
     <label style={{ display: 'block' }}>No of coaches:</label>
     <input
@@ -307,7 +311,7 @@ const AdminHomePage = () => {
   const [searchResult, setSearchResult] = useState('');
   const [trainDetails ,setTrainDetails]=useState([])
   const [originaltrainDetails ,setOriginalTrainDetails]=useState([])
-
+  const [showModal, setShowModal] = useState(false);
   const [selectedTrain, setSelectedTrain] = useState(null);
 
   const handleTrainNumberChange = (event) => {
@@ -397,7 +401,7 @@ const AdminHomePage = () => {
 
       if (data.flag=="OK") {
         // let temp=data.data
-            // console.log(temp[0])
+            console.log(data.data)
         setTrainDetails(data.data)
         setOriginalTrainDetails(data.data)
             } else {
@@ -417,6 +421,56 @@ const AdminHomePage = () => {
 
   }
 
+  
+  const [singleTrainData,setSingleTrainData] = useState()
+
+  const displayAllDetails = (train_Number) => {
+    setShowModal(true);
+    console.log(train_Number);
+    
+    try {
+            
+      fetch(`http://localhost:3001/api/v1/admin/displayAllTrainDetails`, {
+    method: "POST",
+    crossDomain: true,
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      "Accesss-Control-Allow-Origin": "*",
+    },
+    body: JSON.stringify({
+      train_Number
+    }),
+    
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      console.log("recieved data is", data.data)
+      
+
+      if (data.flag=="OK") {
+        let temp=data.data
+            // console.log(Object.keys(temp.Stations).length)
+            setSingleTrainData(data.data)
+        
+            } else {
+              // alert("No Trains Found")
+              
+          }
+
+      });
+
+
+
+  } catch (err) {
+    console.error("Error:", err);
+    
+  }
+
+
+
+  };
+
   useEffect(() => {
 
     displayTrainDetails();
@@ -424,41 +478,49 @@ const AdminHomePage = () => {
 
   return (
     <>
-    {/* {console.log(trainDetails)} */}
+      {/* {console.log(trainDetails)} */}
       <NavbarAdminComponent />
-      
-      <div className='page-container'>
+
+      <div className="page-container">
         <div className="content-box train-details-container">
-        {/* <AdminSearchTrain/> */}
+          {/* <AdminSearchTrain/> */}
 
-
-
-
-        <div>
-        <label htmlFor="trainNumber" style={{color:"black"}}>Enter Train Number:</label>
-        <input
-          type="text"
-          id="trainNumber"
-          value={searchtrainNumber}
-          onChange={handleTrainNumberChange}
-        />
-      </div>
-      <div>
-        <button onClick={handleSearch} style={{ marginRight: '10px', borderRadius:'5px',padding: '5px 10px' }}>Submit</button>
-      </div>
-      <div>
-        <p>{searchResult}</p>
-      </div>
+          <div>
+            <label htmlFor="trainNumber" style={{ color: "black" }}>
+              Enter Train Number:
+            </label>
+            <input
+              type="text"
+              id="trainNumber"
+              value={searchtrainNumber}
+              onChange={handleTrainNumberChange}
+            />
+          </div>
+          <div>
+            <button
+              onClick={handleSearch}
+              style={{
+                marginRight: "10px",
+                borderRadius: "5px",
+                padding: "5px 10px",
+              }}
+            >
+              Submit
+            </button>
+          </div>
+          <div>
+            <p>{searchResult}</p>
+          </div>
           <h2>Train Details</h2>
           <table>
             <thead>
               <tr>
                 <th>Train No.</th>
                 <th>Train Name</th>
-                <th>Source</th>
+                {/* <th>Source</th>
                 <th>Destination</th>
                 <th>Departure Time</th>
-                <th>Arrival Time</th>
+                <th>Arrival Time</th> */}
                 <th>Number Of Coaches</th>
                 <th>Seats Per Coach</th>
                 <th>Fare</th>
@@ -466,27 +528,40 @@ const AdminHomePage = () => {
               </tr>
             </thead>
             <tbody>
-            {trainDetails && trainDetails.map((train, index) => (
-                <tr key={index}>
-                  <td>{train.train_Number}</td>
-                  <td>{train.name}</td>
-                  <td>{train.source}</td>
+              {trainDetails &&
+                trainDetails.map((train, index) => (
+                  <tr
+                    key={index}
+                    onClick={() => displayAllDetails(train.train_Number)}
+                  >
+                    <td>{train.train_Number}</td>
+                    <td>{train.name}</td>
+                    {/* <td>{train.source}</td>
                   <td>{train.destination}</td>
                   
                   <td>{train.endTime}</td>
-                  <td>{train.startTime}</td>
-                  <td>{train.numberOfCoach}</td>
-                  <td>{train.numberOfSeatsPerCoach}</td>
-                  <td>{train.fare}</td>
-                  <td>
-                    <button onClick={() => handleEdit(index)} style={{borderRadius:'5px'}}>Edit</button>
-                  </td>
-                </tr>
-              ))}
+                  <td>{train.startTime}</td> */}
+                    <td>{train.numberOfCoach}</td>
+                    <td>{train.numberOfSeatsPerCoach}</td>
+                    <td>{train.fare}</td>
+                    <td>
+                      <button
+                        onClick={(event) => {
+                          event.stopPropagation(); // Prevent event propagation to the row
+                          handleEdit(index);
+                        }}
+                        style={{ borderRadius: "5px" }}
+                      >
+                        Edit
+                      </button>
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </table>
-          <button onClick={handleAdd} style={{borderRadius:'5px'}}>Add Train</button>
-        
+          <button onClick={handleAdd} style={{ borderRadius: "5px" }}>
+            Add Train
+          </button>
         </div>
       </div>
 
@@ -496,12 +571,53 @@ const AdminHomePage = () => {
           isOpen={selectedTrain !== null}
           onRequestClose={() => setSelectedTrain(null)}
           train={trainDetails[selectedTrain]}
-          trainNumber = {trainDetails[selectedTrain].train_Number}
+          trainNumber={trainDetails[selectedTrain].train_Number}
           onSave={handleSaveEdit}
-          displayTrainDetails = {displayTrainDetails}
-          
+          displayTrainDetails={displayTrainDetails}
         />
       )}
+
+      <ModalNew
+        show={showModal}
+        onHide={() => {
+          setShowModal(false);
+        }}
+      >
+        <ModalNew.Header closeButton>
+          <ModalNew.Title>Train Details</ModalNew.Title>
+        </ModalNew.Header>
+        <ModalNew.Body>
+  {singleTrainData ? (
+    <div className="modal-content">
+      <ul className="events">
+        {Object.entries(singleTrainData.Stations).map(([station, time]) => (
+          <li key={station}>
+            <time datetime={time}>{time}</time>
+            <span>
+              <strong>{station}</strong>
+            </span>
+          </li>
+        ))}
+      </ul>
+
+      <div className="custom-div">
+        <ul id="trailDetail">
+          <li>train Number : {singleTrainData.train_Number}</li>
+          <li>train Name : {singleTrainData.name}</li>
+          <li>Number of Coaches : {singleTrainData.numberOfCoach}</li>
+          <li>
+            Number of Seats per Coach : {singleTrainData.numberOfSeatsPerCoach}
+          </li>
+          <li>Fare/km : {singleTrainData.fare}</li>
+        </ul>
+      </div>
+    </div>
+  ) : (
+    <p>Loading train details...</p>
+  )}
+</ModalNew.Body>
+
+      </ModalNew>
 
       <Footer />
     </>

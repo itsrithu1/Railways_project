@@ -5,7 +5,7 @@ import Footer from './Footer';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Navigate ,useLocation} from 'react-router-dom';
+import { useNavigate ,useLocation} from 'react-router-dom';
 import { PDFViewer, Document, Page, Text, View, StyleSheet, PDFDownloadLink } from '@react-pdf/renderer';
 const shortid = require('shortid')
 // import { useHistory } from 'react-router-dom';
@@ -15,6 +15,8 @@ const shortid = require('shortid')
 const BookingPassengerDetails = () => {
 
   const location =useLocation()
+  const navigate = useNavigate();
+
 
   // var farePerTicket = 100; // Set the fare per ticket
 
@@ -28,7 +30,10 @@ const BookingPassengerDetails = () => {
       foodPreferences: 'no',
     },
   ]);
-  // const [ticket_id, setticket_id] = useState();
+
+
+ 
+
 
   const [trainNumber,setTrainNumber]=useState(null)
   const [date,setdate]=useState(null)
@@ -51,12 +56,11 @@ const BookingPassengerDetails = () => {
       ...prevPassengers,
       {
         name: '',
-        dob: '',
-        gender: '',
-        phone: '',
-       
-        travelInsurance: 'no',
-        foodPreferences: 'no',
+      dob: '',
+      gender: '',
+      phone: null,
+      travelInsurance: 'no',
+      foodPreferences: 'no',
       },
     ]);
     setIsFormValid(true);
@@ -132,11 +136,12 @@ const BookingPassengerDetails = () => {
     console.log({passengers})
   }
 
- 
+
   
 
   const handleConfirm = () => {
     
+
     console.log("Im in handleConfirm");
     console.log(passengers);
 
@@ -159,7 +164,8 @@ const BookingPassengerDetails = () => {
           .then((data) => {
             
             if(data.flag=="OK"){
-              alert("Seat Booked Successfully")
+              // alert("Seat Booked Successfully")
+              navigate("/successBooking");
             }
             if(data.flag == "Not created"){
               alert("No Seats Available")
@@ -174,7 +180,6 @@ const BookingPassengerDetails = () => {
           
         }
 
-        // Navigate('/successBooking');
 
 
   };

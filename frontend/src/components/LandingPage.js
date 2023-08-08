@@ -8,7 +8,7 @@ import NavbarComponent from '../components/NavbarComponent';
 import Footer from '../components/Footer';
 import Swal from 'sweetalert2';
 
-const places = ['Goa', 'Mumbai', 'Bangalore', 'Delhi', 'Chennai'];
+const places = ['Margao', 'Thane', 'Bangalore', 'Panvel', 'Chennai', 'Canacona', 'Ratnagiri'];
 
 const LandingPage = () => {
   const navigate = useNavigate();

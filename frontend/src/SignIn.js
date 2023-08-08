@@ -49,12 +49,15 @@ const Login = () => {
         .then((data) => {
           console.log("recieved data is", data);
 
-          if (data.flag == "OK") {
+          if (data.data == "Logged in as User") {
             setUser("");
             setPwd("");
             setSuccess(true);
             navigate("/LandingPage");
-          } else {
+          }else if(data.data =="Logged in as Admin"){
+            navigate("/AdminHomePage");
+          } 
+          else {
             // Handle unsuccessful login response here
             if (data.status_code === 400) {
               setErrMsg("not a valid email");

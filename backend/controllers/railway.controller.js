@@ -140,8 +140,6 @@ exports.getFare = async (req,res) => {
 
 
 
-
-
 exports.searchTrainUserNew = async (req, res) => {
   // const { source, destination, date } = req.body;
 
@@ -151,40 +149,26 @@ exports.searchTrainUserNew = async (req, res) => {
 
   // const {source,destination, date} = req.body
   const inputStation = [source, destination];
-  console.log(inputStation);
+  console.log(source,destination,date);
 
 
 
-// console.log(source,destination,date)
   try {
-    // const checkTrain = await TrainData.aggregate([
-    //   { "$match" : { "Stations" : {"Margao" : "12:00"} } }])
-
-      // const checkTrain = await TrainData.aggregate([
-      //   { $match: { Stations: { $elemMatch: { [source]: { $exists: true } } } } }
-      // ]);
-
-      // const trains = await TrainData.find({ $and: [ { 'Stations': { $exists: true, [source]: { $exists: true } } }, { 'Stations': { $exists: true, [destination]: { $exists: true } } }, ], }); 
-
-    
+   
 
 const query = { $and: [ { [`Stations.${source}`]: { $exists: true } }, { [`Stations.${destination}`]: { $exists: true } }, ], }; 
 const trains = await TrainData.find(query);
 
 var source_ptr=0,destination_ptr=0,i=0,j=0;
-// console.log(trains);
-
-
-
-
-
-    // console.log(trains);
 
     if (!trains.length) {
       return res.status(httpStatusCodes[202].code).json(
         formResponse(httpStatusCodes[202].code, "No Trains found for this route")
       );
     }
+    console.log("Trains: ");
+console.log(trains);
+  
 
     const foundTrainsPromises = trains.map(async (train) => {
 
@@ -193,7 +177,7 @@ var source_ptr=0,destination_ptr=0,i=0,j=0;
         train_Number: train.train_Number,
         date
       });
-      // console.log("this is the train : ",findTrainWithSeats[0].seatsAvailable)
+      console.log("this is the train : ",findTrainWithSeats[0].seatsAvailable)
 
       if(!findTrainWithSeats){
         return res.status(httpStatusCodes[204].code).json(
@@ -252,6 +236,8 @@ console.log(distanceArray[destination_ptr]);
         train_Number: train.train_Number,
         name : train.name,
         fare:train.fare,
+        departure_time: train.Stations[source],
+        arrival_time: train.Stations[destination],
         totalSeatsAvailable: findTrainWithSeats[0].seatsAvailable,
 
       };
