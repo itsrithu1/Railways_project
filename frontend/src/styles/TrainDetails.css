@@ -115,20 +115,12 @@
 /* Enclose content in a box with a white background */
 
 .content-box {
-  background-color: white;
-
+  background-color: rgba(255, 255, 255, 0.8); /* Change opacity value */
   padding: 20px;
-
   border-radius: 10px;
-
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-
-  opacity: 80%;
-
   width: 95%;
-
   height: 75%;
-
   margin: auto;
 }
 
@@ -169,6 +161,12 @@ button {
 
 input[type="radio"] {
   margin-right: 5px;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #000;
+  border-radius: 50%;
+  background-color: transparent;
 }
 
 .page-container {
@@ -191,21 +189,7 @@ input[type="radio"] {
 
 /* Darken the radio button circle */
 
-input[type="radio"] {
-  margin-right: 5px;
 
-  appearance: none; /* Remove default appearance */
-
-  width: 16px;
-
-  height: 16px;
-
-  border: 2px solid #000; /* Border color for the circle */
-
-  border-radius: 50%; /* Make it a circle */
-
-  background-color: transparent;
-}
 
 input[type="radio"]:checked {
   background-color: #000; /* Darken the circle when selected */
@@ -220,11 +204,18 @@ tr {
 }
 
 tr:hover {
-  background-color: #f2f2f2; /* Change background color on hover */
+  background-color: #8e96fc; /* Change background color on hover */
 }
 
 .scrollable-tablee {
   max-height: 400px; /* Set the desired max height */
   overflow: auto;
   width: 95%;
+}
+
+button {
+  margin-top: 20px;
+  background-color: green; /* Set the background color */
+  color: white; /* Set the text color */
+  opacity: 1; /* Set opacity to 100% */
 }
