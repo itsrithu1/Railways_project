@@ -38,7 +38,7 @@ const DisplayTrains = () => {
     // window.location.href='./displaytrains'
 
     if(selectedTrainNumber){
-      navigate(`/bookingPassengerDetails?train_Number=${selectedTrainNumber}&date=${date}`);
+      navigate(`/bookingPassengerDetails?train_Number=${selectedTrainNumber}&date=${date}&source=${source}&destination=${destination}`);
     } else {
       setShowMessage(true);
 

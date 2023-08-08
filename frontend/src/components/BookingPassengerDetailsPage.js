@@ -41,8 +41,12 @@ const BookingPassengerDetails = () => {
 
 const [showPDFLink, setshowPDFLink] = useState(false);
   const [trainNumber,setTrainNumber]=useState(null)
+  const [source,setsource]=useState(null)
+  const [destination,setdestination]=useState(null)
   const [date,setdate]=useState(null)
   const [name, setName] = useState('First Class')
+  // const [razorpayFare, setrazorpayFare] = useState();
+  var razorpayFare =0;
 
   const handlePrintNow = () => {
     setshowPDFLink(true)
@@ -138,6 +142,9 @@ const [showPDFLink, setshowPDFLink] = useState(false);
   
   const calculateTotalFare = () => {
   const numberOfPassengers = passengers.length;
+  var fareprice = numberOfPassengers * farePerTicket;
+  razorpayFare= fareprice;
+  console.log({razorpayFare});
   return numberOfPassengers * farePerTicket;
 };
 
@@ -206,7 +213,7 @@ const [showPDFLink, setshowPDFLink] = useState(false);
 			return
 		}
 
-		const data = await fetch('http://localhost:3001/api/v1/payment', { method: 'POST' }).then((t) =>
+		const data = await fetch(`http://localhost:3001/api/v1/payment?amount=${razorpayFare}`, { method: 'POST' }).then((t) =>
 			t.json()
 		)
 
@@ -267,7 +274,7 @@ const [showPDFLink, setshowPDFLink] = useState(false);
 
     try {
             
-      fetch(`http://localhost:3001/api/v1/user/getfare?train_Number=${trainNumber}`, {
+      fetch(`http://localhost:3001/api/v1/user/getfare?train_Number=${trainNumber}&date=${date}&source=${source}&destination=${destination}`, {
     method: "GET",
     crossDomain: true,
     headers: {
@@ -301,8 +308,10 @@ const [showPDFLink, setshowPDFLink] = useState(false);
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
     setTrainNumber(queryParams.get("train_Number"));
+    setsource(queryParams.get("soruce"));
+    setdestination(queryParams.get("destination"));
     setdate(queryParams.get("date"));
-  }, [location, ]);
+  }, [location ]);
 
  
 
@@ -565,7 +574,7 @@ const [showPDFLink, setshowPDFLink] = useState(false);
 
           </Button>
 
-          <Button variant="success" onClick={handleConfirm}>
+          <Button variant="success" onClick={displayRazorpay}>
 
             Pay Now
 
