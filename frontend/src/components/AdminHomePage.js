@@ -483,6 +483,7 @@ const AdminHomePage = () => {
 
       <div className="page-container">
         <div className="content-box train-details-container">
+          {/*scroll bar*/}
           {/* <AdminSearchTrain/> */}
 
           <div>
