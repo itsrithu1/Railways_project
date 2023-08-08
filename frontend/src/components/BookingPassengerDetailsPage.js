@@ -319,153 +319,193 @@ const [showPDFLink, setshowPDFLink] = useState(false);
   return (
     <>
       <NavbarComponent />
+
+
+
+      <div className="outsidebpd">
+
+<div className="cardbpd">
+
+  <div className="tdetails-bpd">
+
+  <h1 className="name-bpd">Shatabdi Express</h1>
+
+      <h6 className="tnum-bpd">#12052</h6>
+
+  </div>
+
+
+
+  <div className="ttimeoutsidebpd">
+
+  <div className="ttimebpd">
+
+      <h3 className="timebpd">10:10, 04 Sept</h3>
+
+      <div className="linebpd"></div>
+
+      <h3 className="timebpd" >11h 33mins</h3>
+
+      <div className="linebpd"></div>
+
+      <h3 className="timebpd">09:43, 04 Sept</h3>                
+
+      </div>
+
+
+
+      <div className="stationbpd">
+
+          <h6>Margao</h6>
+
+          <h6>Thane</h6>
+
+      </div>
+
+  </div>
+
+</div>  
+
+
+
+
+
+<div className="paymentbpd">
+
+     
+
+      <div className="detailsbpd">
+
+          <h5>Gst (Inc)</h5>
+
+          <h5>18%</h5>
+
+      </div>
+
+      <div className="detailsbpd">
+
+          <h5>convinence Fee</h5>
+
+          <h5>rs 20</h5>
+
+      </div>
+
+
+
+          <div className="paynowColor">
+
+      <div className="linebpd"></div>
+
+      <button className="paybpd"><span className="paynowbpd">Pay Now</span></button>
+
+      </div>
+
+  </div>
+
+
+
+</div>
+
+
+
       <form>
-        <table className="table table-bordered">
-          <thead>
-            <tr>
-              <th>Sr No</th>
-              <th>Name</th>
-              <th>Dob</th>
-              <th>Gender</th>
-              <th>Phone No</th>
 
-              {/* <th>Travel Insurance</th>
-              <th>Food Preferences</th> */}
+      <table className="table table-bordered table-striped table-custom-width">
+        <thead className="thead-dark">
+          <tr>
+            <th>Sr No</th>
+            <th>Name</th>
+            <th>Dob</th>
+            <th>Gender</th>
+            <th>Phone No</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {passengers.map((passenger, index) => (
+            <tr key={index}>
+              <td>{index + 1}</td>
+              <td>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="name"
+                  value={passenger.name}
+                  onChange={(e) => handleChange(index, e)}
+                  required
+                />
+              </td>
+              <td>
+                <input
+                  type="date"
+                  className="form-control"
+                  name="dob"
+                  value={passenger.date}
+                  onChange={(e) => handleChange(index, e)}
+                  required
+                  max={getMaxDate()}
+                />
+              </td>
+              <td>
+                <select
+                  className="form-control"
+                  name="gender"
+                  value={passenger.gender}
+                  onChange={(e) => handleChange(index, e)}
+                  required
+                >
+                  <option value="" disabled>
+                    Select Gender
+                  </option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                  <option value="other">Other</option>
+                </select>
+              </td>
+              <td>
+                <input
+                  type="number"
+                  className="form-control"
+                  name="phone"
+                  pattern="[0-9]{10}"
+                  value={passenger.phone}
+                  onChange={(e) => handleChange(index, e)}
+                  required
+                />
+              </td>
+              <td>
+                <button
+                  className="btn btn-danger"
+                  onClick={() => handleDeletePassenger(index)}
+                >
+                  Delete
+                </button>
+              </td>
             </tr>
-          </thead>
-          <tbody>
-            {passengers.map((passenger, index) => (
-              <tr key={index}>
-                <td>{index + 1}</td>
-                <td>
-                  <input
-                    type="text"
-                    name="name"
-                    value={passenger.name}
-                    onChange={(e) => handleChange(index, e)}
-                    required
-                  />
-                </td>
-                <td>
-                  <input
-                    type="date"
-                    name="dob"
-                    value={passenger.date}
-                    onChange={(e) => handleChange(index, e)}
-                    required
-                    max={getMaxDate()}
-                  />
-                </td>
-                <td>
-                  <select
-                    name="gender"
-                    value={passenger.gender}
-                    onChange={(e) => handleChange(index, e)}
-                    required
-                  >
-                    <option value="" disabled>
-                      Select Gender
-                    </option>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                    <option value="other">Other</option>
-                  </select>
-                </td>
-                <td>
-                  <input
-                    type="number"
-                    name="phone"
-                    pattern="[0-9]{10}"
-                    value={passenger.phone}
-                    onChange={(e) => handleChange(index, e)}
-                    required
-                  />
-                </td>
+          ))}
+        </tbody>
+      </table>
 
-                {/* <td>
-                  <label>
-                    <input
-                      type="radio"
-                      name={`travelInsurance${index}`}
-                      value="yes"
-                      // checked={passenger.travelInsurance === 'yes'}
+          {/* {!isFormValid && <p style={{ color: 'red' }}>Please fill in all the required details before proceeding.</p>} */}
+          
+          <button
+            type="button"
+            onClick={handleAddPassenger}
+            className="addpass-button"
+            // style={{ borderRadius: "5px", width: "120px", marginLeft: "540px",whiteSpace: "nowrap",textAlign: "center"  }}
+          >
+            Add Passenger
+          </button>
 
-                      onChange={(e) => handleChange(index, e)}
-                    />
-                    Yes
-                  </label>
-                  <label>
-                    <input
-                      type="radio"
-                      name={`travelInsurance${index}`}
-                      value="no"
-                      //checked={passenger.travelInsurance === 'no'}
-                      onChange={(e) => handleChange(index, e)}
-                    />
-                    No
-                  </label>
-                </td>
-                <td>
-                  <label>
-                    <input
-                      type="radio"
-                      name={`foodPreferences${index}`}
-                      value="no"
-                      // checked={passenger.foodPreferences === 'no'}
-                      onChange={(e) => handleChange(index, e)}
-                    />
-                    No
-                  </label>
-                  <label>
-                    <input
-                      type="radio"
-                      name={`foodPreferences${index}`}
-                      value="veg"
-                      // checked={passenger.foodPreferences === 'veg'}
-                      onChange={(e) => handleChange(index, e)}
-                    />
-                    Veg
-                  </label>
-                  <label>
-                    <input
-                      type="radio"
-                      name={`foodPreferences${index}`}
-                      value="non-veg"
-                      // checked={passenger.foodPreferences === 'non-veg'}
-                      onChange={(e) => handleChange(index, e)}
-                    />
-                    Non-Veg
-                  </label>
-                </td> */}
-                <td>
-                  <Button
-                    variant="danger"
-                    onClick={() => handleDeletePassenger(index)}
-                  >
-                    Delete
-                  </Button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+          <button
+            onClick={handleSubmit}
+            style={{ borderRadius: "5px", width: "100px", margin: "0 auto"}}
+          >
+            Proceed
+          </button>
 
-        {/* {!isFormValid && <p style={{ color: 'red' }}>Please fill in all the required details before proceeding.</p>} */}
-
-        <button
-          onClick={handleSubmit}
-          style={{ borderRadius: "5px", width: "100px", marginLeft: "550px" }}
-        >
-          Proceed
-        </button>
-
-        <button
-          type="button"
-          onClick={handleAddPassenger}
-          style={{ borderRadius: "5px", width: "120px", marginLeft: "540px" }}
-        >
-          Add Passenger
-        </button>
+         
+        
       </form>
 
       <Modal show={showModal} onHide={handleCloseModal}>
@@ -506,7 +546,6 @@ const [showPDFLink, setshowPDFLink] = useState(false);
           </Button>
 
           <Button variant="success" onClick={handleConfirm}>
-
             Pay Now
           </Button>
           {showPDFLink && (
