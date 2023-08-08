@@ -79,10 +79,17 @@
   
     width: 95%;
   
-    height: fit-content;
+    height: 85%;
   
     margin: auto;
   
    
   
   }
+
+
+.scrollable-table {
+  max-height: 400px; /* Set the desired max height */
+  overflow: auto;
+  width: 95%;
+}
