@@ -49,12 +49,16 @@ const Login = () => {
         .then((data) => {
           console.log("recieved data is", data);
 
-          if (data.data == "Logged in as User") {
+          if (data.message == "Logged in as User") {
             setUser("");
             setPwd("");
             setSuccess(true);
+            window.localStorage.setItem("token",data.data)
+            // console.log("data :token : ",data.data)
             navigate("/LandingPage");
-          }else if(data.data =="Logged in as Admin"){
+
+          }else if(data.message =="Logged in as Admin"){
+            window.localStorage.setItem("token",data.data)
             navigate("/AdminHomePage");
           } 
           else {

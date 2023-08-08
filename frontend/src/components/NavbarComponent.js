@@ -19,14 +19,16 @@ import '../styles/Navbar.css';
  
 
 import logo from './Rail_Logo.png';
-
+import {useNavigate } from "react-router-dom";
  
-
  
 
 function NavbarComponent() {
-
- 
+  const navigate = useNavigate();
+ const logOut =()=>{
+  window.localStorage.removeItem("token")  
+  navigate("/");
+ }
 
   return (
 
@@ -83,7 +85,7 @@ function NavbarComponent() {
 
  
 
-            <Nav.Link href="/">Logout </Nav.Link>
+            <Nav.Link onClick={logOut}>Logout </Nav.Link>
 
  
 
