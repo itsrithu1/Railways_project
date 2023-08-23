@@ -207,7 +207,7 @@ exports.searchTrainUserNew = async (req, res) => {
 
   // const {source,destination, date} = req.body
   const inputStation = [source, destination];
-  console.log(source,destination,date);
+  console.log("SearchTrain",source,destination,date);
 
 
 
@@ -230,12 +230,12 @@ var source_ptr=0,destination_ptr=0,i=0,j=0;
 
     const foundTrainsPromises = trains.map(async (train) => {
 
-
+console.log("Train Number", train.train_Number);
       const findTrainWithSeats = await SeatAllocation.find({
         train_Number: train.train_Number,
         date
       });
-      console.log("Seats Available : ",findTrainWithSeats)
+      console.log("Seats Available : ",findTrainWithSeats.name)
 
       if(!findTrainWithSeats){
         return res.status(httpStatusCodes[204].code).json(

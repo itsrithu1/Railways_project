@@ -139,6 +139,12 @@ const [showPDFLink, setshowPDFLink] = useState(false);
     console.log({ passengers });
   };
 
+  const taketoHome = () => {
+    // console.log("Navigated");
+                navigate("/successBooking");
+
+  }
+
   const handleConfirm = () => {
     console.log("Im in handleConfirm");
     console.log(passengers);
@@ -613,6 +619,7 @@ const [showPDFLink, setshowPDFLink] = useState(false);
               document={<PDFDocument passengers={passengers} />}
               fileName="Ticket.pdf"
               id="Printnow"
+              onClick={taketoHome}
             >
               {({ blob, url, loading, error }) =>
                 loading ? "Loading document..." : "Print Now"

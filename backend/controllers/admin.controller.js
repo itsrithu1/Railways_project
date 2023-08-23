@@ -6,6 +6,7 @@ const { TrainData } = require("../model/trainDataNew.model");
 const { spawn } = require("child_process");
 const axios = require("axios");
 const { SeatAllocation } = require("../model/seatAllocation.model");
+const { NewseatAllocation } = require("../model/NewseatAllocation.model");
 
 exports.searchTrain = async (req, res) => {
   // const { trainNumber, trainName } = req.params.id;
@@ -444,144 +445,144 @@ function processStationsData(sourceToDest, sourceToDestDepTime) {
 
 
 
-exports.createTrainNew = async (req, res) => {
-  const frontendData = req.body.Trains;
-
-
-  const train_Number = parseInt(frontendData.train_Number);
-  const name = frontendData.name;
-  const Stations = processStationsData(frontendData.sourceToDest, frontendData.sourceToDestDepTime);
-  const Distance = frontendData.distanceFromSource.split(',').map(Number);
-  const numberOfCoach = parseInt(frontendData.numberOfCoach);
-  const numberOfSeatsPerCoach = parseInt(frontendData.numberOfSeatsPerCoach);
-  const fare = parseFloat(frontendData.fare);
+// exports.createTrainNew = async (req, res) => {
+//   const frontendData = req.body.Trains;
   
-    // const Tnumber = parseInt(train_Number,2) 
-// console.log("processed data ", processedData)
+
+//   const train_Number = parseInt(frontendData.train_Number);
+//   const name = frontendData.name;
+//   const Stations = processStationsData(frontendData.sourceToDest, frontendData.sourceToDestDepTime);
+//   const Distance = frontendData.distanceFromSource.split(',').map(Number);
+//   const numberOfCoach = parseInt(frontendData.numberOfCoach);
+//   const numberOfSeatsPerCoach = parseInt(frontendData.numberOfSeatsPerCoach);
+//   const fare = parseFloat(frontendData.fare);
+  
+//     // const Tnumber = parseInt(train_Number,2) 
+// // console.log("processed data ", processedData)
     
   
-    try {
-      if (
-        !train_Number ||
-        !name ||
-        !Stations ||
-        !numberOfCoach ||
-        !numberOfSeatsPerCoach ||
-        !Distance ||
-        !fare
-      ) {
-        return res
-          .status(httpStatusCodes[400].code)
-          .json(formResponse(httpStatusCodes[400].code, "Enter All details"));
-      }
-      const checktrain = await TrainData.findOne({ train_Number });
-      // console.log(checktrain);
+//     try {
+//       if (
+//         !train_Number ||
+//         !name ||
+//         !Stations ||
+//         !numberOfCoach ||
+//         !numberOfSeatsPerCoach ||
+//         !Distance ||
+//         !fare
+//       ) {
+//         return res
+//           .status(httpStatusCodes[400].code)
+//           .json(formResponse(httpStatusCodes[400].code, "Enter All details"));
+//       }
+//       const checktrain = await TrainData.findOne({ train_Number });
+//       // console.log(checktrain);
   
-      if (checktrain) {
-        return res
-          .status(httpStatusCodes[202].code)
-          .json(
-            formResponse(
-              httpStatusCodes[202].code,
-              "train with same Train Number is Present"
-            )
-          );
-      }
+//       if (checktrain) {
+//         return res
+//           .status(httpStatusCodes[202].code)
+//           .json(
+//             formResponse(
+//               httpStatusCodes[202].code,
+//               "train with same Train Number is Present"
+//             )
+//           );
+//       }
   
-      const newTrain = new TrainData({
-        train_Number,
-        name,
-        Stations,
-        numberOfCoach,
-        numberOfSeatsPerCoach,
-        Distance,
-        fare
-      });
+//       const newTrain = new TrainData({
+//         train_Number,
+//         name,
+//         Stations,
+//         numberOfCoach,
+//         numberOfSeatsPerCoach,
+//         Distance,
+//         fare
+//       });
   
-      await newTrain.save();
+//       await newTrain.save();
   
 
-      try {
+//       try {
       
-const totalSeats = numberOfCoach*numberOfSeatsPerCoach
-      const args = [numberOfCoach,numberOfSeatsPerCoach]
-      var reservedArray = []
-      var unreservedArray = []
+// const totalSeats = numberOfCoach*numberOfSeatsPerCoach
+//       const args = [numberOfCoach,numberOfSeatsPerCoach]
+//       var reservedArray = []
+//       var unreservedArray = []
   
-      const py = spawn("C:/Python311/python", [__dirname + "/seatAlloc.py",args]);
-      let data1 = "";
-      py.stdout.on("data", (data) => {
-        // console.log(`stdout: ${data}`);
-        data1 += data;
-        const dataArray = data1.split("\n")
+//       const py = spawn("C:/Python311/python", [__dirname + "/seatAlloc.py",args]);
+//       let data1 = "";
+//       py.stdout.on("data", (data) => {
+//         // console.log(`stdout: ${data}`);
+//         data1 += data;
+//         const dataArray = data1.split("\n")
   
-        var jsonStringWithDoubleQuotes = dataArray[0].replace(/'/g, '"');
+//         var jsonStringWithDoubleQuotes = dataArray[0].replace(/'/g, '"');
   
-      var myObject = JSON.parse(jsonStringWithDoubleQuotes);
+//       var myObject = JSON.parse(jsonStringWithDoubleQuotes);
   
-      unreservedArray=myObject;
+//       unreservedArray=myObject;
   
-      myObject=null;
+//       myObject=null;
   
-      jsonStringWithDoubleQuotes = dataArray[1].replace(/'/g, '"');
+//       jsonStringWithDoubleQuotes = dataArray[1].replace(/'/g, '"');
   
-      myObject = JSON.parse(jsonStringWithDoubleQuotes);
+//       myObject = JSON.parse(jsonStringWithDoubleQuotes);
   
-      reservedArray=myObject;
+//       reservedArray=myObject;
   
-      console.log(reservedArray)
+//       console.log(reservedArray)
         
         
-      });
+//       });
   
   
   
-      py.on("close", (code) => {
-        console.log(`Python script exited with code ${code}`);
-        // Now you can proceed with your remaining logic.
-        // For example, you can process `data1` and use it.
-      });
+//       py.on("close", (code) => {
+//         console.log(`Python script exited with code ${code}`);
+//         // Now you can proceed with your remaining logic.
+//         // For example, you can process `data1` and use it.
+//       });
   
   
-        const today = new Date();
-        const numberOfDays = 30;
-        for (let i = 0; i < numberOfDays; i++) {
-          const incrementedDate = new Date(today);
-          incrementedDate.setDate(today.getDate() + i);
+//         const today = new Date();
+//         const numberOfDays = 30;
+//         for (let i = 0; i < numberOfDays; i++) {
+//           const incrementedDate = new Date(today);
+//           incrementedDate.setDate(today.getDate() + i);
   
-          const year = incrementedDate.getFullYear();
-          const month = String(incrementedDate.getMonth() + 1).padStart(2, "0");
-          const day = String(incrementedDate.getDate()).padStart(2, "0");
+//           const year = incrementedDate.getFullYear();
+//           const month = String(incrementedDate.getMonth() + 1).padStart(2, "0");
+//           const day = String(incrementedDate.getDate()).padStart(2, "0");
   
-          const formattedDate = `${day}-${month}-${year}`;
+//           const formattedDate = `${day}-${month}-${year}`;
   
-          const newSeatAllocation = new SeatAllocation({
-            train_Number,
-            name,
-            unreservedSeats: unreservedArray,
-            reservedSeats: reservedArray,
-            ptrURS:0,
-            ptrRS:0,
-            date:formattedDate,
-            seatsAvailable:totalSeats
-          });
+//           const newSeatAllocation = new SeatAllocation({
+//             train_Number,
+//             name,
+//             unreservedSeats: unreservedArray,
+//             reservedSeats: reservedArray,
+//             ptrURS:0,
+//             ptrRS:0,
+//             date:formattedDate,
+//             seatsAvailable:totalSeats
+//           });
   
-          await newSeatAllocation.save();
-        }
-      } catch (error) {
-        console.log(error);
-      }
+//           await newSeatAllocation.save();
+//         }
+//       } catch (error) {
+//         console.log(error);
+//       }
   
-      res
-        .status(httpStatusCodes[200].code)
-        .json(formResponse(httpStatusCodes[200].code, "Train Created"));
-    } catch (error) {
-      console.log(error);
-      return res
-        .status(httpStatusCodes[500].code)
-        .json(formResponse(httpStatusCodes[500].code, error));
-    }
-  };
+//       res
+//         .status(httpStatusCodes[200].code)
+//         .json(formResponse(httpStatusCodes[200].code, "Train Created"));
+//     } catch (error) {
+//       console.log(error);
+//       return res
+//         .status(httpStatusCodes[500].code)
+//         .json(formResponse(httpStatusCodes[500].code, error));
+//     }
+//   };
 
 
   exports.displayAllTrainDetails = async (req, res) => {
@@ -602,3 +603,159 @@ const totalSeats = numberOfCoach*numberOfSeatsPerCoach
           formResponse(httpStatusCodes[200].code, findTrain)
         );
   }
+
+
+
+
+  exports.createTrainNew = async (req, res) => {
+    const frontendData = req.body.Trains;
+    
+  
+    const train_Number = parseInt(frontendData.train_Number);
+    const name = frontendData.name;
+    const Stations = processStationsData(frontendData.sourceToDest, frontendData.sourceToDestDepTime);
+    const Distance = frontendData.distanceFromSource.split(',').map(Number);
+    const numberOfCoach = parseInt(frontendData.numberOfCoach);
+    const numberOfSeatsPerCoach = parseInt(frontendData.numberOfSeatsPerCoach);
+    const fare = parseFloat(frontendData.fare);
+
+    const stationArray = Object.keys(Stations);
+    console.log("Station Array : ",stationArray);
+    
+    
+      // const Tnumber = parseInt(train_Number,2) 
+  // console.log("processed data ", processedData)
+      
+    
+      try {
+        if (
+          !train_Number ||
+          !name ||
+          !Stations ||
+          !numberOfCoach ||
+          !numberOfSeatsPerCoach ||
+          !Distance ||
+          !fare
+        ) {
+          return res
+            .status(httpStatusCodes[400].code)
+            .json(formResponse(httpStatusCodes[400].code, "Enter All details"));
+        }
+        const checktrain = await TrainData.findOne({ train_Number });
+        // console.log(checktrain);
+    
+        if (checktrain) {
+          return res
+            .status(httpStatusCodes[202].code)
+            .json(
+              formResponse(
+                httpStatusCodes[202].code,
+                "train with same Train Number is Present"
+              )
+            );
+        }
+    
+        const newTrain = new TrainData({
+          train_Number,
+          name,
+          Stations,
+          numberOfCoach,
+          numberOfSeatsPerCoach,
+          Distance,
+          fare
+        });
+    
+        await newTrain.save();
+    
+  
+        try {
+        
+  const totalSeats = numberOfCoach*numberOfSeatsPerCoach
+        const args = [numberOfCoach,numberOfSeatsPerCoach,stationArray]
+        var reservedArray = []
+        var unreservedArray = []
+    
+        const py = spawn("C:/Python311/python", [__dirname + "/seatAlloc5.py",args]);
+        let data1 = "";
+        py.stdout.on("data", (data) => {
+          // console.log(`stdout: ${data}`);
+          data1 += data;
+          const dataArray = data1.split("\n")
+    
+          // console.log("Unreserved Array : ",dataArray[0]);
+
+          var myObject;
+          if (dataArray[0]) {
+            const jsonStringWithDoubleQuotes = dataArray[0].replace(/'/g, '"');
+            myObject = JSON.parse(jsonStringWithDoubleQuotes);
+           }
+            
+            unreservedArray=myObject;
+            myObject=null;
+
+            if (dataArray[1]) {
+              const jsonStringWithDoubleQuotes = dataArray[1].replace(/'/g, '"');
+              myObject = JSON.parse(jsonStringWithDoubleQuotes);
+              }
+          
+          
+          // jsonStringWithDoubleQuotes = dataArray[1].replace(/'/g, '"');
+          
+          // console.log(dataArray[1]);
+        // myObject = JSON.parse(jsonStringWithDoubleQuotes);
+    
+        reservedArray=myObject;
+    
+
+          
+          
+        });
+    
+    
+    
+        py.on("close", (code) => {
+          console.log(`Python script exited with code ${code}`);
+          // Now you can proceed with your remaining logic.
+          // For example, you can process `data1` and use it.
+        });
+    
+    
+          const today = new Date();
+          const numberOfDays = 30;
+          for (let i = 0; i < numberOfDays; i++) {
+            const incrementedDate = new Date(today);
+            incrementedDate.setDate(today.getDate() + i);
+    
+            const year = incrementedDate.getFullYear();
+            const month = String(incrementedDate.getMonth() + 1).padStart(2, "0");
+            const day = String(incrementedDate.getDate()).padStart(2, "0");
+    
+            const formattedDate = `${day}-${month}-${year}`;
+    
+            const newSeatAllocation = new NewseatAllocation({
+              train_Number,
+              name,
+              unreservedSeats: unreservedArray,
+              reservedSeats: reservedArray,
+              ptrURS:0,
+              ptrRS:0,
+              date:formattedDate,
+              seatsAvailable:totalSeats
+            });
+    
+            await newSeatAllocation.save();
+          }
+        } catch (error) {
+          console.log(error);
+        }
+    
+        res
+          .status(httpStatusCodes[200].code)
+          .json(formResponse(httpStatusCodes[200].code, "Train Created"));
+      } catch (error) {
+        console.log(error);
+        return res
+          .status(httpStatusCodes[500].code)
+          .json(formResponse(httpStatusCodes[500].code, error));
+      }
+    };

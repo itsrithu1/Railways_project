@@ -293,6 +293,12 @@ const DisplayTrains = () => {
   ];
 
   const displayTrainDetails = () => {
+
+    console.log("Called from UI");
+    console.log("Source", source);
+    console.log("Destination", destination);
+    console.log("Date", date);
+    
     try {
       fetch(
         `http://localhost:3001/api/v1/user/searchTrainNew?source=${source}&destination=${destination}&date=${date}`,
@@ -345,7 +351,7 @@ const DisplayTrains = () => {
       displayTrainDetails();
     }
 
-  }, [date, showModify, selectedSource, selectedDestination]);
+  }, [date]);
 
 
 
